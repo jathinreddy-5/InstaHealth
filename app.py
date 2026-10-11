@@ -80,8 +80,29 @@ CLINICAL_BASELINES = {
 }
 
 class HealthEngine:
-    def __init__(self):
-        self.baselines = CLINICAL_BASELINES
+    def __init__(self, data_path="data/baselines.json"):
+        import os, json
+        self.baselines = dict(CLINICAL_BASELINES)
+        if os.path.exists(data_path):
+            try:
+                with open(data_path, "r") as f:
+                    data = json.load(f)
+                    for item in data.get("age_cohorts", []):
+                        cohort_key = item.get("cohort")
+                        if cohort_key:
+                            self.baselines[cohort_key] = {
+                                "label": item.get("label", cohort_key),
+                                "restingHR": item.get("avg_resting_hr", 60),
+                                "hrRange": item.get("hr_range", "55–66 bpm"),
+                                "sleepHours": item.get("sleep_hours", 7.8),
+                                "sleepRange": item.get("sleep_range", "7.5–8.5 hrs"),
+                                "stepTarget": item.get("step_target", 8000),
+                                "stepRange": item.get("step_range", "7,000–10,000"),
+                                "calories": item.get("calories", 2400),
+                                "maxStillMinutes": item.get("max_still_minutes", 60)
+                            }
+            except Exception:
+                pass
         self.profiles = {}
         self.active_id = "runner"
         

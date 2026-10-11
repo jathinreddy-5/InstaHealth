@@ -73,6 +73,15 @@
 
 ---
 
+## 📊 Pre-Trained Datasets & Baselines
+
+All physiological reference data used for Day 1–2 demographic benchmarking is stored locally in `data/`:
+
+- **[`data/baselines.json`](./data/baselines.json):** Clinical reference baselines stratified across 5 demographic cohorts (`18–29`, `30–39`, `40–49`, `50–59`, `60+`), specifying resting heart rate, sleep duration ranges, step targets, caloric expenditure, and Tanaka/Gulati equation parameters.
+- **[`data/training_dataset.csv`](./data/training_dataset.csv):** 500-subject training dataset containing biometric measurements (age, gender, resting HR, HRmax, HRR, baseline sleep, baseline steps, Day 1-2 telemetry, and Day 3 calibrated targets).
+
+---
+
 ## 🚀 Quick Start & Live Demo
 
 ### 1. Run the Python Smartwatch Desktop App (Recommended)

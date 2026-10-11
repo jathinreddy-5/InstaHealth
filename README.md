@@ -75,20 +75,30 @@
 
 ## 🚀 Quick Start & Live Demo
 
-### 1. Run in Browser (Desktop or Mobile)
-Simply clone the repository and open `index.html`:
+### 1. Run the Python Smartwatch Desktop App (Recommended)
+You can now run the standalone, zero-dependency Python smartwatch interface on Mac, Windows, or Linux:
 ```bash
-git clone git@github.com:jathinreddy-5/InstaHealth.git
-cd InstaHealth
+python3 app.py
+```
+*(Features: Circular smartwatch OLED display, mouse drag-to-swipe rings, "Change Person" modal with emoji selector, and "Next Day" simulator button).*
+
+To run headless self-tests:
+```bash
+python3 app.py --test
+```
+
+### 2. Run in Browser (Desktop or Mobile Web Simulator)
+Open `index.html` locally or visit the live deployment:
+- **Live Simulator:** [https://jathinreddy-5.github.io/InstaHealth/](https://jathinreddy-5.github.io/InstaHealth/)
+```bash
 open index.html
 ```
-*Tip: On mobile or desktop, swipe horizontally on the activity rings to navigate between Cardio, Sleep, Steps, Stillness, and Calories.*
 
-### 2. Run Engine Verification Tests
-Verify all mathematical formulations and calibration states:
+### 3. Run Node.js Verification Tests
 ```bash
 node test.js
 ```
+
 Expected output:
 ```text
 ✓ Check 1 Passed: Personalized result varies person to person based on age & physiological conditions.

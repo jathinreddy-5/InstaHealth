@@ -15,7 +15,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        webView = WebView(this)
+        // Smartwatch optimization: keep screen active and pure black OLED canvas
+        window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        webView = WebView(this).apply {
+            setBackgroundColor(android.graphics.Color.BLACK)
+            overScrollMode = WebView.OVER_SCROLL_NEVER
+        }
         setContentView(webView)
 
         webView.settings.apply {
@@ -25,6 +31,8 @@ class MainActivity : AppCompatActivity() {
             cacheMode = WebSettings.LOAD_NO_CACHE
             useWideViewPort = true
             loadWithOverviewMode = true
+            builtInZoomControls = false
+            displayZoomControls = false
         }
 
         webView.webViewClient = object : WebViewClient() {}

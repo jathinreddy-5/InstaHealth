@@ -147,10 +147,40 @@ Expected output:
 All InstaHealth engine tests passed successfully!
 ```
 
-### 3. Native Android / Wear OS App
-Open the `android/` directory in **Android Studio Ladybug** and build the standalone APK. Notice that `android.permission.INTERNET` is explicitly omitted from `AndroidManifest.xml` to guarantee network isolation.
+### 4. Deploying Directly onto Physical Smartwatches (Wear OS)
+
+InstaHealth is configured with native Wear OS hardware specifications (`android.hardware.type.watch` and `com.google.android.wearable.standalone="true"`), allowing direct installation onto real Android smartwatches (Samsung Galaxy Watch 4/5/6/7, Google Pixel Watch 1/2/3, OnePlus Watch 2, TicWatch):
+
+#### Method A: Wireless Deployment via Android Studio (Recommended)
+1. On your smartwatch, navigate to **Settings → About Watch → Software Info** and tap **Software Version** 7 times to enable Developer Mode.
+2. In **Settings → Developer Options**, turn on **ADB Debugging** and **Wireless Debugging**.
+3. Note the **IP address and port** displayed on the watch (e.g., `192.168.1.45:5555`).
+4. In Android Studio, open the `android/` directory.
+5. In the device selection drop-down, pair using **Pair device using Wi-Fi** or connect via terminal:
+   ```bash
+   adb connect 192.168.1.45:5555
+   ```
+6. Click **Run (`Shift + F10`)**. Android Studio compiles and installs InstaHealth directly onto your watch face.
+
+#### Method B: Direct Sideloading via ADB (No IDE Needed)
+If you build the debug APK using Gradle:
+```bash
+cd android && ./gradlew assembleDebug
+```
+The APK is generated at `android/app/build/outputs/apk/debug/app-debug.apk`. Install it directly to your connected watch:
+```bash
+adb -s 192.168.1.45:5555 install -r android/app/build/outputs/apk/debug/app-debug.apk
+```
 
 ---
+
+### 5. Install as an Offline PWA on Smartwatches & Mobile Browsers
+
+InstaHealth includes a Web App Manifest ([`manifest.json`](./manifest.json)) and Service Worker ([`sw.js`](./sw.js)) for offline progressive web app installation:
+1. Open the live deployment on any watch or mobile browser:  
+   👉 [https://jathinreddy-5.github.io/InstaHealth/](https://jathinreddy-5.github.io/InstaHealth/)
+2. Tap the browser menu and select **"Install App"** or **"Add to Home Screen"**.
+3. All assets are automatically stored locally. The application can now be launched directly from your smartwatch app launcher and will work **100% offline** without any internet connection.
 
 ## 📑 Academic Documentation
 

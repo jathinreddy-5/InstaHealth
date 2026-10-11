@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 
+      SMARTWATCH / WEAR OS HARDWARE CONFIGURATION:
+      Declares watch hardware capability and standalone operation on Wear OS.
+    -->
+    <uses-feature android:name="android.hardware.type.watch" />
+    <uses-feature android:name="android.hardware.sensor.heartrate" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.stepcounter" android:required="false" />
+
+    <!-- 
       ZERO-CLOUD PRIVACY ENFORCEMENT:
       No android.permission.INTERNET declared!
       The app runs 100% locally from bundled assets with offline on-device storage.
@@ -13,6 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InstaHealth">
         
+        <!-- Crucial for Wear OS: tells watch OS this is a standalone app without a companion phone needed -->
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

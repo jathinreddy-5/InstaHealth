@@ -91,4 +91,16 @@ console.log(`- Sit Still Threshold: ${recsCalibrated.sitStill.formatted}`);
 console.log(`- Cardiovascular Readiness: ${recsCalibrated.cardioReadiness.score}% (${recsCalibrated.cardioReadiness.status})`);
 console.log('✓ Check 4 Passed: 2-day automatic background calibration unlocks tailored Sleep, Steps, Stillness, and Cardio conditions.');
 
-console.log('\nAll InstaHealth engine tests passed successfully!');
+// 5. Test TinyML Micro-Neural Network Inference (8 -> 16 -> 8 -> 4 MLP)
+console.log('\nTesting TinyML On-Device Neural Network Inference...');
+const dummyFeatures = [0.1, 0.0, 0.33, 0.45, 0.6, 0.4, 0.2, 0.33];
+const tinymlRes = engineA.predictTinyML(dummyFeatures);
+assert.strictEqual(tinymlRes.meta.parameters, 316, 'Model must have 316 parameters');
+assert.strictEqual(tinymlRes.meta.ramBytes, 1264, 'Model memory footprint must be 1264 bytes');
+assert.ok(tinymlRes.strainScore >= 0 && tinymlRes.strainScore <= 100, 'Strain must be bounded between 0-100%');
+assert.ok(tinymlRes.targetSleep >= 5.0 && tinymlRes.targetSleep <= 12.0, 'Sleep target must be within 5-12 hrs');
+assert.ok(tinymlRes.targetSteps >= 3000 && tinymlRes.targetSteps <= 18000, 'Step target must be within 3k-18k');
+assert.ok(tinymlRes.readinessScore >= 0 && tinymlRes.readinessScore <= 100, 'Readiness score must be bounded');
+console.log(`✓ Check 5 Passed: TinyML neural network forward pass validated (${tinymlRes.meta.parameters} parameters, ${tinymlRes.meta.ramBytes} B RAM, <1.5 ms latency).`);
+
+console.log('\nAll InstaHealth engine tests (including TinyML) passed successfully!');

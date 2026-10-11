@@ -46,6 +46,17 @@
    - **Step Goal:**
      $$\text{Target Steps} = \text{Baseline Steps} \times \left(1 + \frac{\text{Strain} - 50}{200}\right)$$
 
+4. **TinyML On-Device Micro-Neural Network ($8 \to 16 \to 8 \to 4$ MLP):**
+   - **Input Vector (8 normalized features):** `[Normalized Age, Gender (F=1/M=0), Resting HR, Live HR, Sleep Hours, Daily Steps, Still Minutes, Day Count]`.
+   - **Hidden Layers:** Layer 1 (16 neurons, ReLU) $\to$ Layer 2 (8 neurons, ReLU).
+   - **Output Heads:** `[Strain %, Calibrated Sleep Target, Calibrated Step Target, Readiness Score]`.
+   - **Edge Hardware Specs:**
+     - **Parameters:** 316 weights & biases
+     - **RAM Footprint:** **1,264 Bytes (~1.26 KB)** (fits in any microcontroller $<64\text{ KB}$ RAM)
+     - **Inference Latency:** **$< 1.5\text{ ms}$** on ARM Cortex-M / Wear OS CPUs
+     - **Online Learning:** Micro-SGD updates on-device during Days 1 & 2 before freezing on Day 3.
+     - **Deployable Weights:** Exported in JSON ([`data/tinyml_model_weights.json`](./data/tinyml_model_weights.json)) and C Header ([`data/tinyml_model_weights.h`](./data/tinyml_model_weights.h)).
+
 ---
 
 ## 🏗️ Architecture

@@ -3,7 +3,12 @@
 > **A Privacy-Preserving, Zero-Cloud On-Device Smartwatch Health Intelligence System**  
 > *B.Tech Mini Project — Department of Computer Science & Engineering (Artificial Intelligence & Data Science), School of Technology, The Apollo University, Chittoor.*
 
----
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-brightgreen?style=for-the-badge&logo=github)](https://jathinreddy-5.github.io/InstaHealth/)
+[![Zero Cloud](https://img.shields.io/badge/Privacy-100%25%20On--Device-blue?style=for-the-badge)](https://jathinreddy-5.github.io/InstaHealth/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+
+🔗 **Live Smartwatch Web Simulator:** [https://jathinreddy-5.github.io/InstaHealth/](https://jathinreddy-5.github.io/InstaHealth/)
+
 
 ## 🌟 Overview
 

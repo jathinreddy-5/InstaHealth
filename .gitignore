@@ -1,0 +1,26 @@
+# .gitignore
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+build/
+bin/
+out/
+android/build/
+android/app/build/
+.gradle/
+*.iml
+.idea/
+local.properties
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Scripts
+populate_all_sections.py
+build_full_report_docx.py
+generate_diagrams.py

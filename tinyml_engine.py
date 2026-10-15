@@ -13,7 +13,6 @@ Features:
 
 import json
 import os
-import math
 
 class TinyMLHealthModel:
     def __init__(self, weights_path="data/tinyml_model_weights.json"):
@@ -74,33 +73,34 @@ class TinyMLHealthModel:
         Input: 8 normalized features
         Output: [strain_score, sleep_target_hrs, step_target, readiness_score, is_anomaly]
         """
-        w = custom_weights if custom_weights else self
+        w = custom_weights if custom_weights is not None else {
+            "W1": self.W1, "b1": self.b1,
+            "W2": self.W2, "b2": self.b2,
+            "W3": self.W3, "b3": self.b3,
+        }
 
         # 1. Layer 1: 8 -> 16 (ReLU)
         h1 = [0.0] * 16
         for j in range(16):
-            s = w["b1"][j] if isinstance(w, dict) else w.b1[j]
+            s = w["b1"][j]
             for i in range(8):
-                w_val = w["W1"][i][j] if isinstance(w, dict) else w.W1[i][j]
-                s += features[i] * w_val
+                s += features[i] * w["W1"][i][j]
             h1[j] = self._relu(s)
 
         # 2. Layer 2: 16 -> 8 (ReLU)
         h2 = [0.0] * 8
         for j in range(8):
-            s = w["b2"][j] if isinstance(w, dict) else w.b2[j]
+            s = w["b2"][j]
             for i in range(16):
-                w_val = w["W2"][i][j] if isinstance(w, dict) else w.W2[i][j]
-                s += h1[i] * w_val
+                s += h1[i] * w["W2"][i][j]
             h2[j] = self._relu(s)
 
         # 3. Layer 3 (Output): 8 -> 4 (Linear Heads)
         out = [0.0] * 4
         for j in range(4):
-            s = w["b3"][j] if isinstance(w, dict) else w.b3[j]
+            s = w["b3"][j]
             for i in range(8):
-                w_val = w["W3"][i][j] if isinstance(w, dict) else w.W3[i][j]
-                s += h2[i] * w_val
+                s += h2[i] * w["W3"][i][j]
             out[j] = s
 
         # De-normalize to physical units
@@ -129,16 +129,17 @@ class TinyMLHealthModel:
         pred = self.predict(features, custom_weights=custom_weights)
         h2 = pred["hidden_activations"]
 
-        target_y = [
-            pred["strain_score"] / 100.0,
-            (target_sleep - 5.0) / 7.0,
-            (target_steps - 3000.0) / 15000.0,
-            pred["readiness_score"] / 100.0
+        # Error per output head (predicted - target, normalized). Strain and readiness
+        # have no external ground truth so their gradient is skipped (0.0).
+        errors = [
+            0.0,                                                          # strain: no ground truth
+            (pred["target_sleep"] - target_sleep) / 7.0,                 # sleep (hrs)
+            (pred["target_steps"] - target_steps) / 15000.0,             # steps
+            0.0,                                                          # readiness: no ground truth
         ]
 
-        # Update W3 and b3
         for j in range(4):
-            err = (pred["strain_score"] / 100.0) - target_y[j] if j == 0 else 0.0
+            err = errors[j]
             custom_weights["b3"][j] -= lr * err
             for i in range(8):
                 custom_weights["W3"][i][j] -= lr * err * h2[i]

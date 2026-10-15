@@ -12,107 +12,56 @@ Features:
 - High-contrast OLED dark theme with all typography >= 11pt
 """
 
+import os
+import json
 import sys
-import math
+import time
 import tkinter as tk
 from tkinter import ttk, messagebox
+from tinyml_engine import TinyMLHealthModel
 
 # ==============================================================================
 # 1. ON-DEVICE PHYSIOLOGICAL ENGINE (ZERO-CLOUD)
 # ==============================================================================
 
-CLINICAL_BASELINES = {
-    "18-29": {
-        "label": "18–29 yrs",
-        "restingHR": 60,
-        "hrRange": "55–66 bpm",
-        "sleepHours": 7.8,
-        "sleepRange": "7.5–8.5 hrs",
-        "stepTarget": 8000,
-        "stepRange": "7,000–10,000",
-        "calories": 2400,
-        "maxStillMinutes": 60
-    },
-    "30-39": {
-        "label": "30–39 yrs",
-        "restingHR": 63,
-        "hrRange": "58–70 bpm",
-        "sleepHours": 7.5,
-        "sleepRange": "7.0–8.0 hrs",
-        "stepTarget": 7500,
-        "stepRange": "6,500–9,000",
-        "calories": 2200,
-        "maxStillMinutes": 60
-    },
-    "40-49": {
-        "label": "40–49 yrs",
-        "restingHR": 66,
-        "hrRange": "60–73 bpm",
-        "sleepHours": 7.2,
-        "sleepRange": "7.0–8.0 hrs",
-        "stepTarget": 7000,
-        "stepRange": "6,000–8,500",
-        "calories": 2050,
-        "maxStillMinutes": 55
-    },
-    "50-59": {
-        "label": "50–59 yrs",
-        "restingHR": 68,
-        "hrRange": "62–75 bpm",
-        "sleepHours": 7.0,
-        "sleepRange": "6.5–7.5 hrs",
-        "stepTarget": 6500,
-        "stepRange": "5,500–8,000",
-        "calories": 1900,
-        "maxStillMinutes": 50
-    },
-    "60+": {
-        "label": "60+ yrs",
-        "restingHR": 70,
-        "hrRange": "64–78 bpm",
-        "sleepHours": 7.0,
-        "sleepRange": "6.5–7.5 hrs",
-        "stepTarget": 6000,
-        "stepRange": "5,000–7,500",
-        "calories": 1750,
-        "maxStillMinutes": 45
-    }
+_TINYML_META = {
+    "architecture": "8 -> 16 -> 8 -> 4 MLP",
+    "parameters": 316,
+    "ram_bytes": 1264,
+    "latency_ms": 1.2
 }
 
-from tinyml_engine import TinyMLHealthModel
 
 class HealthEngine:
     def __init__(self, data_path="data/baselines.json"):
-        import os, json
-        self.baselines = dict(CLINICAL_BASELINES)
-        if os.path.exists(data_path):
-            try:
-                with open(data_path, "r") as f:
-                    data = json.load(f)
-                    for item in data.get("age_cohorts", []):
-                        cohort_key = item.get("cohort")
-                        if cohort_key:
-                            self.baselines[cohort_key] = {
-                                "label": item.get("label", cohort_key),
-                                "restingHR": item.get("avg_resting_hr", 60),
-                                "hrRange": item.get("hr_range", "55–66 bpm"),
-                                "sleepHours": item.get("sleep_hours", 7.8),
-                                "sleepRange": item.get("sleep_range", "7.5–8.5 hrs"),
-                                "stepTarget": item.get("step_target", 8000),
-                                "stepRange": item.get("step_range", "7,000–10,000"),
-                                "calories": item.get("calories", 2400),
-                                "maxStillMinutes": item.get("max_still_minutes", 60)
-                            }
-            except Exception:
-                pass
+        with open(data_path, "r") as f:
+            data = json.load(f)
+        self.baselines = {
+            item["cohort"]: {
+                "label": item["label"],
+                "restingHR": item["avg_resting_hr"],
+                "hrRange": item["hr_range"],
+                "sleepHours": item["sleep_hours"],
+                "sleepRange": item["sleep_range"],
+                "stepTarget": item["step_target"],
+                "stepRange": item["step_range"],
+                "calories": item["calories"],
+                "maxStillMinutes": item["max_still_minutes"]
+            }
+            for item in data["age_cohorts"]
+        }
 
         # Initialize on-device TinyML neural network (8 -> 16 -> 8 -> 4 MLP)
         self.tinyml_model = TinyMLHealthModel()
         self.profiles = {}
         self.active_id = "runner"
         
-        # Pre-seed default profile (Runner, 22y Male)
+        # Pre-seed default profiles
         self.add_profile("runner", emoji="🏃‍♂️", age=22, gender="Male")
+        self.add_profile("meditator", emoji="🧘‍♀️", age=28, gender="Female")
+        self.add_profile("cyclist", emoji="🚴‍♂️", age=35, gender="Male")
+        self.add_profile("swimmer", emoji="🏊‍♂️", age=24, gender="Female")
+        self.active_id = "runner"
 
     def _get_cohort(self, age):
         if age < 30: return "18-29"
@@ -220,12 +169,7 @@ class HealthEngine:
                 "readiness": tinyml_pred["readiness_score"],
                 "is_anomaly": tinyml_pred["is_anomaly"],
                 "human_averages": cohort_data,
-                "tinyml_meta": {
-                    "architecture": "8 -> 16 -> 8 -> 4 MLP",
-                    "parameters": 316,
-                    "ram_bytes": 1264,
-                    "latency_ms": 1.2
-                }
+                "tinyml_meta": _TINYML_META
             }
         else:
             # Day 3+: TinyML-derived tailored daily prescriptions
@@ -237,12 +181,7 @@ class HealthEngine:
                 "readiness": tinyml_pred["readiness_score"],
                 "is_anomaly": tinyml_pred["is_anomaly"],
                 "human_averages": cohort_data,
-                "tinyml_meta": {
-                    "architecture": "8 -> 16 -> 8 -> 4 MLP",
-                    "parameters": 316,
-                    "ram_bytes": 1264,
-                    "latency_ms": 1.2
-                }
+                "tinyml_meta": _TINYML_META
             }
 
         return {
@@ -256,103 +195,193 @@ class HealthEngine:
         }
 
 # ==============================================================================
-# 2. SMARTWATCH DESKTOP INTERFACE (TKINTER GUI)
+# 2. SMARTWATCH ON-DEVICE INTERFACE (TRUE WEARABLE EXPERIENCE)
 # ==============================================================================
 
 class InstaHealthSmartwatchApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("InstaHealth — Zero-Cloud Smartwatch (Python)")
-        self.root.geometry("460x780")
-        self.root.configure(bg="#0F172A")
+        self.root.title("InstaHealth Smartwatch")
+        self.root.geometry("420x720")
+        self.root.configure(bg="#0B0F17")
         self.root.resizable(False, False)
 
         self.engine = HealthEngine()
         self.current_ring_index = 0
+        self.screen_mode = "WATCHFACE"  # "WATCHFACE", "PROFILES", "NEW_PROFILE"
+        self.toast_text = None
+        self.toast_timer = None
+
+        # Interactive draft for on-watch person creation
+        self.draft_person = {
+            "emoji": "🧘‍♀️",
+            "gender": "Female",
+            "age": 28
+        }
+
+        # Gesture tracking
         self.drag_start_x = 0
+        self.drag_start_y = 0
+        self.is_dragging = False
+        self.has_swiped = False
+        self.last_scroll_time = 0
 
         self.setup_ui()
         self.refresh_display()
 
     def setup_ui(self):
-        # Container
-        main_frame = tk.Frame(self.root, bg="#0F172A", padx=16, pady=16)
-        main_frame.pack(fill=tk.BOTH, expand=True)
-
-        # External Simulator Controls Header
-        top_ctrl = tk.Frame(main_frame, bg="#0F172A")
-        top_ctrl.pack(fill=tk.X, pady=(0, 10))
-
-        btn_person = tk.Button(
-            top_ctrl, text="👤 Change Person", bg="#2563EB", fg="white",
-            font=("Helvetica", 11, "bold"), relief="flat", cursor="hand2",
-            padx=10, pady=5, command=self.open_change_person_dialog
-        )
-        btn_person.pack(side=tk.LEFT)
-
-        btn_advance = tk.Button(
-            top_ctrl, text="⏭️ Next Day", bg="#0D9488", fg="white",
-            font=("Helvetica", 11, "bold"), relief="flat", cursor="hand2",
-            padx=10, pady=5, command=self.advance_simulation_day
-        )
-        btn_advance.pack(side=tk.RIGHT)
-
-        # Smartwatch Outer Case Frame
+        # 100% On-Device Smartwatch Display (Pure hardware experience - zero desktop clutter)
         self.case_canvas = tk.Canvas(
-            main_frame, width=410, height=620, bg="#0F172A", highlightthickness=0
+            self.root, width=420, height=720, bg="#0B0F17", highlightthickness=0
         )
-        self.case_canvas.pack(pady=4)
+        self.case_canvas.pack(fill=tk.BOTH, expand=True)
 
-        # Draw physical watch bezel
-        # Bezel rim
-        self.case_canvas.create_oval(15, 15, 395, 605, fill="#1E293B", outline="#334155", width=4)
-        # OLED Display Screen (Pure Black)
-        self.screen_rect = self.case_canvas.create_oval(25, 25, 385, 595, fill="#000000", outline="#0F172A", width=2)
-        # Side crown button
-        self.case_canvas.create_rectangle(392, 180, 404, 250, fill="#475569", outline="#64748B", width=2)
+        # Draw Smartwatch Hardware Chassis
+        # 1. Silicone Sport Straps
+        # Top strap
+        self.case_canvas.create_rectangle(140, 0, 280, 55, fill="#1E293B", outline="#0F172A", width=2)
+        self.case_canvas.create_line(155, 18, 265, 18, fill="#334155", width=2)
+        self.case_canvas.create_line(155, 34, 265, 34, fill="#334155", width=2)
+        # Bottom strap
+        self.case_canvas.create_rectangle(140, 665, 280, 720, fill="#1E293B", outline="#0F172A", width=2)
+        self.case_canvas.create_line(155, 685, 265, 685, fill="#334155", width=2)
+        self.case_canvas.create_line(155, 702, 265, 702, fill="#334155", width=2)
 
-        # Bind Drag/Swipe gestures on the watch canvas
+        # 2. Titanium Curved Watch Bezel
+        self.case_canvas.create_oval(20, 40, 390, 680, fill="#1E293B", outline="#334155", width=4)
+
+        # 3. Interactive Digital Crown (Right hardware button -> Returns Home / Watchface)
+        crown_coords = (388, 195, 408, 275)
+        self.crown_rect = self.case_canvas.create_rectangle(
+            crown_coords, fill="#475569", outline="#64748B", width=2, tags="hardware_crown"
+        )
+        for gy in range(205, 270, 10):
+            self.case_canvas.create_line(390, gy, 406, gy, fill="#94A3B8", width=1, tags="hardware_crown")
+        self.case_canvas.tag_bind("hardware_crown", "<Button-1>", lambda e: self.on_crown_press())
+        self.case_canvas.create_text(
+            400, 182, text="CROWN", fill="#64748B", font=("Helvetica", 9, "bold"), tags="hardware_labels"
+        )
+
+        # 4. Secondary Physical Hardware Button (Right side)
+        self.case_canvas.create_rectangle(388, 310, 402, 375, fill="#334155", outline="#475569", width=2, tags="hardware_side_btn")
+        self.case_canvas.tag_bind("hardware_side_btn", "<Button-1>", lambda e: self.toggle_profile_drawer())
+
+        # 5. OLED Display Screen (Pure AMOLED Black)
+        self.case_canvas.create_oval(32, 52, 378, 668, fill="#000000", outline="#0F172A", width=3)
+
+        # Bind Gesture Events for Swiping & Trackpad Interaction
         self.case_canvas.bind("<ButtonPress-1>", self.on_drag_start)
+        self.case_canvas.bind("<B1-Motion>", self.on_drag_motion)
         self.case_canvas.bind("<ButtonRelease-1>", self.on_drag_end)
+        self.root.bind("<ButtonRelease-1>", self.on_drag_end)
 
-        # Bottom Carousel Navigation Bar
-        nav_frame = tk.Frame(main_frame, bg="#0F172A")
-        nav_frame.pack(fill=tk.X, pady=(8, 0))
+        # Trackpad 2-finger horizontal swipe & mousewheel
+        self.case_canvas.bind("<MouseWheel>", self.on_wheel)
+        self.case_canvas.bind("<Shift-MouseWheel>", self.on_wheel)
+        self.root.bind("<MouseWheel>", self.on_wheel)
+        self.root.bind("<Shift-MouseWheel>", self.on_wheel)
 
-        btn_prev = tk.Button(
-            nav_frame, text="◀ Prev Ring", bg="#334155", fg="white",
-            font=("Helvetica", 11), relief="flat", cursor="hand2",
-            command=self.prev_ring
-        )
-        btn_prev.pack(side=tk.LEFT, padx=10)
-
-        lbl_hint = tk.Label(
-            nav_frame, text="Swipe or click arrows", bg="#0F172A", fg="#94A3B8",
-            font=("Helvetica", 11)
-        )
-        lbl_hint.pack(side=tk.LEFT, expand=True)
-
-        btn_next = tk.Button(
-            nav_frame, text="Next Ring ▶", bg="#334155", fg="white",
-            font=("Helvetica", 11), relief="flat", cursor="hand2",
-            command=self.next_ring
-        )
-        btn_next.pack(side=tk.RIGHT, padx=10)
+        # Keyboard Left/Right & Escape
+        self.root.bind("<Left>", lambda e: self.prev_ring())
+        self.root.bind("<Right>", lambda e: self.next_ring())
+        self.root.bind("<Escape>", lambda e: self.on_crown_press())
 
     # --------------------------------------------------------------------------
-    # GESTURE HANDLING
+    # SMARTWATCH HARDWARE ACTIONS
+    # --------------------------------------------------------------------------
+    def on_crown_press(self):
+        """Digital Crown physical press: Always returns Home to main watch face."""
+        if self.screen_mode != "WATCHFACE":
+            self.screen_mode = "WATCHFACE"
+            self.show_toast("🏠 Watch Face")
+        else:
+            # If already on watchface, jump back to cardio ring
+            self.current_ring_index = 0
+            self.show_toast("❤️ Cardio Ring")
+        self.refresh_display()
+
+    def toggle_profile_drawer(self):
+        """Side hardware button: Toggles between Profile Drawer and Watch Face."""
+        if self.screen_mode == "WATCHFACE":
+            self.screen_mode = "PROFILES"
+        else:
+            self.screen_mode = "WATCHFACE"
+        self.refresh_display()
+
+    def show_toast(self, message):
+        """Smartwatch on-screen notification pill that auto-dismisses."""
+        self.toast_text = message
+        if self.toast_timer:
+            self.root.after_cancel(self.toast_timer)
+        self.toast_timer = self.root.after(3000, self.clear_toast)
+        self.refresh_display()
+
+    def clear_toast(self):
+        self.toast_text = None
+        self.refresh_display()
+
+    # --------------------------------------------------------------------------
+    # GESTURE HANDLING (SWIPE, DRAG & TRACKPAD)
     # --------------------------------------------------------------------------
     def on_drag_start(self, event):
         self.drag_start_x = event.x
+        self.drag_start_y = event.y
+        self.is_dragging = True
+        self.has_swiped = False
+
+    def on_drag_motion(self, event):
+        if not self.is_dragging or self.has_swiped:
+            return
+        dx = event.x - self.drag_start_x
+        dy = event.y - self.drag_start_y
+
+        if self.screen_mode == "WATCHFACE":
+            # Horizontal swipe between rings
+            if dx < -26:
+                self.has_swiped = True
+                self.next_ring()
+            elif dx > 26:
+                self.has_swiped = True
+                self.prev_ring()
+            # Vertical swipe down -> open profiles drawer
+            elif dy > 45:
+                self.has_swiped = True
+                self.screen_mode = "PROFILES"
+                self.refresh_display()
+        elif self.screen_mode == "PROFILES":
+            # Swipe up in profiles drawer -> return to watch face
+            if dy < -40:
+                self.has_swiped = True
+                self.screen_mode = "WATCHFACE"
+                self.refresh_display()
 
     def on_drag_end(self, event):
-        dx = event.x - self.drag_start_x
-        if dx < -35:
-            # Swipe left -> Next ring
-            self.next_ring()
-        elif dx > 35:
-            # Swipe right -> Prev ring
-            self.prev_ring()
+        if self.is_dragging and not self.has_swiped:
+            dx = event.x - self.drag_start_x
+            if self.screen_mode == "WATCHFACE":
+                if dx < -16:
+                    self.next_ring()
+                elif dx > 16:
+                    self.prev_ring()
+        self.is_dragging = False
+        self.has_swiped = False
+
+    def on_wheel(self, event):
+        now = time.time()
+        if now - self.last_scroll_time < 0.2:
+            return
+        delta = event.delta
+        if self.screen_mode == "WATCHFACE":
+            if delta < 0:
+                self.last_scroll_time = now
+                self.next_ring()
+            elif delta > 0:
+                self.last_scroll_time = now
+                self.prev_ring()
+
+    def set_ring(self, index):
+        self.current_ring_index = index % 5
+        self.refresh_display()
 
     def prev_ring(self):
         self.current_ring_index = (self.current_ring_index - 1) % 5
@@ -363,71 +392,102 @@ class InstaHealthSmartwatchApp:
         self.refresh_display()
 
     # --------------------------------------------------------------------------
-    # RENDERING THE WATCH SCREEN
+    # MAIN SCREEN ROUTER
     # --------------------------------------------------------------------------
     def refresh_display(self):
-        # Clear previous elements drawn on the OLED screen area
         self.case_canvas.delete("watch_content")
 
+        if self.screen_mode == "WATCHFACE":
+            self.render_watchface()
+        elif self.screen_mode == "PROFILES":
+            self.render_profiles_drawer()
+        elif self.screen_mode == "NEW_PROFILE":
+            self.render_new_profile_dial()
+
+        # Render On-Watch Toast Notification (if active)
+        if self.toast_text:
+            self.case_canvas.create_rectangle(
+                75, 62, 335, 106, fill="#0F172A", outline="#38BDF8", width=2, tags="watch_content"
+            )
+            self.case_canvas.create_text(
+                205, 84, text=self.toast_text, fill="#F8FAFC",
+                font=("Helvetica", 11, "bold"), tags="watch_content"
+            )
+
+    # --------------------------------------------------------------------------
+    # 1. WATCHFACE VIEW (ACTIVITY RINGS & CALIBRATION)
+    # --------------------------------------------------------------------------
+    def render_watchface(self):
         res = self.engine.calculate()
         profile = res["profile"]
         telemetry = res["telemetry"]
         recs = res["recs"]
         is_calibrating = res["is_calibrating"]
 
-        # 1. Top Status Bar (Time, Profile, Battery)
+        # 1. Smartwatch Status Bar
+        # Clock
+        current_time_str = time.strftime("%H:%M")
         self.case_canvas.create_text(
-            65, 65, text="10:09", fill="#94A3B8", font=("Helvetica", 12, "bold"), tags="watch_content"
+            75, 78, text=current_time_str, fill="#94A3B8", font=("Helvetica", 12, "bold"), tags="watch_content"
         )
-        profile_tag = f"{profile['emoji']} Day {profile['day_count']}"
-        self.case_canvas.create_text(
-            205, 65, text=profile_tag, fill="#38BDF8", font=("Helvetica", 12, "bold"), tags="watch_content"
+        # Interactive Profile Pill (Tap directly on-screen to open profile drawer!)
+        pill_text = f"{profile['emoji']} Day {profile['day_count']} ▾"
+        self.case_canvas.create_rectangle(
+            135, 66, 275, 90, fill="#0F172A", outline="#0284C7", width=1, tags=("watch_content", "open_profile_btn")
         )
         self.case_canvas.create_text(
-            345, 65, text="98% 🔋", fill="#10B981", font=("Helvetica", 11), tags="watch_content"
+            205, 78, text=pill_text, fill="#38BDF8", font=("Helvetica", 11, "bold"), tags=("watch_content", "open_profile_btn")
+        )
+        self.case_canvas.tag_bind("open_profile_btn", "<Button-1>", lambda e: self.toggle_profile_drawer())
+
+        # Battery
+        self.case_canvas.create_text(
+            335, 78, text="98% ⚡", fill="#10B981", font=("Helvetica", 11, "bold"), tags="watch_content"
         )
 
-        # 2. Main Title: "[Emoji]'s Body Activity" (Strictly >= 14pt)
-        title_text = f"{profile['emoji']}'s Body Activity"
+        # 2. Main Title: "[Emoji]'s Activity"
         self.case_canvas.create_text(
-            205, 95, text=title_text, fill="#F8FAFC", font=("Helvetica", 15, "bold"), tags="watch_content"
+            205, 108, text=f"{profile['emoji']} Body Activity",
+            fill="#F8FAFC", font=("Helvetica", 14, "bold"), tags="watch_content"
         )
 
-        # 3. Dynamic Swipeable Ring (Ring Index: 0..4)
-        cx, cy, radius = 205, 215, 75
-        self.draw_circular_ring(cx, cy, radius, self.current_ring_index, telemetry, recs)
+        # 3. Dynamic Activity Ring
+        cx, cy, radius = 205, 218, 72
+        self.draw_circular_ring(cx, cy, radius, self.current_ring_index, telemetry, recs, res.get("strain", 0.0))
 
-        # 4. Page Indicator Dots (● ○ ○ ○ ○)
-        dots_y = 310
+        # 4. Interactive Page Dots (● ○ ○ ○ ○)
+        dots_y = 308
         dot_spacing = 16
         start_x = 205 - (2 * dot_spacing)
         for i in range(5):
             x = start_x + (i * dot_spacing)
             color = "#38BDF8" if i == self.current_ring_index else "#334155"
-            size = 4 if i == self.current_ring_index else 3
+            size = 5 if i == self.current_ring_index else 3
+            dot_tag = f"dot_indicator_{i}"
             self.case_canvas.create_oval(
                 x - size, dots_y - size, x + size, dots_y + size,
-                fill=color, outline=color, tags="watch_content"
+                fill=color, outline=color, tags=("watch_content", dot_tag)
             )
+            self.case_canvas.tag_bind(dot_tag, "<Button-1>", lambda e, idx=i: self.set_ring(idx))
 
-        # 5. Calibration Card / Day 3 Auto-Close Section
-        card_top_y = 335
+        # 5. Smartwatch Lower Card (Calibration or Prescriptions)
+        card_top_y = 332
         if is_calibrating:
-            # DAY 1 & 2: Show Live Comparison with Human Demographic Baselines
+            # DAY 1 & 2: Real-time Live Comparison with Clinical Human Demographic Baselines
             self.case_canvas.create_rectangle(
-                55, card_top_y, 355, card_top_y + 195,
+                55, card_top_y, 355, card_top_y + 200,
                 fill="#0F172A", outline="#0284C7", width=2, tags="watch_content"
             )
             # Status Badge
             self.case_canvas.create_text(
-                205, card_top_y + 18,
+                205, card_top_y + 16,
                 text=f"⏳ Calibrating: Day {profile['day_count']} / 2",
                 fill="#FBBF24", font=("Helvetica", 12, "bold"), tags="watch_content"
             )
             self.case_canvas.create_text(
-                205, card_top_y + 36,
+                205, card_top_y + 34,
                 text="Benchmarking against clinical averages",
-                fill="#94A3B8", font=("Helvetica", 11), tags="watch_content"
+                fill="#94A3B8", font=("Helvetica", 10), tags="watch_content"
             )
 
             # Demographic Comparison Table
@@ -439,73 +499,97 @@ class InstaHealthSmartwatchApp:
                 ("Step Target", cohort["stepRange"], f"{telemetry['steps']:,}")
             ]
 
-            row_y = card_top_y + 60
+            row_y = card_top_y + 56
             for idx, (col1, col2, col3) in enumerate(rows):
                 is_hdr = idx == 0
-                font_style = ("Helvetica", 11, "bold") if is_hdr else ("Helvetica", 11)
+                font_style = ("Helvetica", 10, "bold") if is_hdr else ("Helvetica", 10)
                 color = "#E2E8F0" if is_hdr else "#94A3B8"
                 c3_color = "#E2E8F0" if is_hdr else "#38BDF8"
 
                 self.case_canvas.create_text(105, row_y, text=col1, fill=color, font=font_style, tags="watch_content")
                 self.case_canvas.create_text(210, row_y, text=col2, fill=color, font=font_style, tags="watch_content")
                 self.case_canvas.create_text(305, row_y, text=col3, fill=c3_color, font=font_style, tags="watch_content")
-                row_y += 24
+                row_y += 22
 
-            self.case_canvas.create_text(
-                205, card_top_y + 175,
-                text=f"🔒 Day 3 closes this card automatically",
-                fill="#64748B", font=("Helvetica", 11, "italic"), tags="watch_content"
+            # On-Watch "Advance 24h" Action Button (Directly inside watch display!)
+            btn_y = card_top_y + 158
+            self.case_canvas.create_rectangle(
+                75, btn_y, 335, btn_y + 32,
+                fill="#0D9488", outline="#14B8A6", width=1, tags=("watch_content", "on_watch_advance")
             )
+            self.case_canvas.create_text(
+                205, btn_y + 16, text="⏩ Next Day (Simulate 24h Wear)",
+                fill="#FFFFFF", font=("Helvetica", 11, "bold"), tags=("watch_content", "on_watch_advance")
+            )
+            self.case_canvas.tag_bind("on_watch_advance", "<Button-1>", lambda e: self.advance_simulation_day())
 
         else:
-            # DAY 3+: Calibration Closed! Tailored Daily Prescriptions Active
+            # DAY 3+: Calibrated Model Active (Tailored Prescriptions)
             self.case_canvas.create_rectangle(
-                55, card_top_y, 355, card_top_y + 195,
+                55, card_top_y, 355, card_top_y + 200,
                 fill="#0F172A", outline="#10B981", width=2, tags="watch_content"
             )
             self.case_canvas.create_text(
-                205, card_top_y + 20,
+                205, card_top_y + 18,
                 text="✓ Calibrated Model Active",
                 fill="#34D399", font=("Helvetica", 13, "bold"), tags="watch_content"
             )
             self.case_canvas.create_text(
-                205, card_top_y + 42,
+                205, card_top_y + 38,
                 text=f"Tuned for {profile['gender']} ({profile['age']}y) based on 48h activity",
-                fill="#94A3B8", font=("Helvetica", 11), tags="watch_content"
+                fill="#94A3B8", font=("Helvetica", 10), tags="watch_content"
             )
 
-            # Prescriptions
             p_rows = [
                 (f"😴 Sleep Needed Tonight:", f"{recs['target_sleep']} hrs"),
                 (f"🚶 Daily Step Target:", f"{recs['target_steps']:,} steps"),
                 (f"🪑 Max Stillness Limit:", f"60 mins"),
                 (f"❤️ Cardio Readiness:", f"94% (Prime)")
             ]
-            py = card_top_y + 72
+            py = card_top_y + 64
             for label, val in p_rows:
                 self.case_canvas.create_text(75, py, text=label, anchor="w", fill="#F1F5F9", font=("Helvetica", 11), tags="watch_content")
                 self.case_canvas.create_text(335, py, text=val, anchor="e", fill="#38BDF8", font=("Helvetica", 11, "bold"), tags="watch_content")
-                py += 26
+                py += 24
 
-            self.case_canvas.create_text(
-                205, card_top_y + 176,
-                text="100% on-device • 0 bytes cloud data",
-                fill="#64748B", font=("Helvetica", 11), tags="watch_content"
+            # On-Watch "Restart Baseline" Action Pill
+            btn_y = card_top_y + 162
+            self.case_canvas.create_rectangle(
+                95, btn_y, 315, btn_y + 28,
+                fill="#1E293B", outline="#475569", width=1, tags=("watch_content", "on_watch_reset")
             )
+            self.case_canvas.create_text(
+                205, btn_y + 14, text="↺ Reset Calibration to Day 1",
+                fill="#94A3B8", font=("Helvetica", 10, "bold"), tags=("watch_content", "on_watch_reset")
+            )
+            self.case_canvas.tag_bind("on_watch_reset", "<Button-1>", lambda e: self.reset_active_calibration())
 
-    def draw_circular_ring(self, cx, cy, r, ring_idx, telemetry, recs):
-        # Base ring background
+    def draw_circular_ring(self, cx, cy, r, ring_idx, telemetry, recs, strain_score=0.0):
+        # Base ring track
         self.case_canvas.create_oval(
             cx - r, cy - r, cx + r, cy + r,
-            outline="#1E293B", width=14, tags="watch_content"
+            outline="#1E293B", width=13, tags="watch_content"
         )
+
+        # On-watch touch chevrons for direct tapping
+        self.case_canvas.create_text(
+            cx - r - 16, cy, text="‹", fill="#64748B", font=("Helvetica", 22, "bold"),
+            activefill="#38BDF8", tags=("watch_content", "chevron_prev")
+        )
+        self.case_canvas.tag_bind("chevron_prev", "<Button-1>", lambda e: self.prev_ring())
+
+        self.case_canvas.create_text(
+            cx + r + 16, cy, text="›", fill="#64748B", font=("Helvetica", 22, "bold"),
+            activefill="#38BDF8", tags=("watch_content", "chevron_next")
+        )
+        self.case_canvas.tag_bind("chevron_next", "<Button-1>", lambda e: self.next_ring())
 
         configs = [
             {
                 "name": "Cardio Strain",
-                "val": f"{round(((telemetry['hr'] - 60) / 70) * 100)}%",
+                "val": f"{int(round(strain_score))}%",
                 "sub": "Karvonen HRR Strain",
-                "ratio": min(1.0, max(0.1, ((telemetry['hr'] - 60) / 70))),
+                "ratio": min(1.0, max(0.08, strain_score / 100.0)),
                 "color": "#FF2D55"
             },
             {
@@ -541,18 +625,18 @@ class InstaHealthSmartwatchApp:
         cfg = configs[ring_idx]
         extent_angle = -int(cfg["ratio"] * 360)
 
-        # Draw progress arc (starting at 90 deg = top)
+        # Draw progress arc
         if extent_angle != 0:
             self.case_canvas.create_arc(
                 cx - r, cy - r, cx + r, cy + r,
                 start=90, extent=extent_angle,
-                outline=cfg["color"], width=14, style=tk.ARC, tags="watch_content"
+                outline=cfg["color"], width=13, style=tk.ARC, tags="watch_content"
             )
 
-        # Central ring text
+        # Central ring telemetry text
         self.case_canvas.create_text(
             cx, cy - 14, text=cfg["name"].upper(),
-            fill="#94A3B8", font=("Helvetica", 11, "bold"), tags="watch_content"
+            fill="#94A3B8", font=("Helvetica", 10, "bold"), tags="watch_content"
         )
         self.case_canvas.create_text(
             cx, cy + 8, text=cfg["val"],
@@ -560,120 +644,249 @@ class InstaHealthSmartwatchApp:
         )
         self.case_canvas.create_text(
             cx, cy + 28, text=cfg["sub"],
-            fill=cfg["color"], font=("Helvetica", 11), tags="watch_content"
+            fill=cfg["color"], font=("Helvetica", 10), tags="watch_content"
         )
+
+    # --------------------------------------------------------------------------
+    # 2. PROFILES DRAWER VIEW (100% ON-WATCH PROFILE SWITCHER)
+    # --------------------------------------------------------------------------
+    def render_profiles_drawer(self):
+        # Header Bar
+        self.case_canvas.create_text(
+            75, 78, text="‹ Watch", fill="#38BDF8", font=("Helvetica", 11, "bold"),
+            tags=("watch_content", "btn_back_watch")
+        )
+        self.case_canvas.tag_bind("btn_back_watch", "<Button-1>", lambda e: self.on_crown_press())
+
+        self.case_canvas.create_text(
+            205, 78, text="SWITCH PERSON", fill="#F8FAFC", font=("Helvetica", 12, "bold"), tags="watch_content"
+        )
+        self.case_canvas.create_text(
+            335, 78, text="Crown 🏠", fill="#64748B", font=("Helvetica", 10), tags="watch_content"
+        )
+
+        self.case_canvas.create_text(
+            205, 106, text="Each person maintains isolated on-device baseline",
+            fill="#94A3B8", font=("Helvetica", 10), tags="watch_content"
+        )
+
+        # Display Profile Cards directly on watch display
+        card_y = 130
+        for pid, p in self.engine.profiles.items():
+            is_active = (pid == self.engine.active_id)
+            outline_color = "#10B981" if is_active else "#334155"
+            bg_color = "#0B2E24" if is_active else "#0F172A"
+
+            card_tag = f"profile_card_{pid}"
+            self.case_canvas.create_rectangle(
+                55, card_y, 355, card_y + 60,
+                fill=bg_color, outline=outline_color, width=2 if is_active else 1,
+                tags=("watch_content", card_tag)
+            )
+
+            # Emoji avatar
+            self.case_canvas.create_text(
+                85, card_y + 30, text=p["emoji"], font=("Helvetica", 20), tags=("watch_content", card_tag)
+            )
+            # Person title & info
+            self.case_canvas.create_text(
+                120, card_y + 20, text=f"{p['id'].replace('person_', '').capitalize()} ({p['gender']}, {p['age']}y)",
+                anchor="w", fill="#F8FAFC", font=("Helvetica", 11, "bold"), tags=("watch_content", card_tag)
+            )
+            sub_info = f"Day {p['day_count']} · Resting HR: {p['learned_baseline']['restingHR']} bpm"
+            self.case_canvas.create_text(
+                120, card_y + 42, text=sub_info,
+                anchor="w", fill="#94A3B8", font=("Helvetica", 10), tags=("watch_content", card_tag)
+            )
+
+            # Active indicator
+            if is_active:
+                self.case_canvas.create_text(
+                    325, card_y + 30, text="✓ WEARING", fill="#34D399",
+                    font=("Helvetica", 9, "bold"), tags=("watch_content", card_tag)
+                )
+
+            # Bind touch selection
+            self.case_canvas.tag_bind(card_tag, "<Button-1>", lambda e, sel_id=pid: self.select_person(sel_id))
+            card_y += 72
+
+        # "+ Add Custom Person" Button directly inside watch screen
+        self.case_canvas.create_rectangle(
+            55, card_y, 355, card_y + 50,
+            fill="#1E293B", outline="#38BDF8", width=1, tags=("watch_content", "btn_new_person")
+        )
+        self.case_canvas.create_text(
+            205, card_y + 25, text="+ Add Custom Person",
+            fill="#38BDF8", font=("Helvetica", 12, "bold"), tags=("watch_content", "btn_new_person")
+        )
+        self.case_canvas.tag_bind("btn_new_person", "<Button-1>", lambda e: self.open_new_person_screen())
+
+    def select_person(self, profile_id):
+        self.engine.active_id = profile_id
+        p = self.engine.get_active_profile()
+        self.screen_mode = "WATCHFACE"
+        self.show_toast(f"Switched to {p['emoji']} ({p['gender']}, {p['age']}y)")
+
+    def open_new_person_screen(self):
+        self.screen_mode = "NEW_PROFILE"
+        self.refresh_display()
+
+    # --------------------------------------------------------------------------
+    # 3. ON-WATCH PERSON CREATOR (DIAL AGE & SEX DIRECTLY ON WATCH)
+    # --------------------------------------------------------------------------
+    def render_new_profile_dial(self):
+        # Header
+        self.case_canvas.create_text(
+            75, 78, text="‹ Cancel", fill="#94A3B8", font=("Helvetica", 11, "bold"),
+            tags=("watch_content", "btn_cancel_create")
+        )
+        self.case_canvas.tag_bind("btn_cancel_create", "<Button-1>", lambda e: self.toggle_profile_drawer())
+
+        self.case_canvas.create_text(
+            205, 78, text="NEW PERSON", fill="#F8FAFC", font=("Helvetica", 12, "bold"), tags="watch_content"
+        )
+
+        # 1. Choose Avatar Emoji
+        self.case_canvas.create_text(
+            205, 118, text="Tap Avatar Emoji:", fill="#94A3B8", font=("Helvetica", 11, "bold"), tags="watch_content"
+        )
+        emojis = ["🏃‍♂️", "🧘‍♀️", "🚴‍♂️", "🏊‍♂️", "🚶"]
+        start_ex = 90
+        for idx, emo in enumerate(emojis):
+            ex = start_ex + (idx * 58)
+            is_selected = (self.draft_person["emoji"] == emo)
+            if is_selected:
+                self.case_canvas.create_oval(
+                    ex - 22, 148 - 22, ex + 22, 148 + 22,
+                    fill="#0284C7", outline="#38BDF8", width=2, tags="watch_content"
+                )
+            emo_tag = f"draft_emo_{idx}"
+            self.case_canvas.create_text(
+                ex, 148, text=emo, font=("Helvetica", 18), tags=("watch_content", emo_tag)
+            )
+            self.case_canvas.tag_bind(emo_tag, "<Button-1>", lambda e, em=emo: self.update_draft("emoji", em))
+
+        # 2. Biological Sex Toggle
+        self.case_canvas.create_text(
+            205, 205, text="Biological Sex:", fill="#94A3B8", font=("Helvetica", 11, "bold"), tags="watch_content"
+        )
+        # Female pill
+        f_active = (self.draft_person["gender"] == "Female")
+        self.case_canvas.create_rectangle(
+            75, 225, 195, 265,
+            fill="#0284C7" if f_active else "#1E293B",
+            outline="#38BDF8" if f_active else "#334155",
+            width=2 if f_active else 1, tags=("watch_content", "btn_gender_female")
+        )
+        self.case_canvas.create_text(
+            135, 245, text="Female", fill="#FFFFFF" if f_active else "#94A3B8",
+            font=("Helvetica", 11, "bold"), tags=("watch_content", "btn_gender_female")
+        )
+        self.case_canvas.tag_bind("btn_gender_female", "<Button-1>", lambda e: self.update_draft("gender", "Female"))
+
+        # Male pill
+        m_active = (self.draft_person["gender"] == "Male")
+        self.case_canvas.create_rectangle(
+            215, 225, 335, 265,
+            fill="#0284C7" if m_active else "#1E293B",
+            outline="#38BDF8" if m_active else "#334155",
+            width=2 if m_active else 1, tags=("watch_content", "btn_gender_male")
+        )
+        self.case_canvas.create_text(
+            275, 245, text="Male", fill="#FFFFFF" if m_active else "#94A3B8",
+            font=("Helvetica", 11, "bold"), tags=("watch_content", "btn_gender_male")
+        )
+        self.case_canvas.tag_bind("btn_gender_male", "<Button-1>", lambda e: self.update_draft("gender", "Male"))
+
+        # 3. Touch Age Dial
+        self.case_canvas.create_text(
+            205, 305, text="Age Dial:", fill="#94A3B8", font=("Helvetica", 11, "bold"), tags="watch_content"
+        )
+        age = self.draft_person["age"]
+
+        # [ -5 ]
+        self.case_canvas.create_rectangle(65, 330, 115, 370, fill="#1E293B", outline="#475569", width=1, tags=("watch_content", "age_sub5"))
+        self.case_canvas.create_text(90, 350, text="-5", fill="#E2E8F0", font=("Helvetica", 12, "bold"), tags=("watch_content", "age_sub5"))
+        self.case_canvas.tag_bind("age_sub5", "<Button-1>", lambda e: self.step_draft_age(-5))
+
+        # [ -1 ]
+        self.case_canvas.create_rectangle(125, 330, 165, 370, fill="#1E293B", outline="#475569", width=1, tags=("watch_content", "age_sub1"))
+        self.case_canvas.create_text(145, 350, text="-1", fill="#E2E8F0", font=("Helvetica", 12, "bold"), tags=("watch_content", "age_sub1"))
+        self.case_canvas.tag_bind("age_sub1", "<Button-1>", lambda e: self.step_draft_age(-1))
+
+        # Big Age Number in Center
+        self.case_canvas.create_rectangle(175, 325, 235, 375, fill="#0F172A", outline="#0284C7", width=2, tags="watch_content")
+        self.case_canvas.create_text(
+            205, 345, text=str(age), fill="#38BDF8", font=("Helvetica", 16, "bold"), tags="watch_content"
+        )
+        self.case_canvas.create_text(
+            205, 363, text="years", fill="#94A3B8", font=("Helvetica", 9), tags="watch_content"
+        )
+
+        # [ +1 ]
+        self.case_canvas.create_rectangle(245, 330, 285, 370, fill="#1E293B", outline="#475569", width=1, tags=("watch_content", "age_add1"))
+        self.case_canvas.create_text(265, 350, text="+1", fill="#E2E8F0", font=("Helvetica", 12, "bold"), tags=("watch_content", "age_add1"))
+        self.case_canvas.tag_bind("age_add1", "<Button-1>", lambda e: self.step_draft_age(1))
+
+        # [ +5 ]
+        self.case_canvas.create_rectangle(295, 330, 345, 370, fill="#1E293B", outline="#475569", width=1, tags=("watch_content", "age_add5"))
+        self.case_canvas.create_text(320, 350, text="+5", fill="#E2E8F0", font=("Helvetica", 12, "bold"), tags=("watch_content", "age_add5"))
+        self.case_canvas.tag_bind("age_add5", "<Button-1>", lambda e: self.step_draft_age(5))
+
+        # Formula Preview
+        if self.draft_person["gender"] == "Female":
+            formula_info = f"Gulati HRmax: {round(206.0 - (0.88 * age), 1)} bpm"
+        else:
+            formula_info = f"Tanaka HRmax: {round(208.0 - (0.7 * age), 1)} bpm"
+        self.case_canvas.create_text(
+            205, 410, text=formula_info, fill="#34D399", font=("Helvetica", 11, "bold"), tags="watch_content"
+        )
+
+        # Big Touch Button: [ ✓ Start Day 1 Calibration ]
+        self.case_canvas.create_rectangle(
+            65, 460, 345, 515,
+            fill="#10B981", outline="#34D399", width=2, tags=("watch_content", "btn_confirm_create")
+        )
+        self.case_canvas.create_text(
+            205, 487, text="✓ Start Day 1 Wear",
+            fill="#FFFFFF", font=("Helvetica", 13, "bold"), tags=("watch_content", "btn_confirm_create")
+        )
+        self.case_canvas.tag_bind("btn_confirm_create", "<Button-1>", lambda e: self.confirm_create_profile())
+
+    def update_draft(self, key, val):
+        self.draft_person[key] = val
+        self.refresh_display()
+
+    def step_draft_age(self, delta):
+        self.draft_person["age"] = max(10, min(100, self.draft_person["age"] + delta))
+        self.refresh_display()
+
+    def confirm_create_profile(self):
+        emo = self.draft_person["emoji"]
+        gender = self.draft_person["gender"]
+        age = self.draft_person["age"]
+        pid = f"person_{emo}_{age}"
+
+        self.engine.add_profile(profile_id=pid, emoji=emo, age=age, gender=gender)
+        self.screen_mode = "WATCHFACE"
+        self.show_toast(f"Added {emo}! Day 1 calibration begun.")
 
     # --------------------------------------------------------------------------
     # SIMULATION ACTIONS
     # --------------------------------------------------------------------------
     def advance_simulation_day(self):
         new_day = self.engine.advance_day()
-        self.refresh_display()
         if new_day == 3:
-            messagebox.showinfo(
-                "Day 3 Reached!",
-                "48-Hour baseline calibration is now complete!\n"
-                "The calibration card has automatically closed, unlocking tailored daily prescriptions."
-            )
+            self.show_toast("🎉 Day 3 Complete! Calibrated.")
+        else:
+            self.show_toast(f"Advanced to Day {new_day} wear")
+        self.refresh_display()
 
-    def open_change_person_dialog(self):
-        dlg = tk.Toplevel(self.root)
-        dlg.title("Change Person — Add / Switch Profile")
-        dlg.geometry("380x420")
-        dlg.configure(bg="#0F172A")
-        dlg.resizable(False, False)
-        dlg.transient(self.root)
-        dlg.grab_set()
-
-        # Modal Header
-        tk.Label(
-            dlg, text="Select or Add Person", bg="#0F172A", fg="#F8FAFC",
-            font=("Helvetica", 14, "bold")
-        ).pack(pady=(16, 4))
-        tk.Label(
-            dlg, text="Each person starts with fresh isolated data.",
-            bg="#0F172A", fg="#94A3B8", font=("Helvetica", 11)
-        ).pack(pady=(0, 16))
-
-        form_frame = tk.Frame(dlg, bg="#0F172A", padx=20)
-        form_frame.pack(fill=tk.BOTH, expand=True)
-
-        # 1. Emoji Selection
-        tk.Label(
-            form_frame, text="Person Emoji:", bg="#0F172A", fg="#E2E8F0",
-            font=("Helvetica", 11, "bold")
-        ).grid(row=0, column=0, sticky="w", pady=8)
-
-        emoji_var = tk.StringVar(value="🧘‍♀️")
-        emoji_combo = ttk.Combobox(
-            form_frame, textvariable=emoji_var,
-            values=["🏃‍♂️ Runner", "🧘‍♀️ Meditator", "🚴‍♂️ Cyclist", "🏊‍♂️ Swimmer", "🚶 Walker"],
-            font=("Helvetica", 11), state="readonly", width=16
-        )
-        emoji_combo.grid(row=0, column=1, sticky="w", pady=8)
-
-        # 2. Gender Selection
-        tk.Label(
-            form_frame, text="Biological Sex:", bg="#0F172A", fg="#E2E8F0",
-            font=("Helvetica", 11, "bold")
-        ).grid(row=1, column=0, sticky="w", pady=8)
-
-        gender_var = tk.StringVar(value="Female")
-        gender_combo = ttk.Combobox(
-            form_frame, textvariable=gender_var,
-            values=["Female", "Male"],
-            font=("Helvetica", 11), state="readonly", width=16
-        )
-        gender_combo.grid(row=1, column=1, sticky="w", pady=8)
-
-        # 3. Age Selection
-        tk.Label(
-            form_frame, text="Age (years):", bg="#0F172A", fg="#E2E8F0",
-            font=("Helvetica", 11, "bold")
-        ).grid(row=2, column=0, sticky="w", pady=8)
-
-        age_entry = tk.Entry(form_frame, font=("Helvetica", 11), width=18, bg="#1E293B", fg="white", insertbackground="white")
-        age_entry.insert(0, "28")
-        age_entry.grid(row=2, column=1, sticky="w", pady=8)
-
-        # Action Buttons
-        btn_frame = tk.Frame(dlg, bg="#0F172A", pady=16)
-        btn_frame.pack(fill=tk.X)
-
-        def save_person():
-            try:
-                age_val = int(age_entry.get().strip())
-                if age_val < 5 or age_val > 110:
-                    raise ValueError("Age out of range")
-            except ValueError:
-                messagebox.showerror("Invalid Input", "Please enter a valid age between 5 and 110.", parent=dlg)
-                return
-
-            chosen_emoji = emoji_var.get().split()[0]
-            chosen_gender = gender_var.get()
-            profile_id = f"person_{chosen_emoji}_{age_val}"
-
-            # Create isolated profile
-            self.engine.add_profile(
-                profile_id=profile_id,
-                emoji=chosen_emoji,
-                age=age_val,
-                gender=chosen_gender
-            )
-            dlg.destroy()
-            self.refresh_display()
-            messagebox.showinfo(
-                "Profile Switched",
-                f"Switched to {chosen_emoji} ({chosen_gender}, {age_val}y)!\n"
-                f"Fresh calibration started at Day 1 with zero data leakage."
-            )
-
-        btn_submit = tk.Button(
-            btn_frame, text="Save & Switch Person", bg="#10B981", fg="white",
-            font=("Helvetica", 11, "bold"), relief="flat", cursor="hand2",
-            padx=16, pady=8, command=save_person
-        )
-        btn_submit.pack()
+    def reset_active_calibration(self):
+        p = self.engine.get_active_profile()
+        p["day_count"] = 1
+        self.show_toast("↺ Calibration reset to Day 1")
+        self.refresh_display()
 
 # ==============================================================================
 # 3. VERIFICATION SELF-TEST

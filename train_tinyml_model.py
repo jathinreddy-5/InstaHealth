@@ -28,10 +28,12 @@ Executes in <1.5 ms on wearable ARM Cortex-M / Wear OS processors.
 
 import csv
 import json
-import math
 import numpy as np
 
-def load_data(filepath="data/training_dataset.csv"):
+def load_data(filepath="data/clinical_training_dataset.csv"):
+    import os
+    if not os.path.exists(filepath):
+        filepath = "data/training_dataset.csv"
     X, Y = [], []
     with open(filepath, "r") as f:
         reader = csv.DictReader(f)
@@ -39,10 +41,10 @@ def load_data(filepath="data/training_dataset.csv"):
             age = float(r["age"])
             gender = 1.0 if r["gender"] == "Female" else 0.0
             rhr = float(r["resting_hr"])
-            live_hr = float(r["day1_observed_hr"])
-            sleep = float(r["day1_observed_sleep"])
-            steps = float(r["day1_observed_steps"])
-            still = float(r["max_still_mins"])
+            live_hr = float(r.get("observed_heart_rate", r.get("day1_observed_hr", 70)))
+            sleep = float(r.get("observed_sleep_hours", r.get("day1_observed_sleep", 7.0)))
+            steps = float(r.get("observed_steps", r.get("day1_observed_steps", 6000)))
+            still = float(r.get("observed_still_minutes", r.get("max_still_mins", 60)))
             day = 1.0
 
             # Normalization (0 to 1 scaling)
@@ -58,8 +60,8 @@ def load_data(filepath="data/training_dataset.csv"):
             ]
 
             # Outputs
-            cal_sleep = float(r["calibrated_day3_sleep_target"])
-            cal_steps = float(r["calibrated_day3_step_target"])
+            cal_sleep = float(r.get("target_calibrated_sleep", r.get("calibrated_day3_sleep_target", 7.5)))
+            cal_steps = float(r.get("target_calibrated_steps", r.get("calibrated_day3_step_target", 7000)))
             max_hr = float(r["max_hr"])
             hrr = float(r["hrr"])
             strain = max(0.0, min(100.0, ((live_hr - rhr) / max(30.0, hrr)) * 100.0))

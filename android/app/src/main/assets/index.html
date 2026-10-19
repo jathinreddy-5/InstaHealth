@@ -9,13 +9,6 @@
   <title>InstaHealth - Zero-Cloud Watch Health Engine</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="css/style.css">
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      });
-    }
-  </script>
 </head>
 <body>
 
@@ -72,11 +65,14 @@
 
           <div style="display: flex; gap: 6px;">
             <button id="btnAdvanceDay" class="btn-advance-day" style="flex: 1;">
-              ⏩ Advance Day (Auto-Wear 24h)
+              ⏩ Advance Day [Simulation Demo]
             </button>
-            <button id="btnResetTimeline" class="btn-advance-day" style="background: #252830; width: 34px; padding: 0;" title="Restart 2-Day Calibration">
+            <button id="btnResetTimeline" class="btn-advance-day" style="background: #252830; width: 34px; padding: 0;" title="Reset / Recalibrate Baseline">
               ↺
             </button>
+          </div>
+          <div style="font-size: 10px; color: #8e8e93; text-align: center; margin-top: 5px; opacity: 0.85;">
+            ⚕️ Wellness product: Not a diagnostic device (FDA/CDSCO guidance).
           </div>
         </div>
 
@@ -98,7 +94,7 @@
               </div>
               <div id="dispCategory" class="category-tag">Rest / Recovery</div>
               <div class="personal-delta-badge" id="dispDelta">
-                Strain: <strong>2.6 / 21</strong> (-0.4 vs avg)
+                Strain: <strong>2.6 / 21</strong>
               </div>
             </div>
 
@@ -192,42 +188,42 @@
             <span class="calibrating-title">
               <span>⏳ Day <span id="dispCalDayNum">1</span> Calibration</span>
             </span>
-            <span class="data-status-badge" id="dispCohortBadge">Trained Avg</span>
+            <span class="data-status-badge" id="dispCohortBadge">Baseline</span>
           </div>
 
-          <!-- Trained Average Human vs Person Comparison -->
+          <!-- Baseline vs Current Comparison -->
           <div class="human-comparison-grid">
             <div class="compare-item">
               <span class="compare-label">Resting HR</span>
               <div class="compare-vals">
-                <span class="val-human" id="cmpRHRHuman">60 bpm avg</span>
+                <span class="val-human" id="cmpRHRHuman">60 bpm</span>
                 <span class="val-arrow">→</span>
-                <span class="val-you" id="cmpRHRYou">58 bpm (You)</span>
+                <span class="val-you" id="cmpRHRYou">58 bpm</span>
               </div>
             </div>
 
             <div class="compare-item">
               <span class="compare-label">Daily Steps</span>
               <div class="compare-vals">
-                <span class="val-human" id="cmpStepsHuman">9,000 avg</span>
+                <span class="val-human" id="cmpStepsHuman">8,000</span>
                 <span class="val-arrow">→</span>
-                <span class="val-you" id="cmpStepsYou">7,400 (You)</span>
+                <span class="val-you" id="cmpStepsYou">7,400</span>
               </div>
             </div>
 
             <div class="compare-item">
               <span class="compare-label">Sleep Need</span>
               <div class="compare-vals">
-                <span class="val-human" id="cmpSleepHuman">8.0h avg</span>
+                <span class="val-human" id="cmpSleepHuman">7.8h</span>
                 <span class="val-arrow">→</span>
-                <span class="val-you" id="cmpSleepYou">7.2h (You)</span>
+                <span class="val-you" id="cmpSleepYou">7.2h</span>
               </div>
             </div>
 
             <div class="compare-item">
               <span class="compare-label">Calorie Burn</span>
               <div class="compare-vals">
-                <span class="val-human" id="cmpCalHuman">280 cal/hr</span>
+                <span class="val-human" id="cmpCalHuman">360 cal/hr</span>
                 <span class="val-arrow">→</span>
                 <span class="val-you" id="cmpCalYou">260 cal/hr</span>
               </div>
@@ -424,539 +420,6 @@
   </div>
 
   <script src="js/engine.js"></script>
-  <script>
-    (function () {
-      const engine = new InstaHealthEngine.HealthEngine();
-
-      // UI Elements
-      const btnOpenChangePerson = document.getElementById('btnOpenChangePerson');
-      const changePersonModal = document.getElementById('changePersonModal');
-      const btnCloseModal = document.getElementById('btnCloseModal');
-      const savedProfilesList = document.getElementById('savedProfilesList');
-      const emojiGrid = document.getElementById('emojiGrid');
-      const btnSexMale = document.getElementById('btnSexMale');
-      const btnSexFemale = document.getElementById('btnSexFemale');
-      const modalInputAge = document.getElementById('modalInputAge');
-      const modalValAge = document.getElementById('modalValAge');
-      const btnSavePerson = document.getElementById('btnSavePerson');
-
-      const dispActiveEmoji = document.getElementById('dispActiveEmoji');
-      const dispActivePersonTitle = document.getElementById('dispActivePersonTitle');
-      const dispActivePersonSub = document.getElementById('dispActivePersonSub');
-
-      const dispTimelineBadge = document.getElementById('dispTimelineBadge');
-      const timelineSection = document.getElementById('timelineSection');
-      const stepDay1 = document.getElementById('stepDay1');
-      const stepDay2 = document.getElementById('stepDay2');
-      const stepDay3 = document.getElementById('stepDay3');
-      const btnAdvanceDay = document.getElementById('btnAdvanceDay');
-      const btnResetTimeline = document.getElementById('btnResetTimeline');
-
-      const calibratingSection = document.getElementById('calibratingSection');
-      const dispCalibratingText = document.getElementById('dispCalibratingText');
-      const dispCalDayNum = document.getElementById('dispCalDayNum');
-      const dispCohortBadge = document.getElementById('dispCohortBadge');
-      const cmpRHRHuman = document.getElementById('cmpRHRHuman');
-      const cmpRHRYou = document.getElementById('cmpRHRYou');
-      const cmpStepsHuman = document.getElementById('cmpStepsHuman');
-      const cmpStepsYou = document.getElementById('cmpStepsYou');
-      const cmpSleepHuman = document.getElementById('cmpSleepHuman');
-      const cmpSleepYou = document.getElementById('cmpSleepYou');
-      const cmpCalHuman = document.getElementById('cmpCalHuman');
-      const cmpCalYou = document.getElementById('cmpCalYou');
-      const recommendationsSection = document.getElementById('recommendationsSection');
-
-      const recSleepVal = document.getElementById('recSleepVal');
-      const recSleepSub = document.getElementById('recSleepSub');
-      const recStepVal = document.getElementById('recStepVal');
-      const recStepSub = document.getElementById('recStepSub');
-      const recSitVal = document.getElementById('recSitVal');
-      const recSitSub = document.getElementById('recSitSub');
-      const recCardioVal = document.getElementById('recCardioVal');
-      const recCardioSub = document.getElementById('recCardioSub');
-
-      const dispHealthScore = document.getElementById('dispHealthScore');
-      const dispRingLabel = document.getElementById('dispRingLabel');
-      const strainRing = document.getElementById('strainRingProgress');
-      const dispCategory = document.getElementById('dispCategory');
-      const dispDelta = document.getElementById('dispDelta');
-
-      // Carousel Elements
-      const ringCarousel = document.getElementById('ringCarousel');
-      const carouselDots = document.querySelectorAll('.carousel-dot');
-
-      // Slide 1: Sleep
-      const sleepRingProgress = document.getElementById('sleepRingProgress');
-      const dispSleepScore = document.getElementById('dispSleepScore');
-      const dispSleepRingLabel = document.getElementById('dispSleepRingLabel');
-      const dispSleepDelta = document.getElementById('dispSleepDelta');
-
-      // Slide 2: Steps
-      const stepRingProgress = document.getElementById('stepRingProgress');
-      const dispStepScore = document.getElementById('dispStepScore');
-      const dispStepRingLabel = document.getElementById('dispStepRingLabel');
-      const dispStepDelta = document.getElementById('dispStepDelta');
-
-      // Slide 3: Sit Still
-      const sitRingProgress = document.getElementById('sitRingProgress');
-      const dispSitScore = document.getElementById('dispSitScore');
-      const dispSitRingLabel = document.getElementById('dispSitRingLabel');
-      const dispSitDelta = document.getElementById('dispSitDelta');
-
-      // Slide 4: Active Calories
-      const calRingProgress = document.getElementById('calRingProgress');
-      const dispCalScore = document.getElementById('dispCalScore');
-      const dispCalRingLabel = document.getElementById('dispCalRingLabel');
-      const dispCalDelta = document.getElementById('dispCalDelta');
-
-      const dispMaxHR = document.getElementById('dispMaxHR');
-      const dispRestingHR = document.getElementById('dispRestingHR');
-      const dispCalories = document.getElementById('dispCalories');
-      const dispRecovery = document.getElementById('dispRecovery');
-
-      // Body Activity Ranges Elements
-      const dispRangesTitle = document.getElementById('dispRangesTitle');
-      const dispRHRRangeText = document.getElementById('dispRHRRangeText');
-      const zoneRHR = document.getElementById('zoneRHR');
-      const dotRHR = document.getElementById('dotRHR');
-      const dispCalRangeText = document.getElementById('dispCalRangeText');
-      const zoneCal = document.getElementById('zoneCal');
-      const dotCal = document.getElementById('dotCal');
-      const dispStrainRangeText = document.getElementById('dispStrainRangeText');
-      const zoneStrain = document.getElementById('zoneStrain');
-      const dotStrain = document.getElementById('dotStrain');
-
-      const btnToggleBezel = document.getElementById('btnToggleBezel');
-      const watchBezel = document.getElementById('watchBezel');
-
-      // State for modal inputs
-      let selectedEmoji = '🏃‍♂️';
-      let selectedSex = 'male';
-      let selectedAge = 24;
-
-      // Workout State
-      let currentWorkout = {
-        durationMins: 30,
-        activeCalories: 140,
-        avgHR: 110,
-        steps: 3200,
-        perceivedExertion: 4
-      };
-
-      const PRESETS = {
-        walk: { durationMins: 30, activeCalories: 140, avgHR: 110, steps: 3200, perceivedExertion: 4 },
-        run: { durationMins: 45, activeCalories: 460, avgHR: 152, steps: 6100, perceivedExertion: 8 },
-        hiit: { durationMins: 35, activeCalories: 380, avgHR: 162, steps: 2800, perceivedExertion: 9 },
-        rest: { durationMins: 20, activeCalories: 60, avgHR: 85, steps: 1400, perceivedExertion: 2 }
-      };
-
-      // Watch Clock
-      function updateClock() {
-        const now = new Date();
-        const hrs = String(now.getHours()).padStart(2, '0');
-        const mins = String(now.getMinutes()).padStart(2, '0');
-        document.getElementById('watchClock').textContent = `${hrs}:${mins}`;
-      }
-      setInterval(updateClock, 1000);
-      updateClock();
-
-      // Render Saved Profiles list inside modal
-      function renderSavedProfiles() {
-        savedProfilesList.innerHTML = '';
-        const profiles = engine.getProfiles();
-        const activeId = engine.activeProfileId;
-
-        profiles.forEach(p => {
-          const chip = document.createElement('div');
-          chip.className = `saved-profile-chip ${p.id === activeId ? 'active' : ''}`;
-          chip.innerHTML = `<span>${p.emoji}</span> <span>${p.age}y ${p.sex === 'female' ? 'F' : 'M'} (Day ${p.currentDay || 1})</span>`;
-          chip.addEventListener('click', () => {
-            engine.switchProfile(p.id);
-            closeModal();
-            recalculate();
-          });
-          savedProfilesList.appendChild(chip);
-        });
-      }
-
-      // Open Modal
-      function openModal() {
-        const active = engine.getActiveProfile();
-        selectedEmoji = active.emoji || '🏃‍♂️';
-        selectedSex = active.sex || 'male';
-        selectedAge = active.age || 24;
-
-        // Highlight selected emoji
-        document.querySelectorAll('.emoji-option').forEach(el => {
-          el.classList.toggle('selected', el.dataset.emoji === selectedEmoji);
-        });
-
-        // Set sex buttons
-        btnSexMale.classList.toggle('selected', selectedSex === 'male');
-        btnSexFemale.classList.toggle('selected', selectedSex === 'female');
-
-        // Set age slider
-        modalInputAge.value = selectedAge;
-        modalValAge.textContent = `${selectedAge} yrs`;
-
-        renderSavedProfiles();
-        changePersonModal.classList.add('active');
-      }
-
-      function closeModal() {
-        changePersonModal.classList.remove('active');
-      }
-
-      // Emoji Selection Listener
-      emojiGrid.addEventListener('click', (e) => {
-        const item = e.target.closest('.emoji-option');
-        if (!item) return;
-        document.querySelectorAll('.emoji-option').forEach(el => el.classList.remove('selected'));
-        item.classList.add('selected');
-        selectedEmoji = item.dataset.emoji;
-      });
-
-      // Sex Selection Listeners
-      btnSexMale.addEventListener('click', () => {
-        selectedSex = 'male';
-        btnSexMale.classList.add('selected');
-        btnSexFemale.classList.remove('selected');
-      });
-      btnSexFemale.addEventListener('click', () => {
-        selectedSex = 'female';
-        btnSexFemale.classList.add('selected');
-        btnSexMale.classList.remove('selected');
-      });
-
-      // Age Slider Listener
-      modalInputAge.addEventListener('input', (e) => {
-        selectedAge = Number(e.target.value);
-        modalValAge.textContent = `${selectedAge} yrs`;
-      });
-
-      // Save Person Button
-      btnSavePerson.addEventListener('click', () => {
-        engine.addOrUpdateProfile({
-          emoji: selectedEmoji,
-          sex: selectedSex,
-          age: selectedAge
-        });
-        closeModal();
-        recalculate();
-      });
-
-      // Advance Day Automatically (Auto-Wear 24h)
-      btnAdvanceDay.addEventListener('click', () => {
-        btnAdvanceDay.textContent = '⏳ Simulating 24h Wear...';
-        btnAdvanceDay.style.opacity = '0.7';
-        setTimeout(() => {
-          engine.advanceDay(currentWorkout);
-          recalculate();
-          btnAdvanceDay.textContent = '⏩ Advance Day (Auto-Wear 24h)';
-          btnAdvanceDay.style.opacity = '1';
-        }, 150);
-      });
-
-      // Reset Timeline
-      btnResetTimeline.addEventListener('click', () => {
-        if (confirm('Restart 2-Day Calibration for this person?')) {
-          engine.resetTimeline();
-          recalculate();
-        }
-      });
-
-      btnOpenChangePerson.addEventListener('click', openModal);
-      btnCloseModal.addEventListener('click', closeModal);
-
-      // Recalculate and update the watch view
-      function recalculate() {
-        const res = engine.calculateCondition(currentWorkout);
-        const person = res.person;
-        const ranges = res.trainedRanges;
-        const recs = res.recommendations;
-        const currentDay = person.currentDay || engine.profile.currentDay || 1;
-
-        // Top Person Header Bar
-        dispActiveEmoji.textContent = person.emoji;
-        dispActivePersonTitle.textContent = `${person.emoji} Profile`;
-        dispActivePersonSub.textContent = `${person.sex === 'female' ? 'Female' : 'Male'} · ${person.age} yrs · ${person.restingHR} bpm`;
-
-        // Timeline Step Badges
-        dispTimelineBadge.textContent = recs.isCalibrated ? '✅ Calibrated' : `Day ${currentDay} of 2`;
-        dispTimelineBadge.style.color = recs.isCalibrated ? 'var(--accent-green)' : 'var(--accent-purple)';
-
-        stepDay1.className = `timeline-step ${currentDay === 1 ? 'active' : 'completed'}`;
-        stepDay2.className = `timeline-step ${currentDay === 2 ? 'active' : (currentDay > 2 ? 'completed' : '')}`;
-        stepDay3.className = `timeline-step ${currentDay >= 3 ? 'completed active' : ''}`;
-
-        // Toggle Calibration Notice vs Personalized Prescriptions
-        // AUTOMATICALLY HIDE TIMELINE & COMPARISON CARD ONCE DAY 3 IS COMPLETED!
-        if (!recs.isCalibrated) {
-          timelineSection.style.display = 'flex';
-          calibratingSection.style.display = 'flex';
-          recommendationsSection.style.display = 'none';
-
-          // Trained Human Average vs Person Data Comparison for Day 1 & Day 2
-          const humanAvg = recs.humanAverages || {
-            cohortLabel: `${person.age}y ${person.sex === 'female' ? 'Female' : 'Male'}`,
-            restingHR: person.sex === 'female' ? 62 : 60,
-            steps: 9000,
-            sleepHours: 8.0,
-            burnRateCalHr: 280
-          };
-
-          dispCalDayNum.textContent = currentDay;
-          dispCohortBadge.textContent = `${humanAvg.cohortLabel} Avg`;
-
-          // 1. Resting HR Comparison
-          cmpRHRHuman.textContent = `${humanAvg.restingHR} bpm avg`;
-          cmpRHRYou.textContent = `${res.metrics.restingHR} bpm (${person.emoji})`;
-
-          // 2. Steps Comparison
-          cmpStepsHuman.textContent = `${humanAvg.steps.toLocaleString()} avg`;
-          const stepsWalkedNow = Math.round(res.metrics.steps + (person.historyDays && person.historyDays.length > 0 ? (person.historyDays[person.historyDays.length - 1].steps * 0.4) : 4500));
-          cmpStepsYou.textContent = `${stepsWalkedNow.toLocaleString()} (${person.emoji})`;
-
-          // 3. Sleep Comparison
-          cmpSleepHuman.textContent = `${humanAvg.sleepHours}h avg`;
-          let userSleepHours = 7.2;
-          if (person.historyDays && person.historyDays.length > 0) {
-            userSleepHours = person.historyDays[person.historyDays.length - 1].sleepHours || 7.2;
-          } else {
-            userSleepHours = person.sex === 'female' ? 7.4 : 7.1;
-          }
-          cmpSleepYou.textContent = `${userSleepHours}h (${person.emoji})`;
-
-          // 4. Calorie Burn Comparison
-          cmpCalHuman.textContent = `${humanAvg.burnRateCalHr} cal/hr avg`;
-          cmpCalYou.textContent = `${res.metrics.activeCalories} cal (${person.emoji})`;
-
-          dispCalibratingText.textContent = `Collecting 48h personal data · Day 3 unlocks custom plan`;
-          
-          // Ring shows Calibration Readiness Progress
-          dispHealthScore.textContent = `${recs.progressPercent}%`;
-          dispRingLabel.textContent = 'Calibrating';
-          strainRing.style.stroke = 'var(--accent-purple)';
-        } else {
-          // Closed automatically after completing Day 3!
-          timelineSection.style.display = 'none';
-          calibratingSection.style.display = 'none';
-          recommendationsSection.style.display = 'flex';
-
-          // Ring shows Cardiorespiratory Readiness Score
-          dispHealthScore.textContent = `${recs.cardioReadiness.score}%`;
-          dispRingLabel.textContent = 'Cardio Ready';
-          strainRing.style.stroke = recs.cardioReadiness.color;
-
-          // Fill Recommendations (Watch-legible: large numbers + concise badges)
-          recSleepVal.textContent = recs.sleep.formatted;
-          recSleepSub.textContent = 'Recovery Goal';
-
-          recStepVal.textContent = recs.steps.formatted;
-          recStepSub.textContent = 'Daily Target';
-
-          recSitVal.textContent = recs.sitStill.formatted;
-          recSitSub.textContent = 'Max Stillness';
-
-          recCardioVal.textContent = `${recs.cardioReadiness.score}%`;
-          recCardioVal.style.color = recs.cardioReadiness.color;
-          recCardioSub.textContent = recs.cardioReadiness.status;
-        }
-
-        // Circular Rings Calculation for Carousel (Slides 0-4)
-        const circumference = 345.57;
-
-        // 1. Slide 0: Cardio Readiness Score
-        const scoreVal = recs.isCalibrated ? recs.cardioReadiness.score : recs.progressPercent;
-        const fraction0 = Math.min(1.0, scoreVal / 100.0);
-        strainRing.style.strokeDashoffset = circumference - (fraction0 * circumference);
-
-        // 2. Slide 1: Sleep Need ("hours slept / hours total need to sleep")
-        let targetSleepHours = 8.0;
-        if (recs.isCalibrated && recs.sleep) {
-          targetSleepHours = Number((recs.sleep.hours + (recs.sleep.minutes / 60)).toFixed(1));
-        } else {
-          targetSleepHours = person.age < 30 ? 8.2 : (person.age > 60 ? 7.2 : 7.8);
-          if (person.sex === 'female') targetSleepHours += 0.2;
-        }
-        targetSleepHours = Number(targetSleepHours.toFixed(1));
-
-        let hoursSlept = 7.2;
-        if (person.historyDays && person.historyDays.length > 0) {
-          const lastDay = person.historyDays[person.historyDays.length - 1];
-          hoursSlept = Number((lastDay.sleepHours || 7.2).toFixed(1));
-        } else {
-          hoursSlept = Number((person.sex === 'female' ? 7.4 : 7.1).toFixed(1));
-        }
-
-        dispSleepScore.textContent = `${hoursSlept}h`;
-        dispSleepRingLabel.textContent = recs.isCalibrated ? `/ ${targetSleepHours}h NEEDED` : `/ ${targetSleepHours}h HUMAN AVG`;
-        dispSleepDelta.innerHTML = recs.isCalibrated
-          ? `<strong>${hoursSlept}h</strong> slept / <strong>${targetSleepHours}h</strong> goal`
-          : `<strong>${hoursSlept}h</strong> (${person.emoji}) vs <strong>${targetSleepHours}h</strong> (Human Avg)`;
-        const sleepFraction = Math.min(1.0, hoursSlept / targetSleepHours);
-        sleepRingProgress.style.strokeDashoffset = circumference - (sleepFraction * circumference);
-
-        // 3. Slide 2: Steps Goal ("steps walked / total steps to walk daily")
-        let targetSteps = 10000;
-        if (recs.isCalibrated && recs.steps) {
-          targetSteps = recs.steps.target;
-        } else {
-          targetSteps = person.sex === 'female' ? 8000 : 9000;
-          if (person.age < 30) targetSteps = person.sex === 'female' ? 10000 : 11500;
-          else if (person.age >= 60) targetSteps = 5000;
-        }
-
-        const stepsWalked = Math.round(res.metrics.steps + (person.historyDays && person.historyDays.length > 0 ? (person.historyDays[person.historyDays.length - 1].steps * 0.4) : 4500));
-        dispStepScore.textContent = stepsWalked >= 1000 ? `${(stepsWalked / 1000).toFixed(1)}k` : `${stepsWalked}`;
-        dispStepRingLabel.textContent = recs.isCalibrated ? `/ ${(targetSteps / 1000).toFixed(1)}k STEPS` : `/ ${(targetSteps / 1000).toFixed(1)}k HUMAN AVG`;
-        dispStepDelta.innerHTML = recs.isCalibrated
-          ? `<strong>${stepsWalked.toLocaleString()}</strong> / <strong>${targetSteps.toLocaleString()}</strong> steps`
-          : `<strong>${stepsWalked.toLocaleString()}</strong> (${person.emoji}) vs <strong>${targetSteps.toLocaleString()}</strong> (Human Avg)`;
-        const stepFraction = Math.min(1.0, stepsWalked / targetSteps);
-        stepRingProgress.style.strokeDashoffset = circumference - (stepFraction * circumference);
-
-        // 4. Slide 3: Sit Still Inactivity Limit
-        const maxSitMins = recs.isCalibrated && recs.sitStill ? recs.sitStill.maxMins : (person.age >= 60 ? 40 : 55);
-        const currentSitMins = Math.round(maxSitMins * 0.65);
-        dispSitScore.textContent = `${currentSitMins}m`;
-        dispSitRingLabel.textContent = recs.isCalibrated ? `/ ${maxSitMins}m STILL` : `/ ${maxSitMins}m HUMAN AVG`;
-        dispSitDelta.innerHTML = recs.isCalibrated
-          ? `<strong>${currentSitMins}m</strong> still / <strong>${maxSitMins}m</strong> max alert`
-          : `<strong>${currentSitMins}m</strong> (${person.emoji}) vs <strong>${maxSitMins}m</strong> (Human Avg)`;
-        const sitFraction = Math.min(1.0, currentSitMins / maxSitMins);
-        sitRingProgress.style.strokeDashoffset = circumference - (sitFraction * circumference);
-
-        // 5. Slide 4: Active Calories Burn
-        const targetCalories = ranges.activeCalories ? Math.round((ranges.activeCalories.min + ranges.activeCalories.max) / 2) : 300;
-        const currentCal = res.metrics.activeCalories;
-        dispCalScore.textContent = `${currentCal}`;
-        dispCalRingLabel.textContent = recs.isCalibrated ? `/ ${targetCalories} KCAL` : `/ ${targetCalories} HUMAN AVG`;
-        dispCalDelta.innerHTML = recs.isCalibrated
-          ? `<strong>${currentCal}</strong> of <strong>${targetCalories}</strong> kcal target`
-          : `<strong>${currentCal}</strong> (${person.emoji}) vs <strong>${targetCalories}</strong> (Human Avg)`;
-        const calFraction = Math.min(1.0, currentCal / targetCalories);
-        calRingProgress.style.strokeDashoffset = circumference - (calFraction * circumference);
-
-        // Status badges
-        dispCategory.textContent = res.category;
-        dispCategory.style.color = res.categoryColor;
-        dispCategory.style.background = res.categoryColor + '22';
-
-        const sign = res.personalDelta > 0 ? '+' : '';
-        dispDelta.innerHTML = `Strain: <strong>${res.strain} / 21</strong> (${sign}${res.personalDelta} vs avg)`;
-
-        // Vitals Grid
-        dispMaxHR.textContent = `${res.metrics.maxHR} bpm`;
-        dispRestingHR.textContent = `${res.metrics.restingHR} bpm`;
-        dispCalories.textContent = `${res.metrics.activeCalories} kcal`;
-        dispRecovery.textContent = `${res.recoveryHours} hrs`;
-
-        // Body Activity Card Title Update
-        dispRangesTitle.textContent = `${person.emoji} Body Activity`;
-
-        // 1. Resting HR Range
-        dispRHRRangeText.textContent = `${ranges.restingHR.min} – ${ranges.restingHR.max} bpm`;
-        const rhrMinPct = Math.max(0, Math.min(100, ((ranges.restingHR.min - 40) / 60) * 100));
-        const rhrMaxPct = Math.max(0, Math.min(100, ((ranges.restingHR.max - 40) / 60) * 100));
-        const rhrCurPct = Math.max(0, Math.min(100, ((res.metrics.restingHR - 40) / 60) * 100));
-        zoneRHR.style.left = `${rhrMinPct}%`;
-        zoneRHR.style.width = `${Math.max(4, rhrMaxPct - rhrMinPct)}%`;
-        dotRHR.style.left = `${rhrCurPct}%`;
-
-        // 2. Active Calories Range
-        dispCalRangeText.textContent = `${ranges.activeCalories.min} – ${ranges.activeCalories.max} cal/hr`;
-        const calMinPct = Math.max(0, Math.min(100, ((ranges.activeCalories.min - 100) / 450) * 100));
-        const calMaxPct = Math.max(0, Math.min(100, ((ranges.activeCalories.max - 100) / 450) * 100));
-        const curHourlyBurn = Math.round((res.metrics.activeCalories / res.metrics.durationMins) * 60);
-        const calCurPct = Math.max(0, Math.min(100, ((curHourlyBurn - 100) / 450) * 100));
-        zoneCal.style.left = `${calMinPct}%`;
-        zoneCal.style.width = `${Math.max(4, calMaxPct - calMinPct)}%`;
-        dotCal.style.left = `${calCurPct}%`;
-
-        // 3. Strain Tolerance Range
-        dispStrainRangeText.textContent = `${ranges.dailyStrain.min} – ${ranges.dailyStrain.max} pts`;
-        const strainMinPct = Math.max(0, Math.min(100, (ranges.dailyStrain.min / 21) * 100));
-        const strainMaxPct = Math.max(0, Math.min(100, (ranges.dailyStrain.max / 21) * 100));
-        const strainCurPct = Math.max(0, Math.min(100, (res.strain / 21) * 100));
-        zoneStrain.style.left = `${strainMinPct}%`;
-        zoneStrain.style.width = `${Math.max(4, strainMaxPct - strainMinPct)}%`;
-        dotStrain.style.left = `${strainCurPct}%`;
-      }
-
-      // Presets
-      document.querySelectorAll('.btn-preset').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          const presetKey = btn.dataset.preset;
-          currentWorkout = { ...PRESETS[presetKey] };
-          recalculate();
-        });
-      });
-
-      // Bezel view toggle
-      btnToggleBezel.addEventListener('click', () => {
-        const isFullscreen = watchBezel.classList.toggle('fullscreen-mode');
-        btnToggleBezel.textContent = isFullscreen ? 'Switch to Bezel View' : 'Switch to Watch View';
-      });
-
-      // Ring Carousel Horizontal Swipe, Drag & Dot Pagination
-      function updateActiveCarouselDot() {
-        const slideWidth = ringCarousel.offsetWidth;
-        if (!slideWidth) return;
-        const activeIdx = Math.round(ringCarousel.scrollLeft / slideWidth);
-        carouselDots.forEach((dot, idx) => {
-          dot.classList.toggle('active', idx === activeIdx);
-        });
-      }
-
-      ringCarousel.addEventListener('scroll', updateActiveCarouselDot, { passive: true });
-
-      carouselDots.forEach((dot) => {
-        dot.addEventListener('click', () => {
-          const idx = Number(dot.dataset.index);
-          const slideWidth = ringCarousel.offsetWidth;
-          ringCarousel.scrollTo({
-            left: idx * slideWidth,
-            behavior: 'smooth'
-          });
-        });
-      });
-
-      // Mouse drag to swipe (for desktop testing)
-      let isDraggingCarousel = false;
-      let startDragX = 0;
-      let startCarouselScroll = 0;
-
-      ringCarousel.addEventListener('mousedown', (e) => {
-        isDraggingCarousel = true;
-        startDragX = e.pageX - ringCarousel.offsetLeft;
-        startCarouselScroll = ringCarousel.scrollLeft;
-      });
-
-      window.addEventListener('mouseup', () => {
-        if (!isDraggingCarousel) return;
-        isDraggingCarousel = false;
-        const slideWidth = ringCarousel.offsetWidth;
-        const targetIdx = Math.round(ringCarousel.scrollLeft / slideWidth);
-        ringCarousel.scrollTo({
-          left: targetIdx * slideWidth,
-          behavior: 'smooth'
-        });
-      });
-
-      ringCarousel.addEventListener('mousemove', (e) => {
-        if (!isDraggingCarousel) return;
-        e.preventDefault();
-        const currentX = e.pageX - ringCarousel.offsetLeft;
-        const walk = (currentX - startDragX) * 1.2;
-        ringCarousel.scrollLeft = startCarouselScroll - walk;
-      });
-
-      // Initial run
-      recalculate();
-    })();
-  </script>
+  <script src="js/app.js"></script>
 </body>
 </html>

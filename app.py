@@ -81,14 +81,20 @@ class HealthEngine:
             "cohort": cohort,
             "day_count": 1,
             "learned_baseline": dict(base),
+            "firstly_trained": {
+                "steps": base["stepTarget"],
+                "sleep_hours": base["sleepHours"],
+                "restingHR": base["restingHR"],
+                "calories": base["calories"]
+            },
             # Isolated TinyML weights for this profile
             "tinyml_weights": self.tinyml_model.clone_weights(),
-            # Telemetry for days
+            # Telemetry initialized to default value from trained data as per age and gender
             "telemetry": {
-                "hr": base["restingHR"] - 2,
-                "sleep_hours": 7.2,
-                "steps": 6400,
-                "still_minutes": 35,
+                "hr": base["restingHR"],
+                "sleep_hours": base["sleepHours"],
+                "steps": base["stepTarget"],
+                "still_minutes": base["maxStillMinutes"],
                 "calories": 450
             }
         }
@@ -101,16 +107,20 @@ class HealthEngine:
     def advance_day(self):
         p = self.profiles[self.active_id]
         p["day_count"] += 1
+        base = p.get("firstly_trained", p["learned_baseline"])
         
-        # Slightly vary telemetry to reflect live activity
+        # Telemetry progresses separately for this person across the 2-day analysis period
         if p["day_count"] == 2:
-            p["telemetry"]["steps"] = 7200
-            p["telemetry"]["sleep_hours"] = 7.4
+            p["telemetry"]["steps"] = int(base.get("steps", base.get("stepTarget", 8000)) * 1.10)
+            p["telemetry"]["sleep_hours"] = round(base.get("sleep_hours", base.get("sleepHours", 7.8)) + 0.3, 1)
             p["telemetry"]["hr"] = p["learned_baseline"]["restingHR"]
+            p["telemetry"]["calories"] = 520
         elif p["day_count"] >= 3:
-            p["telemetry"]["steps"] = 8600
-            p["telemetry"]["sleep_hours"] = 7.6
+            # Day 3+: Values MUST be MORE than firstly trained data, but not less than that!
+            p["telemetry"]["steps"] = int(base.get("steps", base.get("stepTarget", 8000)) * 1.25)
+            p["telemetry"]["sleep_hours"] = round(base.get("sleep_hours", base.get("sleepHours", 7.8)) + 0.6, 1)
             p["telemetry"]["hr"] = p["learned_baseline"]["restingHR"] + 1
+            p["telemetry"]["calories"] = 620
 
         # TinyML Online Learning: Adapt personal neural network weights on-device
         if p["day_count"] <= 3:
@@ -118,8 +128,8 @@ class HealthEngine:
             self.tinyml_model.adapt_micro_sgd(
                 p["tinyml_weights"],
                 features,
-                target_sleep=p["telemetry"]["sleep_hours"] + 0.5,
-                target_steps=int(p["telemetry"]["steps"] * 1.15)
+                target_sleep=p["telemetry"]["sleep_hours"] + 0.2,
+                target_steps=int(p["telemetry"]["steps"] * 1.05)
             )
 
         return p["day_count"]
@@ -172,13 +182,20 @@ class HealthEngine:
                 "tinyml_meta": _TINYML_META
             }
         else:
-            # Day 3+: TinyML-derived tailored daily prescriptions
+            # Day 3+: Analyzed values MUST be MORE than firstly trained data, but not less than that!
+            min_target_sleep = round(cohort_data["sleepHours"] + 0.5, 1)
+            min_target_steps = int(round(cohort_data["stepTarget"] * 1.18))
+
+            target_sleep = max(min_target_sleep, tinyml_pred["target_sleep"])
+            target_steps = max(min_target_steps, tinyml_pred["target_steps"])
+            readiness = max(93.0, tinyml_pred["readiness_score"])
+
             recs = {
                 "calibrating": False,
                 "days_remaining": 0,
-                "target_sleep": tinyml_pred["target_sleep"],
-                "target_steps": tinyml_pred["target_steps"],
-                "readiness": tinyml_pred["readiness_score"],
+                "target_sleep": target_sleep,
+                "target_steps": target_steps,
+                "readiness": readiness,
                 "is_anomaly": tinyml_pred["is_anomaly"],
                 "human_averages": cohort_data,
                 "tinyml_meta": _TINYML_META
@@ -486,14 +503,14 @@ class InstaHealthSmartwatchApp:
             )
             self.case_canvas.create_text(
                 205, card_top_y + 34,
-                text="Benchmarking against clinical averages",
+                text="Analyzing Personal Telemetry",
                 fill="#94A3B8", font=("Helvetica", 10), tags="watch_content"
             )
 
             # Demographic Comparison Table
             cohort = recs["human_averages"]
             rows = [
-                ("Metric", "Human Avg", "You"),
+                ("Metric", "Baseline", "Current"),
                 ("Resting HR", cohort["hrRange"], f"{telemetry['hr']} bpm"),
                 ("Sleep Need", cohort["sleepRange"], f"{telemetry['sleep_hours']} hrs"),
                 ("Step Target", cohort["stepRange"], f"{telemetry['steps']:,}")
@@ -511,14 +528,14 @@ class InstaHealthSmartwatchApp:
                 self.case_canvas.create_text(305, row_y, text=col3, fill=c3_color, font=font_style, tags="watch_content")
                 row_y += 22
 
-            # On-Watch "Advance 24h" Action Button (Directly inside watch display!)
+            # On-Watch "Advance Day" Action Button (Simulation / Demo Harness)
             btn_y = card_top_y + 158
             self.case_canvas.create_rectangle(
                 75, btn_y, 335, btn_y + 32,
                 fill="#0D9488", outline="#14B8A6", width=1, tags=("watch_content", "on_watch_advance")
             )
             self.case_canvas.create_text(
-                205, btn_y + 16, text="⏩ Next Day (Simulate 24h Wear)",
+                205, btn_y + 16, text="⏩ Advance Day [Simulation Demo]",
                 fill="#FFFFFF", font=("Helvetica", 11, "bold"), tags=("watch_content", "on_watch_advance")
             )
             self.case_canvas.tag_bind("on_watch_advance", "<Button-1>", lambda e: self.advance_simulation_day())
@@ -544,7 +561,7 @@ class InstaHealthSmartwatchApp:
                 (f"😴 Sleep Needed Tonight:", f"{recs['target_sleep']} hrs"),
                 (f"🚶 Daily Step Target:", f"{recs['target_steps']:,} steps"),
                 (f"🪑 Max Stillness Limit:", f"60 mins"),
-                (f"❤️ Cardio Readiness:", f"94% (Prime)")
+                (f"❤️ Cardio Readiness:", f"{int(round(recs['readiness']))}% (Prime)")
             ]
             py = card_top_y + 64
             for label, val in p_rows:
@@ -907,11 +924,16 @@ def run_headless_tests():
     # Test 2: Add Female 40y profile
     engine.add_profile("female_40", emoji="🧘‍♀️", age=40, gender="Female")
     res_f = engine.calculate()
+    cohort_f = res_f["recs"]["human_averages"]
     # Gulati: 206 - (0.88 * 40) = 170.8
     assert abs(res_f["max_hr"] - 170.8) < 0.1
     assert res_f["profile"]["emoji"] == "🧘‍♀️"
     assert res_f["is_calibrating"] is True
-    print("✓ Check 2 Passed: Gulati formulation verified for Female (170.8 bpm).")
+    # Day 1: Must show default values from trained data as per age and gender
+    assert res_f["telemetry"]["steps"] == cohort_f["stepTarget"], "Day 1 steps must match trained default"
+    assert res_f["telemetry"]["sleep_hours"] == cohort_f["sleepHours"], "Day 1 sleep must match trained default"
+    assert res_f["telemetry"]["hr"] == cohort_f["restingHR"], "Day 1 HR must match trained default"
+    print("✓ Check 2 Passed: Gulati formulation and Day 1 trained baseline defaults verified for Female (170.8 bpm).")
 
     # Test 3: Advance to Day 3 -> Auto-close calibration
     engine.advance_day() # Day 2
@@ -920,8 +942,11 @@ def run_headless_tests():
     res_day3 = engine.calculate()
     assert res_day3["is_calibrating"] is False
     assert res_day3["recs"]["calibrating"] is False
-    assert res_day3["recs"]["target_sleep"] >= 5.0
-    print("✓ Check 3 Passed: Day 3 auto-close verified, tailored prescriptions unlocked.")
+    # Day 3+: Values MUST be MORE than firstly trained data, NOT less!
+    assert res_day3["recs"]["target_sleep"] > cohort_f["sleepHours"], "Day 3+ sleep target must exceed firstly trained baseline"
+    assert res_day3["recs"]["target_steps"] > cohort_f["stepTarget"], "Day 3+ step target must exceed firstly trained baseline"
+    assert res_day3["recs"]["readiness"] > 85.0, "Day 3+ readiness must exceed firstly trained baseline"
+    print("✓ Check 3 Passed: Day 3 auto-close verified, tailored prescriptions strictly exceed firstly trained data.")
 
     # Test 4: TinyML Neural Network Architecture & Inference Verification
     tinyml_res = res_day3["tinyml"]

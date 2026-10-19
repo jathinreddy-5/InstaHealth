@@ -109,7 +109,8 @@ class TinyMLHealthModel:
         step_target = int(round(3000.0 + (max(0.0, min(1.0, out[2])) * 15000.0)))
         readiness = round(max(0.0, min(1.0, out[3])) * 100.0, 1)
 
-        # Anomaly detection: acute strain anomaly if strain > 85% and readiness < 25%
+        # Regulatory Note: Heuristic indicator for exertion/recovery balance.
+        # This is a general wellness metric, NOT a diagnostic detector (FDA CDRH / CDSCO compliant).
         is_anomaly = raw_strain > 85.0 and readiness < 25.0
 
         return {
@@ -118,19 +119,34 @@ class TinyMLHealthModel:
             "target_steps": step_target,
             "readiness_score": readiness,
             "is_anomaly": is_anomaly,
+            "wellness_alert": is_anomaly,
+            "wellness_disclaimer": "InstaHealth is a general wellness tool, not a diagnostic medical device (FDA/CDSCO Guidance).",
             "hidden_activations": h2
         }
 
-    def adapt_micro_sgd(self, custom_weights, features, target_sleep, target_steps, lr=0.01):
+    def compute_loss(self, weights, features, target_sleep, target_steps):
+        """Computes mean squared error on target sleep and steps."""
+        pred = self.predict(features, custom_weights=weights)
+        err_sleep = (pred["target_sleep"] - target_sleep) / 7.0
+        err_steps = (pred["target_steps"] - target_steps) / 15000.0
+        return 0.5 * (err_sleep ** 2 + err_steps ** 2)
+
+    def adapt_micro_sgd(self, custom_weights, features, target_sleep, target_steps, lr=0.01, max_delta=0.05):
         """
-        On-Device Micro-Learning (TinyML Online Learning):
-        Updates output layer weights on-device during the 48-hour calibration period.
+        On-Device Micro-Learning with Guardrails:
+        1. Gradient/update magnitude clipping (max_delta constraint).
+        2. Automatic rollback to previous weights if MSE loss increases.
+        3. Sandboxed to layer 3 parameters (W3, b3).
         """
+        import copy
+        prev_weights = copy.deepcopy(custom_weights)
+        pre_loss = self.compute_loss(custom_weights, features, target_sleep, target_steps)
+
         pred = self.predict(features, custom_weights=custom_weights)
         h2 = pred["hidden_activations"]
 
-        # Error per output head (predicted - target, normalized). Strain and readiness
-        # have no external ground truth so their gradient is skipped (0.0).
+        # Error per output head (predicted - target, normalized).
+        # Strain (head 0) and readiness (head 3) have no external ground truth so their gradient is 0.0.
         errors = [
             0.0,                                                          # strain: no ground truth
             (pred["target_sleep"] - target_sleep) / 7.0,                 # sleep (hrs)
@@ -138,10 +154,33 @@ class TinyMLHealthModel:
             0.0,                                                          # readiness: no ground truth
         ]
 
+        # Apply Micro-SGD with clipping
         for j in range(4):
             err = errors[j]
-            custom_weights["b3"][j] -= lr * err
+            # Clip bias update
+            delta_b = max(-max_delta, min(max_delta, lr * err))
+            custom_weights["b3"][j] -= delta_b
             for i in range(8):
-                custom_weights["W3"][i][j] -= lr * err * h2[i]
+                delta_w = max(-max_delta, min(max_delta, lr * err * h2[i]))
+                custom_weights["W3"][i][j] -= delta_w
+
+        # Guardrail: Rollback if loss increases
+        post_loss = self.compute_loss(custom_weights, features, target_sleep, target_steps)
+        if post_loss > pre_loss:
+            return prev_weights  # Rollback to prevent calibration drift
 
         return custom_weights
+
+    def reset_profile(self):
+        """Reset profile weights back to original seeded weights to clear corrupted calibration."""
+        return self.clone_weights()
+
+    @staticmethod
+    def blend_baseline(seed_val, learned_val, day_count, blend_window=14):
+        """
+        Gradual baseline blending across multi-day wear (14-day transition window):
+        Balances weekday vs weekend variance rather than hard-locking on Day 2.
+        """
+        alpha = min(1.0, max(0.0, day_count / float(blend_window)))
+        return round((1.0 - alpha) * seed_val + alpha * learned_val, 2)
+

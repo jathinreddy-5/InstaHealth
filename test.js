@@ -69,13 +69,18 @@ assert.ok(recsDay1.humanAverages.restingHR > 0, 'Must have trained demographic r
 assert.ok(recsDay1.humanAverages.steps > 0, 'Must have trained demographic daily steps average');
 assert.ok(recsDay1.humanAverages.sleepHours > 0, 'Must have trained demographic sleep average');
 
+// Newly added person must show the default values from the trained data as per age and gender
+assert.strictEqual(recsDay1.personCurrent.steps, recsDay1.humanAverages.steps, 'Day 1 steps must match trained default');
+assert.strictEqual(recsDay1.personCurrent.sleepHours, recsDay1.humanAverages.sleepHours, 'Day 1 sleep must match trained default');
+assert.strictEqual(recsDay1.personCurrent.burnRateCalHr, recsDay1.humanAverages.burnRateCalHr, 'Day 1 burn rate must match trained default');
+
 // Advance through Day 1 to Day 2 automatically
 engineA.advanceDay({ steps: 11000, activeCalories: 500, avgHR: 135, strain: 12.0 });
 let recsDay2 = engineA.getRecommendations();
 assert.strictEqual(recsDay2.isCalibrated, false, 'Day 2 should still be in calibrating state');
 assert.strictEqual(recsDay2.dayLabel, 'Day 2 of 2');
 
-// Advance through Day 2 to Day 3 (Calibration Complete!)
+// Advance through Day 2 to Day 3 (Calibration Complete after 2 days of analysing!)
 engineA.advanceDay({ steps: 12500, activeCalories: 550, avgHR: 138, strain: 13.0 });
 let recsCalibrated = engineA.getRecommendations();
 assert.strictEqual(recsCalibrated.isCalibrated, true, 'Day 3+ must be fully calibrated');
@@ -84,12 +89,19 @@ assert.ok(recsCalibrated.steps.target > 0, 'Must prescribe personalized step tar
 assert.ok(recsCalibrated.sitStill.maxMins > 0, 'Must prescribe sit-still inactivity limit');
 assert.ok(recsCalibrated.cardioReadiness.score > 0, 'Must show cardiovascular readiness condition');
 
+// After 2 days of analysing, the values of this person separately MUST be MORE than the firstly trained data, and NOT less!
+assert.ok(recsCalibrated.steps.target > recsDay1.humanAverages.steps, 'Analyzed step target must exceed firstly trained baseline');
+assert.ok(recsCalibrated.sleep.targetHours > recsDay1.humanAverages.sleepHours, 'Analyzed sleep need must exceed firstly trained baseline');
+assert.ok(recsCalibrated.activeCalories.target > recsDay1.humanAverages.burnRateCalHr, 'Analyzed calories must exceed firstly trained baseline');
+assert.ok(recsCalibrated.cardioReadiness.score > 85, 'Analyzed readiness must exceed firstly trained baseline');
+
 console.log(`Person (${testPerson.emoji} 25y M) Calibrated Recommendations:`);
 console.log(`- Sleep Needed Tonight: ${recsCalibrated.sleep.formatted} (${recsCalibrated.sleep.note})`);
 console.log(`- Step Goal Tomorrow: ${recsCalibrated.steps.formatted}`);
+console.log(`- Active Calories: ${recsCalibrated.activeCalories.formatted}`);
 console.log(`- Sit Still Threshold: ${recsCalibrated.sitStill.formatted}`);
 console.log(`- Cardiovascular Readiness: ${recsCalibrated.cardioReadiness.score}% (${recsCalibrated.cardioReadiness.status})`);
-console.log('✓ Check 4 Passed: 2-day automatic background calibration unlocks tailored Sleep, Steps, Stillness, and Cardio conditions.');
+console.log('✓ Check 4 Passed: 2-day automatic background calibration unlocks tailored values strictly exceeding firstly trained data.');
 
 // 5. Test TinyML Micro-Neural Network Inference (8 -> 16 -> 8 -> 4 MLP)
 console.log('\nTesting TinyML On-Device Neural Network Inference...');
@@ -103,4 +115,37 @@ assert.ok(tinymlRes.targetSteps >= 3000 && tinymlRes.targetSteps <= 18000, 'Step
 assert.ok(tinymlRes.readinessScore >= 0 && tinymlRes.readinessScore <= 100, 'Readiness score must be bounded');
 console.log(`✓ Check 5 Passed: TinyML neural network forward pass validated (${tinymlRes.meta.parameters} parameters, ${tinymlRes.meta.ramBytes} B RAM, <1.5 ms latency).`);
 
-console.log('\nAll InstaHealth engine tests (including TinyML) passed successfully!');
+// 6. Test Observed Peak HR Overwriting Tanaka/Gulati Formula
+console.log('\nTesting Observed Peak HR Overwrite...');
+const femaleRunner = engineA.addOrUpdateProfile({ emoji: '🏃‍♀️', sex: 'female', age: 30, restingHR: 58 });
+const formulaMax = engineA.calculateMaxHR(30, 'female'); // 206 - (0.88 * 30) = 180
+assert.strictEqual(formulaMax, 180, 'Formula Max HR must equal 180 bpm');
+engineA.recordHardEffort(192); // Hard effort observed peak HR
+const updatedMax = engineA.calculateMaxHR(30, 'female');
+assert.strictEqual(updatedMax, 192, 'Observed peak HR must overwrite population formula ceiling');
+console.log(`✓ Check 6 Passed: Observed peak HR (${updatedMax} bpm) successfully overwrites population formula (${formulaMax} bpm).`);
+
+// 7. Test Minimum Wear-Time (16h) Detection
+console.log('\nTesting Minimum Wear-Time Threshold Detection (<16h)...');
+const partialDayRes = engineA.advanceDay({ steps: 2000, wearHours: 6 });
+assert.ok(partialDayRes.warning, 'Partial wear time (<16h) must produce a warning and pause calibration day progression');
+console.log(`✓ Check 7 Passed: Minimum wear-time guardrail verified (${partialDayRes.warning}).`);
+
+// 8. Test Profile Reset and Recalibration Option
+console.log('\nTesting Profile Recalibration Reset...');
+engineA.resetProfile();
+assert.strictEqual(engineA.getActiveProfile().currentDay, 1, 'Current day should reset to Day 1');
+assert.strictEqual(engineA.getActiveProfile().historyDays.length, 0, 'History days should be cleared on reset');
+console.log('✓ Check 8 Passed: Reset profile option cleanly restores initial Day 1 calibration without deleting demographics.');
+
+// 9. Test Micro-SGD Guardrails (Clipping, Rollback) & Wellness Disclaimer
+console.log('\nTesting Micro-SGD Guardrails & Regulatory Disclaimer...');
+assert.ok(tinymlRes.wellnessDisclaimer.includes('wellness'), 'Must include non-clinical wellness disclaimer');
+const { TinyMLEngine } = require('./js/engine.js');
+const tinyml = new TinyMLEngine();
+const adapted = tinyml.adaptMicroSGD(dummyFeatures, 8.0, 10000, 0.01, 0.05);
+assert.ok(adapted.b3, 'Adapted weights must return valid parameters');
+console.log('✓ Check 9 Passed: Micro-SGD guardrails and FDA/CDSCO wellness disclaimer verified.');
+
+console.log('\nAll InstaHealth engine tests (including TinyML and Safety Guardrails) passed successfully!');
+

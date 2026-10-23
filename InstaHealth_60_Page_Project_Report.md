@@ -5,10 +5,8 @@
 **A Project Report**  
 *Submitted by*
 
-- **JATHIN REDDY** (22BCE10001)
-- **STUDENT 2** (22BCE10002)
-- **STUDENT 3** (22BCE10003)
-- **STUDENT 4** (22BCE10004)
+- **A. JATHIN REDDY** (122311520105)
+- **K. PRANAY KUMAR** (122311520133)
 
 
 *in partial fulfillment for the award of the degree of Bachelor of Technology in Computer Science & Engineering*
@@ -16,8 +14,8 @@
 
 
 **Under the Guidance of**  
-**Dr. S. Ramesh Kumar, M.Tech., Ph.D.**  
-*Associate Professor, Department of Computer Science & Engineering*
+**Dr. Thirumalesu.K**  
+*Assistant Professor, Department of Computer Science & Engineering*
 
 
 **SCHOOL OF TECHNOLOGY  
@@ -32,20 +30,16 @@ THE APOLLO UNIVERSITY, CHITTOOR**
 # DECLARATION
 
 
-We hereby declare that the project entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” submitted by us, for the award of the degree of Bachelor of Technology in Computer Science & Engineering, School of Technology to The Apollo University is a record of bonafide work carried out by us under the supervision of Dr. S. Ramesh Kumar, Associate Professor, Department of Computer Science & Engineering.
+We hereby declare that the project entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” submitted by us, for the award of the degree of Bachelor of Technology in Computer Science & Engineering, School of Technology to The Apollo University is a record of bonafide work carried out by us under the supervision of Dr. Thirumalesu.K, Assistant Professor, Department of Computer Science & Engineering.
 
 We further declare that the work reported in this thesis has not been submitted and will not be submitted, either in part or in full, for the award of any other degree or diploma in this institute or any other institute or university.
 
 
 **Signature of the Candidate(s) with names:**
 
-1. JATHIN REDDY (22BCE10001)  ____________________________________  
+1. A. JATHIN REDDY (122311520105)  ____________________________________  
 
-2. STUDENT 2 (22BCE10002)  ____________________________________  
-
-3. STUDENT 3 (22BCE10003)  ____________________________________  
-
-4. STUDENT 4 (22BCE10004)  ____________________________________  
+2. K. PRANAY KUMAR (122311520133)  ____________________________________  
 
 
 **Place:** Chittoor  
@@ -58,11 +52,11 @@ We further declare that the work reported in this thesis has not been submitted 
 # BONAFIDE CERTIFICATE
 
 
-This is to certify that the project report entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” is the bonafide work carried out by JATHIN REDDY (Register No: 22BCE10001), STUDENT 2 (Register No: 22BCE10002), STUDENT 3 (Register No: 22BCE10003), and STUDENT 4 (Register No: 22BCE10004), under my supervision and guidance, in partial fulfillment of the requirements for the award of the degree of Bachelor of Technology in Computer Science & Engineering by The Apollo University, Chittoor.
+This is to certify that the project report entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” is the bonafide work carried out by A. JATHIN REDDY (Register No: 122311520105) and K. PRANAY KUMAR (Register No: 122311520133), under my supervision and guidance, in partial fulfillment of the requirements for the award of the degree of Bachelor of Technology in Computer Science & Engineering by The Apollo University, Chittoor.
 
 
-**Dr. S. Ramesh Kumar, M.Tech., Ph.D.**  
-Associate Professor, Department of Computer Science & Engineering  
+**Dr. Thirumalesu.K**  
+Assistant Professor, Department of Computer Science & Engineering  
 *Signature of the Guide*
 
 
@@ -76,7 +70,7 @@ Associate Professor, Department of Computer Science & Engineering
 # ACKNOWLEDGEMENT
 
 
-We express our sincere gratitude to our project guide Dr. S. Ramesh Kumar, Associate Professor, Department of Computer Science & Engineering, School of Technology, The Apollo University, Chittoor, for his continuous guidance, valuable suggestions and constructive feedback throughout the course of this project. His academic rigor and support have been instrumental in the successful completion of this work.
+We express our sincere gratitude to our project guide Dr. Thirumalesu.K, Assistant Professor, Department of Computer Science & Engineering, School of Technology, The Apollo University, Chittoor, for his continuous guidance, valuable suggestions and constructive feedback throughout the course of this project. His academic rigor and support have been instrumental in the successful completion of this work.
 
 
 We also thank the Project Coordinator, Department of Computer Science & Engineering, School of Technology, The Apollo University for providing direction, structured milestone reviews, and invaluable technical counsel throughout the progression of this research.
@@ -1833,7 +1827,7 @@ Integrating an on-device conversational language model with InstaHealth would al
 - [33] Centers for Disease Control and Prevention, National Health and Nutrition Examination Survey (NHANES) physiological data, 2024. Available from: <https://www.cdc.gov/nchs/nhanes/index.htm>. [10 February 2026].
 - [34] Arm Limited, Cortex-M4 technical reference manual and DSP instruction set, 2023. Available from: <https://developer.arm.com/documentation/100166/latest/>. [5 March 2026].
 - [35] Cookson AH, Particle trap for compressed gas insulated transmission systems, 1985, US Patent 4554399.
-- [36] Jathin R, Kumar SR, Student2 B & Student3 C, Zero-cloud on-device adaptive physiological monitoring system and method for resource-constrained wearable devices, 2026, Indian Patent Application 202641019876 (Filed April 2026).
+- [36] Jathin Reddy A, Pranay Kumar K & Thirumalesu K, Zero-cloud on-device adaptive physiological monitoring system and method for resource-constrained wearable devices, 2026, Indian Patent Application 202641019876 (Filed April 2026).
 
 # PUBLICATIONS/CONFERENCES
 
@@ -1842,7 +1836,7 @@ Integrating an on-device conversational language model with InstaHealth would al
 
 
 **Target Venue:** 2026 IEEE 23rd International Conference on Wearable and Implantable Body Sensor Networks (BSN 2026)  
-**Authors:** Jathin Reddy, Student 2, Student 3, Student 4, and Dr. S. Ramesh Kumar  
+**Authors:** A. Jathin Reddy, K. Pranay Kumar, and Dr. Thirumalesu.K  
 *Department of Computer Science & Engineering, School of Technology, The Apollo University, Chittoor, Andhra Pradesh, India*
 
 

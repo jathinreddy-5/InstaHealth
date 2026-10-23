@@ -68,7 +68,7 @@ REFERENCES_LIST = [
     
     # 9. Patent
     "[35] Cookson AH, Particle trap for compressed gas insulated transmission systems, 1985, US Patent 4554399.",
-    "[36] Jathin R, Kumar SR, Student2 B & Student3 C, Zero-cloud on-device adaptive physiological monitoring system and method for resource-constrained wearable devices, 2026, Indian Patent Application 202641019876 (Filed April 2026)."
+    "[36] Jathin Reddy A, Pranay Kumar K & Thirumalesu K, Zero-cloud on-device adaptive physiological monitoring system and method for resource-constrained wearable devices, 2026, Indian Patent Application 202641019876 (Filed April 2026)."
 ]
 
 PUBLICATIONS_TITLE = "PUBLICATIONS/CONFERENCES"
@@ -76,7 +76,7 @@ PUBLICATIONS_TITLE = "PUBLICATIONS/CONFERENCES"
 PUBLICATION_SUMMARY = {
     "conference": "2026 IEEE 23rd International Conference on Wearable and Implantable Body Sensor Networks (BSN 2026)",
     "paper_title": "Zero-Cloud On-Device Health Intelligence: Adaptive TinyML Physiological Modeling on Resource-Constrained Smartwatches",
-    "authors": "Jathin Reddy, Student 2, Student 3, Student 4, and Dr. S. Ramesh Kumar",
+    "authors": "A. Jathin Reddy, K. Pranay Kumar, and Dr. Thirumalesu.K",
     "affiliations": "Department of Computer Science & Engineering, School of Technology, The Apollo University, Chittoor, Andhra Pradesh, India",
     "abstract": (
         "Continuous physiological surveillance via commercial wrist-worn wearables predominantly relies on cloud-centric "

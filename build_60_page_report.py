@@ -333,7 +333,7 @@ add_para(doc, "THE APOLLO UNIVERSITY, CHITTOOR\nSCHOOL OF TECHNOLOGY", size=13, 
 add_heading_1(doc, "BONAFIDE CERTIFICATE")
 add_para(doc, BONAFIDE_CERTIFICATE_TEXT, size=12, space_before=14, space_after=24, line_spacing=1.5)
 
-add_para(doc, "Signature of the Guide\nDr. S. Ramesh Kumar, M.Tech., Ph.D.\nAssociate Professor, Dept. of CSE", size=11, bold=True, align=WD_ALIGN_PARAGRAPH.RIGHT, space_before=24, space_after=36, line_spacing=1.2)
+add_para(doc, "Signature of the Guide\nDr. Thirumalesu.K\nAssistant Professor, Dept. of CSE", size=11, bold=True, align=WD_ALIGN_PARAGRAPH.RIGHT, space_before=24, space_after=36, line_spacing=1.2)
 
 # Program Coordinator and Dean Block
 tbl_cert = doc.add_table(rows=1, cols=2)
@@ -736,7 +736,7 @@ md_lines.append("\n---\n")
 
 md_h1("BONAFIDE CERTIFICATE")
 md_p(BONAFIDE_CERTIFICATE_TEXT)
-md_p("**Dr. S. Ramesh Kumar, M.Tech., Ph.D.**  \nAssociate Professor, Department of Computer Science & Engineering  \n*Signature of the Guide*")
+md_p("**Dr. Thirumalesu.K**  \nAssistant Professor, Department of Computer Science & Engineering  \n*Signature of the Guide*")
 md_p("**Program Coordinator**, Dept. of CSE, School of Technology, The Apollo University  \n**Prof. D. Jagadeesan, Ph.D.**, Dean, School of Technology, The Apollo University")
 md_lines.append("\n---\n")
 

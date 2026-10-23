@@ -2,9 +2,8 @@
 
 ### A Mini Project Report
 **Submitted by**  
-**JATHIN REDDY** (Register No. 22BCE10001)  
-**STUDENT 2** (Register No. 22BCE10002)  
-**STUDENT 3** (Register No. 22BCE10003)  
+**A. JATHIN REDDY** (Register No. 122311520105)  
+**K. PRANAY KUMAR** (Register No. 122311520133)  
 
 *in partial fulfilment of the requirements for the award of the degree of*  
 **Bachelor of Technology**  
@@ -13,7 +12,7 @@
 **(Artificial Intelligence & Data Science)**  
 
 **Under the Guidance of**  
-**[Guide Name], M.Tech., Ph.D.**  
+**Dr. Thirumalesu.K**  
 *Assistant Professor, Department of Computer Science & Engineering*  
 
 ---
@@ -32,15 +31,14 @@ Murukambattu, Chittoor – 517 127, Andhra Pradesh
 
 ## DECLARATION
 
-We hereby declare that the mini project report entitled **“INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING”** submitted by us to **The Apollo University, Chittoor**, in partial fulfilment of the requirements for the award of the degree of **Bachelor of Technology in Computer Science & Engineering (Artificial Intelligence & Data Science)**, School of Technology, is a record of bonafide work carried out by us during the V Semester of the academic year 2026–2027 under the supervision of **[Guide Name], [Designation]**, Department of Computer Science & Engineering.
+We hereby declare that the mini project report entitled **“INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING”** submitted by us to **The Apollo University, Chittoor**, in partial fulfilment of the requirements for the award of the degree of **Bachelor of Technology in Computer Science & Engineering (Artificial Intelligence & Data Science)**, School of Technology, is a record of bonafide work carried out by us during the V Semester of the academic year 2026–2027 under the supervision of **Dr. Thirumalesu.K, Assistant Professor**, Department of Computer Science & Engineering.
 
 We further declare that the work reported in this report has not been submitted and will not be submitted, either in part or in full, for the award of any other degree or diploma in this institute or any other institute or university. Wherever the work of others has been used, it has been duly acknowledged and cited.
 
 **Signature of the Candidate(s) with names:**
 
-1. JATHIN REDDY (Register No. 22BCE10001) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ______________________  
-2. STUDENT 2 (Register No. 22BCE10002) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ______________________  
-3. STUDENT 3 (Register No. 22BCE10003) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ______________________  
+1. A. JATHIN REDDY (Register No. 122311520105) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ______________________  
+2. K. PRANAY KUMAR (Register No. 122311520133) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ______________________  
 
 **Place :** Chittoor  
 **Date :** 15-10-2026  
@@ -53,7 +51,7 @@ We further declare that the work reported in this report has not been submitted 
 
 ## BONAFIDE CERTIFICATE
 
-This is to certify that the mini project report entitled **“INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING”** is the bonafide work carried out by **JATHIN REDDY (Register No. 22BCE10001), STUDENT 2 (Register No. 22BCE10002), and STUDENT 3 (Register No. 22BCE10003)**, III Year B.Tech, V Semester, under my supervision and guidance, in partial fulfilment of the requirements for the award of the degree of **Bachelor of Technology in Computer Science & Engineering (Artificial Intelligence & Data Science)** by **The Apollo University, Chittoor**, during the academic year 2026–2027. This work was carried out as part of the course **CSE3051 – Mini Project**.
+This is to certify that the mini project report entitled **“INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING”** is the bonafide work carried out by **A. JATHIN REDDY (Register No. 122311520105) and K. PRANAY KUMAR (Register No. 122311520133)**, III Year B.Tech, V Semester, under my supervision and guidance, in partial fulfilment of the requirements for the award of the degree of **Bachelor of Technology in Computer Science & Engineering (Artificial Intelligence & Data Science)** by **The Apollo University, Chittoor**, during the academic year 2026–2027. This work was carried out as part of the course **CSE3051 – Mini Project**.
 
 The results embodied in this report have not been submitted to any other University or Institute for the award of any degree or diploma.
 
@@ -61,8 +59,8 @@ The results embodied in this report have not been submitted to any other Univers
 
 | **Signature of the Guide** | **Programme Coordinator** | **Dean** |
 | :--- | :--- | :--- |
-| **[Guide Name]** | **[PC Name]** | **Prof. D. Jagadeesan** |
-| Designation, Dept. of CSE | Dept. of CSE | Dean, School of Technology |
+| **Dr. Thirumalesu.K** | **[PC Name]** | **Prof. D. Jagadeesan** |
+| Assistant Professor, Dept. of CSE | Dept. of CSE | Dean, School of Technology |
 | School of Technology | School of Technology | The Apollo University |
 
 <br/>
@@ -78,7 +76,7 @@ Submitted for the Mini Project (**CSE3051**) Viva-Voce Examination held on: ____
 ## CERTIFICATE OF SIMILARITY CHECK
 *(As per UGC (Promotion of Academic Integrity and Prevention of Plagiarism in Higher Educational Institutions) Regulations, 2018)*
 
-This is to certify that the mini project report entitled **“INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING”** submitted by **JATHIN REDDY, STUDENT 2, and STUDENT 3** has been checked for similarity using **Turnitin / DrillBit** and the details are as follows:
+This is to certify that the mini project report entitled **“INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING”** submitted by **A. JATHIN REDDY and K. PRANAY KUMAR** has been checked for similarity using **Turnitin / DrillBit** and the details are as follows:
 
 | Particulars | Details |
 | :--- | :--- |
@@ -96,13 +94,13 @@ This is to certify that the mini project report entitled **“INSTAHEALTH: A PRI
 | **Signature of the Guide** | **Signature of the Programme Coordinator** |
 | :---: | :---: |
 | ___________________________ | ___________________________ |
-| **[Guide Name]** | **[PC Name]** |
+| **Dr. Thirumalesu.K** | **[PC Name]** |
 
 ---
 
 ## ACKNOWLEDGEMENT
 
-We express our sincere gratitude to our project guide **[Guide Name], [Designation]**, Department of Computer Science & Engineering, School of Technology, The Apollo University, Chittoor, for the continuous guidance, valuable suggestions and constructive feedback throughout the course of this project. Their support has been instrumental in the successful completion of this work.
+We express our sincere gratitude to our project guide **Dr. Thirumalesu.K, Assistant Professor**, Department of Computer Science & Engineering, School of Technology, The Apollo University, Chittoor, for the continuous guidance, valuable suggestions and constructive feedback throughout the course of this project. Their support has been instrumental in the successful completion of this work.
 
 We thank **[Mini Project Coordinator Name], [Designation]**, Mini Project Coordinator, Department of Computer Science & Engineering, School of Technology, The Apollo University, for giving us the right direction at every stage of the work.
 
@@ -114,9 +112,8 @@ We express our profound gratitude to the Honourable Chancellor Emeritus **Dr. Pr
 
 We acknowledge the support of all faculty members and technical staff of the department for their cooperation and valuable inputs during the project period. We thank our friends and classmates for their constant encouragement, and express our deepest gratitude to our parents and family members for their unwavering support, motivation and blessings.
 
-**1. JATHIN REDDY (Register No. 22BCE10001)**  
-**2. STUDENT 2 (Register No. 22BCE10002)**  
-**3. STUDENT 3 (Register No. 22BCE10003)**  
+**1. A. JATHIN REDDY (Register No. 122311520105)**  
+**2. K. PRANAY KUMAR (Register No. 122311520133)**  
 
 ---
 

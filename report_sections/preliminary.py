@@ -8,15 +8,13 @@ TITLE_DATA = {
     "subtitle": "A Project Report",
     "submission_text": "Submitted by",
     "students": [
-        ("JATHIN REDDY", "22BCE10001"),
-        ("STUDENT 2", "22BCE10002"),
-        ("STUDENT 3", "22BCE10003"),
-        ("STUDENT 4", "22BCE10004")
+        ("A. JATHIN REDDY", "122311520105"),
+        ("K. PRANAY KUMAR", "122311520133")
     ],
     "degree_text": "in partial fulfillment for the award of the degree\nof\nBachelor of Technology\nin\nComputer Science & Engineering",
     "guide_header": "Under the Guidance of",
-    "guide_name": "Dr. S. Ramesh Kumar, M.Tech., Ph.D.",
-    "guide_title": "Associate Professor, Department of Computer Science & Engineering",
+    "guide_name": "Dr. Thirumalesu.K",
+    "guide_title": "Assistant Professor, Department of Computer Science & Engineering",
     "institution": "SCHOOL OF TECHNOLOGY\nDEPARTMENT OF COMPUTER SCIENCE & ENGINEERING\nTHE APOLLO UNIVERSITY, CHITTOOR",
     "date": "April, 2026"
 }
@@ -26,7 +24,7 @@ DECLARATION_TEXT = (
     "ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” "
     "submitted by us, for the award of the degree of Bachelor of Technology in Computer Science & Engineering, "
     "School of Technology to The Apollo University is a record of bonafide work carried out by us under the "
-    "supervision of Dr. S. Ramesh Kumar, Associate Professor, Department of Computer Science & Engineering.\n\n"
+    "supervision of Dr. Thirumalesu.K, Assistant Professor, Department of Computer Science & Engineering.\n\n"
     "We further declare that the work reported in this thesis has not been submitted and will not be submitted, "
     "either in part or in full, for the award of any other degree or diploma in this institute or any other institute or university."
 )
@@ -34,14 +32,13 @@ DECLARATION_TEXT = (
 BONAFIDE_CERTIFICATE_TEXT = (
     "This is to certify that the project report entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD "
     "ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” "
-    "is the bonafide work carried out by JATHIN REDDY (Register No: 22BCE10001), STUDENT 2 (Register No: 22BCE10002), "
-    "STUDENT 3 (Register No: 22BCE10003), and STUDENT 4 (Register No: 22BCE10004), under my supervision and guidance, "
-    "in partial fulfillment of the requirements for the award of the degree of Bachelor of Technology in "
-    "Computer Science & Engineering by The Apollo University, Chittoor."
+    "is the bonafide work carried out by A. JATHIN REDDY (Register No: 122311520105) and K. PRANAY KUMAR "
+    "(Register No: 122311520133), under my supervision and guidance, in partial fulfillment of the requirements "
+    "for the award of the degree of Bachelor of Technology in Computer Science & Engineering by The Apollo University, Chittoor."
 )
 
 ACKNOWLEDGEMENT_PARAGRAPHS = [
-    "We express our sincere gratitude to our project guide Dr. S. Ramesh Kumar, Associate Professor, Department of Computer Science & Engineering, School of Technology, The Apollo University, Chittoor, for his continuous guidance, valuable suggestions and constructive feedback throughout the course of this project. His academic rigor and support have been instrumental in the successful completion of this work.",
+    "We express our sincere gratitude to our project guide Dr. Thirumalesu.K, Assistant Professor, Department of Computer Science & Engineering, School of Technology, The Apollo University, Chittoor, for his continuous guidance, valuable suggestions and constructive feedback throughout the course of this project. His academic rigor and support have been instrumental in the successful completion of this work.",
     "We also thank the Project Coordinator, Department of Computer Science & Engineering, School of Technology, The Apollo University for providing direction, structured milestone reviews, and invaluable technical counsel throughout the progression of this research.",
     "We extend our heartfelt thanks to the Programme Coordinator, Department of Computer Science & Engineering, School of Technology, The Apollo University for providing the necessary academic support, laboratories, and computing infrastructure to carry out this project effectively.",
     "We convey our sincere thanks to Prof. D. Jagadeesan, Dean, School of Technology, for his encouragement, leadership, and administrative support throughout the tenure of our project work.",

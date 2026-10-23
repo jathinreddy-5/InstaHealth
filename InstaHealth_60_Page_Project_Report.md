@@ -2,25 +2,28 @@
 # INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING
 
 
+**(Times new roman pt.18)**  
 **A Project Report**  
-*Submitted by*
+*Submitted by*  
+**A . Jathin Reddy** ( reg no : 122311520105)  
+**K.Pranay Kumar** (reg.no : 122311520133)  
 
-- **A. JATHIN REDDY** (122311520105)
-- **K. PRANAY KUMAR** (122311520133)
+*in partial fulfillment for the award of the degree of*
+**Bachelor of Technology**
+*in*
+**Computer Sciences & Engineering**  
 
-
-*in partial fulfillment for the award of the degree of Bachelor of Technology in Computer Science & Engineering*
-
-
-
-**Under the Guidance of**  
+*Under the Guidance of*  
 **Dr. Thirumalesu.K**  
-*Assistant Professor, Department of Computer Science & Engineering*
+*Assistant Professor*
 
 
-**SCHOOL OF TECHNOLOGY  
-DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING  
-THE APOLLO UNIVERSITY, CHITTOOR**  
+<p align="center"><img src="apollo_logo.png" width="180" alt="The Apollo University Logo"/></p>
+
+
+**SCHOOL OF TECHNOLOGY**  
+**DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING**  
+**THE APOLLO UNIVERSITY, CHITTOOR**  
 **April, 2026**
 
 
@@ -30,17 +33,14 @@ THE APOLLO UNIVERSITY, CHITTOOR**
 # DECLARATION
 
 
-We hereby declare that the project entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” submitted by us, for the award of the degree of Bachelor of Technology in Computer Science & Engineering, School of Technology to The Apollo University is a record of bonafide work carried out by us under the supervision of Dr. Thirumalesu.K, Assistant Professor, Department of Computer Science & Engineering.
+   I hereby declare that the project entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” submitted by us, for the award of the degree of Bachelor of Technology in Computer Sciences & Engineering, School of Technology to The Apollo University is a record of bonafide work carried out by us under the supervision of Dr. Thirumalesu.K, Assistant Professor, Department of Computer Science & Engineering.
 
-We further declare that the work reported in this thesis has not been submitted and will not be submitted, either in part or in full, for the award of any other degree or diploma in this institute or any other institute or university.
-
+   We further declare that the work reported in this thesis has not been submitted and will not be submitted, either in part or in full, for the award of any other degree or diploma in this institute or any other institute or university.
 
 **Signature of the Candidate(s) with names:**
 
-1. A. JATHIN REDDY (122311520105)  ____________________________________  
-
-2. K. PRANAY KUMAR (122311520133)  ____________________________________  
-
+1. A . Jathin Reddy ( reg no : 122311520105)        ____________________  
+2. K.Pranay Kumar (reg.no : 122311520133)        ____________________  
 
 **Place:** Chittoor  
 **Date:** April, 2026
@@ -49,19 +49,25 @@ We further declare that the work reported in this thesis has not been submitted 
 ---
 
 
+**THE APOLLO UNIVERSITY, CHITTOOR**  
+**SCHOOL OF TECHNOLOGY**
+
+
 # BONAFIDE CERTIFICATE
 
 
-This is to certify that the project report entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” is the bonafide work carried out by A. JATHIN REDDY (Register No: 122311520105) and K. PRANAY KUMAR (Register No: 122311520133), under my supervision and guidance, in partial fulfillment of the requirements for the award of the degree of Bachelor of Technology in Computer Science & Engineering by The Apollo University, Chittoor.
+         This is to certify that the project report entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” is the bonafide work carried out by A . Jathin Reddy (Register No: 122311520105) and K.Pranay Kumar (Register No: 122311520133), under my supervision and guidance, in partial fulfillment of the requirements for the award of the degree of Bachelor of Technology in Computer Sciences & Engineering by The Apollo University, Chittoor.
 
-
+**Signature of the Guide**  
 **Dr. Thirumalesu.K**  
-Assistant Professor, Department of Computer Science & Engineering  
-*Signature of the Guide*
+Assistant Professor, Dept. of CSE
 
+| **Program Coordinator** | **Dean** |
+| :--- | :--- |
+| Department of Computer Science & Engineering | School of Technology |
+| The Apollo University | The Apollo University |
 
-**Program Coordinator**, Dept. of CSE, School of Technology, The Apollo University  
-**Prof. D. Jagadeesan, Ph.D.**, Dean, School of Technology, The Apollo University
+**Internal Examiner:** _______________________ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **External Examiner:** _______________________
 
 
 ---
@@ -70,28 +76,78 @@ Assistant Professor, Department of Computer Science & Engineering
 # ACKNOWLEDGEMENT
 
 
-We express our sincere gratitude to our project guide Dr. Thirumalesu.K, Assistant Professor, Department of Computer Science & Engineering, School of Technology, The Apollo University, Chittoor, for his continuous guidance, valuable suggestions and constructive feedback throughout the course of this project. His academic rigor and support have been instrumental in the successful completion of this work.
+I express my sincere gratitude to my project guide Dr. Thirumalesu.K, Assistant Professor, Computer Sciences & Engineering, School of Technology, The Apollo University, Chittoor, for their continuous guidance, valuable suggestions and constructive feedback throughout the course of this project. Their support has been instrumental in the successful completion of this work.
 
 
-We also thank the Project Coordinator, Department of Computer Science & Engineering, School of Technology, The Apollo University for providing direction, structured milestone reviews, and invaluable technical counsel throughout the progression of this research.
+I also thank the Project Coordinator, Department of Computer Science & Engineering, School of Technology, The Apollo University for giving me the right direction whenever I came to the University.
 
 
-We extend our heartfelt thanks to the Programme Coordinator, Department of Computer Science & Engineering, School of Technology, The Apollo University for providing the necessary academic support, laboratories, and computing infrastructure to carry out this project effectively.
+I extend my heartfelt thanks to the Programme Coordinator, Department of Computer Science & Engineering, School of Technology, The Apollo University for providing the necessary academic support and facilities to carry out this project effectively.
 
 
-We convey our sincere thanks to Prof. D. Jagadeesan, Dean, School of Technology, for his encouragement, leadership, and administrative support throughout the tenure of our project work.
+I also convey my sincere thanks to the Prof. D. Jagadeesan, Dean, School of Technology for their support and encouragement throughout the project work.
 
 
-We express our profound gratitude to the Honourable Chancellor Emeritus Dr. Prathap C. Reddy, Dr. H. Vinod Bhat, Vice-Chancellor, and Prof. M. Potharaju, Registrar of The Apollo University for their visionary leadership, institutional inspiration, and continuous fostering of a vibrant research and innovation culture.
+I express my profound gratitude to the Honourable Chancellor Dr Prathap C. Reddy, Dr. H. Vinod Bhat, Vice-Chancellor and Prof. M. Potharaju, Registrar of The Apollo University for their visionary leadership, constant encouragement and for fostering a supportive academic environment.
 
 
-We gratefully acknowledge the support of all faculty members and technical staff of the Department of Computer Science & Engineering for their cooperation, critical reviews, and valuable inputs during the project period.
+I acknowledge the support of all faculty members of the department for their cooperation and valuable inputs during the project period.
 
 
-We also thank our fellow classmates, peers, and friends for their camaraderie, constructive debates, and collaborative assistance during the experimental benchmarking phases.
+I would like to thank my friends and classmates for their constant encouragement and support.
 
 
-Finally, we express our deepest gratitude to our parents and family members for their unconditional love, moral support, patient understanding, and perpetual blessings throughout our academic journey.
+Finally, I express my deepest gratitude to my parents and family members for their unwavering support, motivation and blessings.
+
+*For Internship Students*
+I would like to express my sincere gratitude to the organization for providing me with the opportunity to undergo internship training.
+
+**A . Jathin Reddy** ( reg no : 122311520105)  
+**K.Pranay Kumar** (reg.no : 122311520133)
+
+*(INTERNSHIP STUDENTS PLACE YOUR CERTIFICATE)*
+
+
+---
+
+
+# TABLE OF CONTENTS
+
+| | CONTENTS | Page No. |
+| :--- | :--- | :---: |
+| | **ABSTRACT** | I |
+| | **List of Figures** | II |
+| | **List of Tables** | III |
+| | **Abbreviations** | IV |
+| 1 | **INTRODUCTION** | 1 |
+| | 1.1 Background of the Study | 1 |
+| | 1.2 Problem Statement | 2 |
+| 2 | **LITERATURE REVIEW** | 6 |
+| | 2.1 Introduction | 6 |
+| | 2.2 Review of Existing Systems | 7 |
+| | 2.3 Limitations of Existing Systems | 11 |
+| | 2.4 Proposed System Overview | 12 |
+| 3 | **OBJECTIVES AND SCOPE OF WORK** | 14 |
+| | 3.1 Objectives of the Project | 14 |
+| | 3.2 Scope of the Project | 16 |
+| 4 | **SYSTEM ANALYSIS & DESIGN** | 20 |
+| | 4.1 System Requirements (Hardware & Software) | 20 |
+| | 4.2 System Architecture | 23 |
+| | 4.3 Data Flow Diagram (DFD) | 26 |
+| 5 | **IMPLEMENTATION** | 33 |
+| | 5.1 Tools & Technologies Used | 33 |
+| | 5.2 Module Description | 35 |
+| | 5.3 Algorithms / Methods Used | 38 |
+| | 5.4 Code Snippets (optional) | 41 |
+| 6 | **RESULTS AND DISCUSSION** | 43 |
+| | 6.1 Output Screens / Results | 43 |
+| | 6.2 Testing (Test Cases & Results) | 46 |
+| | 6.3 Performance Analysis | 49 |
+| 7 | **CONCLUSION AND FUTURE SCOPE** | 54 |
+| | 7.1 Conclusion | 54 |
+| | 7.2 Future Enhancements | 55 |
+| | **REFERENCES** | 58 |
+| | **PUBLICATIONS/CONFERENCES** | 61 |
 
 
 ---
@@ -104,6 +160,111 @@ Modern wearable health intelligence predominantly relies on continuous cloud tra
 
 
 **Keywords:** Edge Computing, On-Device TinyML, Zero-Cloud Privacy, Adaptive Physiological Modeling, Smartwatch Health Intelligence
+
+
+*Page I*
+
+
+---
+
+
+# LIST OF FIGURES
+
+| Figure No. | Title | Page No. |
+| :--- | :--- | :---: |
+| Figure 3.1 | InstaHealth 12-Week Comprehensive Project Engineering Gantt Schedule | 18 |
+| Figure 4.1 | InstaHealth Multi-Layered Zero-Cloud On-Device Smartwatch Architecture | 23 |
+| Figure 4.2 | Data Flow Diagram (DFD) Level 0: Context Level System Representation | 26 |
+| Figure 4.3 | Data Flow Diagram (DFD) Level 1: Subsystem Level Functional Decomposition | 27 |
+| Figure 4.4 | Data Flow Diagram (DFD) Level 2: Detailed Process Flow for TinyML Micro-SGD Engine | 28 |
+| Figure 5.1 | InstaHealth 48-Hour On-Device Calibration and Lifecycle State Machine Workflow | 36 |
+| Figure 6.1 | InstaHealth Day 1 & Day 2 Calibration UI: Real-Time Telemetry vs Demographic Benchmarks | 43 |
+| Figure 6.2 | InstaHealth Day 3+ Calibrated Prescription UI: Multi-Metric Circular Ring Carousel | 44 |
+| Figure 6.3 | Empirical Ablation Study: Mean Absolute Error (MAE) Across Physiological Models | 49 |
+| Figure 6.4 | Hardware Subsystem Current Draw Profile and 48-Hour Smartwatch Battery Budget | 51 |
+
+*Page II*
+
+
+---
+
+
+# LIST OF TABLES
+
+| Table No. | Title | Page No. |
+| :--- | :--- | :---: |
+| Table 2.1 | Comparative Architectural and Privacy Matrix: InstaHealth vs Commercial Platforms | 11 |
+| Table 3.1 | Project Risk Assessment, Likelihood-Impact Rating, and Architectural Mitigation Matrix | 19 |
+| Table 4.1 | Embedded Microcontroller and Biometric Hardware Sensor Specifications | 22 |
+| Table 4.2 | InstaHealth System Comprehensive Data Dictionary and Flow Specifications | 29 |
+| Table 4.3 | Clinically Stratified Demographic Population Baseline Lookup Table | 30 |
+| Table 4.4 | Karvonen Heart Rate Reserve (HRR) Training Intensity Zones and Metabolic Demands | 31 |
+| Table 5.1 | Embedded Hardware Platform Comparison and Compute Resource Allocation | 33 |
+| Table 5.2 | Software Toolchains, Libraries, Compilers, and Runtime Dependencies | 34 |
+| Table 5.3 | InstaHealth Multi-Profile Avatar Sandboxing and Namespace Partitioning | 36 |
+| Table 6.1 | Comprehensive System Test Cases (TC01 to TC12) and Experimental Validation Results | 46 |
+| Table 6.2 | Signal Quality Index (SQI) Artifact Rejection Performance Across Activity Modalities | 48 |
+| Table 6.3 | Empirical Model Ablation Performance: TinyML MLP vs Linear Regression vs Static Rules | 49 |
+| Table 6.4 | On-Device Execution Latency and Memory Footprint Profile on ARM Cortex-M4F | 50 |
+| Table 6.5 | Subsystem Current Consumption Profile and 65 mAh Battery Life Budget | 51 |
+
+*Page III*
+
+
+---
+
+
+# LIST OF ABBREVIATIONS
+
+| Abbreviation | Full Terminology |
+| :--- | :--- |
+| **API** | Application Programming Interface |
+| **BLE** | Bluetooth Low Energy |
+| **BPM** | Beats Per Minute |
+| **CDC** | Centers for Disease Control and Prevention |
+| **CMSIS-NN** | Cortex Microcontroller Software Interface Standard - Neural Network |
+| **DFD** | Data Flow Diagram |
+| **DMA** | Direct Memory Access |
+| **DSP** | Digital Signal Processing |
+| **ECG** | Electrocardiogram |
+| **EDA** | Electrodermal Activity |
+| **EEPROM** | Electrically Erasable Programmable Read-Only Memory |
+| **EMA** | Exponential Moving Average |
+| **FFT** | Fast Fourier Transform |
+| **FPU** | Floating Point Unit |
+| **GDPR** | General Data Protection Regulation |
+| **GUI** | Graphical User Interface |
+| **HIPAA** | Health Insurance Portability and Accountability Act |
+| **HR** | Heart Rate |
+| **HRmax** | Maximum Heart Rate |
+| **HRR** | Heart Rate Reserve |
+| **HRV** | Heart Rate Variability |
+| **IMU** | Inertial Measurement Unit |
+| **INT8** | 8-Bit Signed Integer Quantization |
+| **IoT** | Internet of Things |
+| **MAE** | Mean Absolute Error |
+| **MCU** | Microcontroller Unit |
+| **MLP** | Multi-Layer Perceptron |
+| **MSE** | Mean Squared Error |
+| **PPG** | Photoplethysmography |
+| **PWA** | Progressive Web Application |
+| **RAM** | Random Access Memory |
+| **ReLU** | Rectified Linear Unit |
+| **RMSSD** | Root Mean Square of Successive Differences |
+| **ROM** | Read-Only Memory |
+| **SaMD** | Software as a Medical Device |
+| **SGD** | Stochastic Gradient Descent |
+| **SoC** | System on Chip |
+| **SQI** | Signal Quality Index |
+| **SRAM** | Static Random Access Memory |
+| **TFLM** | TensorFlow Lite for Microcontrollers |
+| **TinyML** | Tiny Machine Learning |
+| **UI** | User Interface |
+| **UX** | User Experience |
+| **VO2 Max** | Maximal Oxygen Consumption Rate |
+| **WHO** | World Health Organization |
+
+*Page IV*
 
 
 ---

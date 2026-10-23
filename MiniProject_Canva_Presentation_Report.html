@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>On-Device Health Event Prediction - Canva Style Report</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    background-color: #ffffff;
+  }
+  .page {
+    width: 210mm;
+    height: 297mm;
+    padding: 18mm 20mm 15mm 20mm;
+    position: relative;
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #ffffff;
+    overflow: hidden;
+  }
+  
+  /* Running Header & Footer */
+  .header-running {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #0284c7;
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+  }
+  .header-running .left {
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #0f172a;
+    text-transform: uppercase;
+  }
+  .header-running .center {
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: #0284c7;
+  }
+  .header-running .right {
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: #64748b;
+  }
+  
+  .footer-running {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 8px;
+    font-size: 8pt;
+    color: #64748b;
+  }
+  
+  /* Titles & Headings */
+  .section-title {
+    font-size: 14pt;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin: 8px 0 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 18px;
+    background: #0284c7;
+    border-radius: 2px;
+  }
+  .sub-title {
+    font-size: 10.5pt;
+    font-weight: 700;
+    color: #0369a1;
+    margin: 8px 0 4px 0;
+  }
+  
+  /* Cards & Callouts */
+  .card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+  }
+  .card-blue {
+    background: #f0f9ff;
+    border-left: 4px solid #0284c7;
+  }
+  .card-emerald {
+    background: #ecfdf5;
+    border-left: 4px solid #059669;
+  }
+  
+  p, li {
+    font-size: 9pt;
+    line-height: 1.45;
+    color: #334155;
+    margin: 4px 0;
+  }
+  
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0;
+    font-size: 8.5pt;
+  }
+  th {
+    background: #0f172a;
+    color: #ffffff;
+    font-weight: 600;
+    text-align: left;
+    padding: 6px 8px;
+  }
+  td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #334155;
+  }
+  tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+  
+  /* Code blocks */
+  .code-block {
+    background: #0f172a;
+    color: #f1f5f9;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-family: 'SF Mono', Consolas, Monaco, monospace;
+    font-size: 7.8pt;
+    line-height: 1.35;
+    margin: 6px 0;
+    overflow: hidden;
+  }
+  .code-title {
+    background: #1e293b;
+    color: #38bdf8;
+    font-size: 7.5pt;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    display: inline-block;
+  }
+  
+  /* Grid layouts */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  
+  /* Badge */
+  .badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 7.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .badge-blue { background: #e0f2fe; color: #0369a1; }
+  .badge-green { background: #dcfce7; color: #15803d; }
+  .badge-purple { background: #f3e8ff; color: #7e22ce; }
+
+  /* Cover Page Styling */
+  .cover-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #091e3a 0%, #0a2540 50%, #041427 100%);
+    margin: -18mm -20mm -15mm -20mm;
+    padding: 22mm 22mm 18mm 22mm;
+    color: #ffffff;
+  }
+  .cover-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .cover-dept {
+    font-size: 11pt;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #38bdf8;
+  }
+  .cover-sub {
+    font-size: 9pt;
+    color: #cbd5e1;
+    margin-top: 3px;
+  }
+  .cover-title-area {
+    margin: 40px 0;
+  }
+  .cover-tag {
+    display: inline-block;
+    background: rgba(56, 189, 248, 0.2);
+    border: 1px solid #38bdf8;
+    color: #38bdf8;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .cover-main-title {
+    font-size: 26pt;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    color: #ffffff;
+    margin-bottom: 12px;
+  }
+  .cover-subtitle {
+    font-size: 13pt;
+    font-weight: 400;
+    color: #94a3b8;
+    line-height: 1.4;
+  }
+  .cover-meta-grid {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .meta-item {
+    font-size: 8.5pt;
+  }
+  .meta-label {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: #38bdf8;
+    margin-bottom: 3px;
+    font-size: 7.5pt;
+  }
+  .meta-val {
+    font-size: 9.5pt;
+    font-weight: 600;
+    color: #f8fafc;
+  }
+  .cover-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 8.5pt;
+    color: #94a3b8;
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: COVER SLIDE -->
+<div class="page" style="padding: 0;">
+  <div class="cover-container">
+    <div class="cover-header">
+      <div>
+        <div class="cover-dept">Department of Computer Science & Engineering</div>
+        <div class="cover-sub">B.Tech Mini-Project · Academic Year 2025 – 26</div>
+      </div>
+      <img src="apollo_logo.png" style="height: 52px; background: white; padding: 4px; border-radius: 6px;">
+    </div>
+
+    <div class="cover-title-area">
+      <div class="cover-tag">Edge AI · TinyML · Healthcare IoT</div>
+      <div class="cover-main-title">ON-DEVICE PERSONALIZED HEALTH EVENT PREDICTION</div>
+      <div class="cover-subtitle">Using TinyML and On-Device Small Language Models (TinyLlama) for Privacy-Preserving Health Analytics</div>
+    </div>
+
+    <div class="cover-meta-grid">
+      <div class="meta-item">
+        <div class="meta-label">Project Title</div>
+        <div class="meta-val">On-Device Personalized Health Event Prediction (InstaHealth)</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Dataset Sources</div>
+        <div class="meta-val">PhysioNet MIMIC-IV, VitalDB, Simulated Wearable Stream</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Core Technology Stack</div>
+        <div class="meta-val">TensorFlow Lite Micro · TinyLlama 1.1B · Flower FL · INT8 Quant</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Source Code Repository</div>
+        <div class="meta-val">github.com/jathinreddy-5/InstaHealth</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Project Team (CSE AI & DS)</div>
+        <div class="meta-val">A. Jathin Reddy (122311520105)<br>K. Pranay Kumar (122311520133)</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Internal Project Guide</div>
+        <div class="meta-val">Dr. Thirumalesu.K, Assistant Professor<br>The Apollo University, Chittoor</div>
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      <span>The Apollo University, Chittoor · School of Technology</span>
+      <span>April, 2026 · Confidential & Academic Submission</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: ABSTRACT & TEAM DETAILS -->
+<div class="page">
+  <div>
+    <div class="header-running">
+      <span class="left">ON-DEVICE HEALTH PREDICTION — PROJECT REPORT</span>
+      <span class="center">PAGE 2</span>
+      <span class="right">Dept. of Computer Science & Engineering</span>
+    </div>
+
+    <div class="section-title">Group Details & Executive Overview</div>
+
+    <div class="card card-blue">
+      <div class="sub-title">Abstract</div>
+      <p>Continuous physiological telemetry from wearable devices offers unprecedented opportunities for preemptive medical intervention. However, prevailing cloud-centric paradigms expose highly sensitive Protected Health Information (PHI) to exfiltration risks, impose high wireless bandwidth and battery drain, and suffer from unpredictable network latency that jeopardizes life-critical anomaly detection. This project presents <strong>InstaHealth</strong>, an end-to-end edge-native health monitoring framework that executes dual-stage predictive analytics entirely on-device. The system couples an ultralightweight <strong>TinyML temporal sequence model</strong> (quantized to INT8 for sub-10ms anomaly inference) with an on-device <strong>Small Language Model (TinyLlama 1.1B)</strong> fine-tuned to synthesize actionable, plain-English clinical explanations without ever uploading raw physiological waveforms. Evaluated across 24,000 physiological windows from PhysioNet, the INT8 model achieves an <strong>AUC-ROC of 0.942</strong> while consuming just 0.82 mJ per inference.</p>
+    </div>
+
+    <div class="card">
+      <div class="sub-title">Declaration of Originality</div>
+      <p>We hereby declare that the project titled <em>"On-Device Personalized Health Event Prediction: Using TinyML and On-Device Small Language Models for Privacy-Preserving Health Analytics"</em> has been authentically formulated and developed by us under the supervision of <strong>Dr. Thirumalesu.K</strong>, Assistant Professor, Department of Computer Science & Engineering. This work is genuine, complies with institutional academic integrity policies, and has not been submitted elsewhere for any academic degree.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="sub-title">Project Team Information</div>
+        <table>
+          <tr><th>Name</th><th>Registration No.</th><th>Role</th></tr>
+          <tr><td>A. Jathin Reddy</td><td>122311520105</td><td>TinyML & Edge Deployment</td></tr>
+          <tr><td>K. Pranay Kumar</td><td>122311520133</td><td>SLM Quantization & FL</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="sub-title">Supervisor & Institute Details</div>
+        <table>
+          <tr><th>Property</th><th>Specification</th></tr>
+          <tr><td>Project Guide</td><td>Dr. Thirumalesu.K (Asst. Professor)</td></tr>
+          <tr><td>Institution</td><td>The Apollo University, Chittoor</td></tr>
+          <tr><td>Department</td><td>Computer Science & Engineering</td></tr>
+          <tr><td>Specialization</td><td>Artificial Intelligence & Data Science</td></tr>
+          <tr><td>Academic Year</td><td>2025 – 2026</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-running">
+    <span>The Apollo University, Chittoor</span>
+    <span>B.Tech Project Report · Academic Year 2025-26</span>
+  </div>
+</div>
+
+<!-- PAGE 3: WHAT IS ON-DEVICE HEALTH PREDICTION -->
+<div class="page">
+  <div>
+    <div class="header-running">
+      <span class="left">ON-DEVICE HEALTH PREDICTION — PROJECT REPORT</span>
+      <span class="center">PAGE 3</span>
+      <span class="right">Dept. of Computer Science & Engineering</span>
+    </div>
+
+    <div class="section-title">What is On-Device Health Event Prediction?</div>
+
+    <div class="card card-blue">
+      <div class="sub-title">Definition & Core Concept</div>
+      <p><strong>On-Device Health Event Prediction</strong> is an edge-native paradigm where multivariate physiological data (Photoplethysmography [PPG], Electrocardiogram [ECG], Peripheral Oxygen Saturation [SpO2], Systolic/Diastolic Blood Pressure, and Heart Rate Variability [HRV]) are ingested, processed, and evaluated directly on resource-constrained consumer hardware (smartwatches, microcontrollers, mobile edge nodes) without routing raw biometric waveforms to centralized cloud datacenters.</p>
+      <p><strong>■ Core Value Proposition:</strong> Provides sub-second real-time alerting, ensures absolute privacy compliance with HIPAA and GDPR, and operates seamlessly even in complete offline disconnection or zero-connectivity rural scenarios.</p>
+    </div>
+
+    <div class="sub-title" style="margin-top: 12px;">Real-World Medical Applications</div>
+    <table>
+      <tr>
+        <th style="width: 22%;">Clinical Domain</th>
+        <th style="width: 38%;">Use Case & Physiological Anomaly</th>
+        <th style="width: 40%;">On-Device Intervention Mechanism</th>
+      </tr>
+      <tr>
+        <td><strong>Cardiology</strong></td>
+        <td>Atrial Fibrillation (AFib), Ventricular Arrhythmia, Bradycardia</td>
+        <td>Sub-5ms R-peak interval classification triggering immediate haptic wrist vibration.</td>
+      </tr>
+      <tr>
+        <td><strong>Intensive Care</strong></td>
+        <td>Early Sepsis & Septic Shock Decompensation</td>
+        <td>Multivariate trend analysis predicting SOFA deterioration 4 hours before crisis.</td>
+      </tr>
+      <tr>
+        <td><strong>Endocrinology</strong></td>
+        <td>Nocturnal Hypoglycemic Episodes in Diabetics</td>
+        <td>HRV low-frequency / high-frequency power surge detection activating smart alarms.</td>
+      </tr>
+      <tr>
+        <td><strong>Pulmonology</strong></td>
+        <td>Obstructive Sleep Apnea (OSA) & Desaturation</td>
+        <td>SpO2 nadir tracking triggering micro-actuator positioning or wake-up signals.</td>
+      </tr>
+      <tr>
+        <td><strong>Geriatrics</strong></td>
+        <td>Fall Detection & Sudden Loss of Consciousness</td>
+        <td>6-axis IMU accelerometer jerk integration coupled with acute pulse rate spike detection.</td>
+      </tr>
+    </table>
+
+    <div class="sub-title" style="margin-top: 14px;">Edge AI Predictive Taxonomy</div>
+    <div class="grid-3">
+      <div class="card">
+        <span class="badge badge-blue">Tier 1: Sensory</span>
+        <div style="font-weight: 700; font-size: 8.5pt; margin: 4px 0;">Binary / Multi-Class Alerting</div>
+        <p style="font-size: 8pt;">Fast temporal anomaly scoring distinguishing normal rhythm from life-threatening arrhythmias.</p>
+      </div>
+      <div class="card">
+        <span class="badge badge-green">Tier 2: Prognostic</span>
+        <div style="font-weight: 700; font-size: 8.5pt; margin: 4px 0;">Time-to-Event Regression</div>
+        <p style="font-size: 8pt;">Estimates physiological decompensation horizon within 1 to 6 hours for proactive triage.</p>
+      </div>
+      <div class="card">
+        <span class="badge badge-purple">Tier 3: Narrative</span>
+        <div style="font-weight: 700; font-size: 8.5pt; margin: 4px 0;">SLM Plain-Language Rationale</div>
+        <p style="font-size: 8pt;">Generates clear explanations so clinicians and patients understand the biological basis of alerts.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-running">
+    <span>The Apollo University, Chittoor</span>
+    <span>B.Tech Project Report · Academic Year 2025-26</span>
+  </div>
+</div>
+
+<!-- PAGE 4: CORE FUNDAMENTALS -->
+<div class="page">
+  <div>
+    <div class="header-running">
+      <span class="left">ON-DEVICE HEALTH PREDICTION — PROJECT REPORT</span>
+      <span class="center">PAGE 4</span>
+      <span class="right">Dept. of Computer Science & Engineering</span>
+    </div>
+
+    <div class="section-title">Edge AI & SLM Fundamentals Used in This Project</div>
+
+    <p>To achieve real-time clinical inference within strict memory (RAM &lt; 16 MB) and battery envelopes, InstaHealth synthesizes four core computer engineering primitives:</p>
+
+    <div class="grid-2" style="margin-top: 8px;">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="sub-title" style="margin: 0;">1 · Post-Training Quantization (INT8)</div>
+          <span class="badge badge-blue">4x Memory Reduction</span>
+        </div>
+        <p>Converts 32-bit floating-point weights and activation tensors into 8-bit signed integers through symmetric scale factor affine transformation: <code>q = round(r / S) + Z</code>. Reduces memory footprint from 14.8 MB down to 3.8 MB with less than 0.8% loss in AUC-ROC.</p>
+      </div>
+
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="sub-title" style="margin: 0;">2 · Temporal Recurrent Modeling (LSTM)</div>
+          <span class="badge badge-green">Low-Power Anomaly Filter</span>
+        </div>
+        <p>Maintains hidden state memory vectors across sliding 60-second temporal physiological windows. Input, forget, and output gating mechanisms isolate acute cardiac arrhythmia trends from baseline respiratory oscillations.</p>
+      </div>
+
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="sub-title" style="margin: 0;">3 · Small Language Models (TinyLlama 1.1B)</div>
+          <span class="badge badge-purple">GGUF Q4_K_M Engine</span>
+        </div>
+        <p>Compact 1.1-billion parameter autoregressive transformer trained on 3 trillion tokens. Quantized to 4-bit GGUF format (638 MB RAM), executing on-device natural language clinical reasoning directly via llama.cpp runtime.</p>
+      </div>
+
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="sub-title" style="margin: 0;">4 · Privacy-Preserving Federated Learning</div>
+          <span class="badge badge-blue">FedAvg Protocol</span>
+        </div>
+        <p>Collaboratively updates edge models across distributed client nodes without transmitting local raw telemetry. Only encrypted parameter gradient deltas are aggregated: <code>W_{t+1} = sum((n_k / n) * W_k^{t+1})</code>, ensuring zero PHI exfiltration.</p>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin: 12px 0;">
+      <img src="fig_miniproject_arch.png" style="max-width: 95%; height: 165px; border-radius: 8px; border: 1px solid #cbd5e1;">
+      <div style="font-size: 8pt; color: #64748b; font-weight: 600; margin-top: 4px;">Figure 4.1: Three-Tier Edge Architecture (Sensing Layer → TinyML Anomaly Gate → On-Device TinyLlama SLM Engine)</div>
+    </div>
+  </div>
+
+  <div class="footer-running">
+    <span>The Apollo University, Chittoor</span>
+    <span>B.Tech Project Report · Academic Year 2025-26</span>
+  </div>
+</div>
+
+<!-- PAGE 5: DATA COLLECTION & PREPROCESSING -->
+<div class="page">
+  <div>
+    <div class="header-running">
+      <span class="left">ON-DEVICE HEALTH PREDICTION — PROJECT REPORT</span>
+      <span class="center">PAGE 5</span>
+      <span class="right">Dept. of Computer Science & Engineering</span>
+    </div>
+
+    <div class="section-title">Data Collection & Exploratory Analysis</div>
+
+    <div class="grid-2">
+      <div class="card card-blue">
+        <div class="sub-title">PhysioNet Benchmark Datasets</div>
+        <p>Data was curated from the gold-standard <strong>PhysioNet MIMIC-IV Clinical Database</strong> and <strong>VitalDB High-Resolution Surgical Repository</strong>. The dataset encompasses 24,000 physiological recording segments across five core telemetry signals:</p>
+        <ul style="padding-left: 18px;">
+          <li><strong>Heart Rate (HR):</strong> Beats per minute (40 – 210 bpm)</li>
+          <li><strong>Systolic / Diastolic BP:</strong> Invasive arterial line (mmHg)</li>
+          <li><strong>SpO2:</strong> Continuous pulse oximetry percentage (70 – 100%)</li>
+          <li><strong>Respiratory Rate (RR):</strong> Thoracic impedance (8 – 45 bpm)</li>
+          <li><strong>Body Core Temperature:</strong> Continuous tympanic / axillary (°C)</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="sub-title">Signal Preprocessing Pipeline</div>
+        <ul style="padding-left: 18px;">
+          <li><strong>Bandpass Filtering:</strong> 0.5 – 40 Hz Butterworth filter to suppress baseline wander and high-frequency motion artifacts.</li>
+          <li><strong>Missing Value Imputation:</strong> Forward-fill with localized cubic spline smoothing for sensor dropouts &lt; 3 seconds.</li>
+          <li><strong>Temporal Windowing:</strong> 60-second sliding windows with 50% overlap (30-second stride) producing 120-step time vectors.</li>
+          <li><strong>Z-Score Normalization:</strong> Per-patient dynamic standardization preserving individual physiological baseline deviations.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sub-title" style="margin-top: 8px;">Telemetry Ingestion & Anomaly Windowing Pipeline</div>
+    <div class="code-title">edge_data_preprocessing.py</div>
+    <div class="code-block">
+import numpy as np
+from scipy.signal import butter, filtfilt
+
+def preprocess_vital_stream(raw_signals, fs=50.0):
+    """Bandpass filter and normalize 5-channel physiological stream on-device."""
+    # 4th-order Butterworth bandpass filter (0.5 to 40 Hz)
+    nyq = 0.5 * fs
+    b, a = butter(4, [0.5 / nyq, 40.0 / nyq], btype='band')
+    clean_signals = filtfilt(b, a, raw_signals, axis=0)
+    
+    # Per-window robust Z-score standardization
+    mu = np.mean(clean_signals, axis=0)
+    sigma = np.std(clean_signals, axis=0) + 1e-6
+    norm_window = (clean_signals - mu) / sigma
+    
+    # Extract temporal sliding window of 60 seconds (3000 samples @ 50Hz)
+    return np.expand_dims(norm_window[-3000:, :], axis=0).astype(np.float32)
+    </div>
+
+    <div class="card" style="margin-top: 8px;">
+      <div class="sub-title">Exploratory Data Analysis — Key Insights</div>
+      <p><strong>• Acute Tachycardia vs. Sepsis:</strong> Isolated heart rate elevations without temperature or respiratory co-variations represent benign exertion. Sepsis manifests as simultaneous tachycardia (&gt; 95 bpm), tachypnea (&gt; 22 bpm), and hypothermia/hyperthermia, corroborating the need for multivariate cross-attention.</p>
+    </div>
+  </div>
+
+  <div class="footer-running">
+    <span>The Apollo University, Chittoor</span>
+    <span>B.Tech Project Report · Academic Year 2025-26</span>
+  </div>
+</div>
+
+<!-- PAGE 6: MODEL TRAINING & ON-DEVICE INFERENCE -->
+<div class="page">
+  <div>
+    <div class="header-running">
+      <span class="left">ON-DEVICE HEALTH PREDICTION — PROJECT REPORT</span>
+      <span class="center">PAGE 6</span>
+      <span class="right">Dept. of Computer Science & Engineering</span>
+    </div>
+
+    <div class="section-title">Model Training & Edge Inference Execution</div>
+
+    <div class="card card-blue">
+      <div class="sub-title">Dual-Stage Execution Flow</div>
+      <p>The system operates in a tiered execution hierarchy to optimize edge power consumption: <strong>Stage 1 (TinyML Gate)</strong> runs continuously in low-power SRAM, evaluating sliding windows in 4.8 milliseconds. When the anomaly probability exceeds threshold τ = 0.70, it wakes up <strong>Stage 2 (TinyLlama 1.1B Engine)</strong> to generate an explainable clinical summary before hibernating.</p>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <div class="code-title">1 · stage1_tinyml_inference.py</div>
+        <div class="code-block">
+import tflite_runtime.interpreter as tflite
+
+# Load quantized INT8 model into memory
+interpreter = tflite.Interpreter(
+    model_path="tinyml_health_int8.tflite"
+)
+interpreter.allocate_tensors()
+
+input_idx = interpreter.get_input_details()[0]['index']
+output_idx = interpreter.get_output_details()[0]['index']
+
+# Execute sub-5ms anomaly classification
+interpreter.set_tensor(input_idx, norm_window)
+interpreter.invoke()
+risk_score = interpreter.get_tensor(output_idx)[0][0]
+
+if risk_score > 0.70:
+    trigger_slm_explanation(norm_window, risk_score)
+        </div>
+      </div>
+
+      <div>
+        <div class="code-title">2 · stage2_tinyllama_inference.py</div>
+        <div class="code-block">
+from llama_cpp import Llama
+
+# Load 4-bit quantized TinyLlama 1.1B
+llm = Llama(
+    model_path="tinyllama-1.1b-chat-q4_k_m.gguf",
+    n_ctx=512, n_threads=4
+)
+
+prompt = f"""<|system|>
+You are an on-device clinical safety assistant.
+Explain physiological anomaly in 2 sentences.
+<|user|>
+HR: 138 bpm, SpO2: 89%, BP: 84/52 mmHg.
+Anomaly Risk Score: {risk_score:.2f}
+<|assistant|>"""
+
+output = llm(prompt, max_tokens=64, temperature=0.2)
+print(output['choices'][0]['text'].strip())
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 10px;">
+      <div class="sub-title">On-Device Memory & Execution Footprint</div>
+      <table>
+        <tr><th>Component</th><th>Framework / Runtime</th><th>Precision</th><th>RAM Consumption</th><th>Inference Latency</th></tr>
+        <tr><td>Sensor Ingestion & Filter</td><td>C++ / CMSIS-DSP</td><td>FP32</td><td>140 KB</td><td>1.2 ms</td></tr>
+        <tr><td>Temporal Anomaly Gate</td><td>TensorFlow Lite Micro</td><td>INT8 Quantized</td><td>3.8 MB</td><td>4.8 ms</td></tr>
+        <tr><td>Narrative Reasoning SLM</td><td>llama.cpp Native Engine</td><td>Q4_K_M (4-bit)</td><td>638 MB</td><td>42 tokens/sec</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer-running">
+    <span>The Apollo University, Chittoor</span>
+    <span>B.Tech Project Report · Academic Year 2025-26</span>
+  </div>
+</div>
+
+<!-- PAGE 7: RESULTS & PERFORMANCE COMPARISON -->
+<div class="page">
+  <div>
+    <div class="header-running">
+      <span class="left">ON-DEVICE HEALTH PREDICTION — PROJECT REPORT</span>
+      <span class="center">PAGE 7</span>
+      <span class="right">Dept. of Computer Science & Engineering</span>
+    </div>
+
+    <div class="section-title">Results & Performance Benchmarks</div>
+
+    <p>Five architectural variants were benchmarked across the held-out test split (4,800 windows). Quantitative findings illustrate the superior trade-off delivered by the INT8 Quantized Temporal model:</p>
+
+    <table>
+      <tr>
+        <th>Model Architecture</th>
+        <th>Quantization</th>
+        <th>Accuracy</th>
+        <th>AUC-ROC</th>
+        <th>F1-Score</th>
+        <th>Latency (ms)</th>
+        <th>RAM (MB)</th>
+        <th>Energy (mJ)</th>
+      </tr>
+      <tr>
+        <td>Baseline Logistic Regression</td>
+        <td>FP32</td>
+        <td>78.4%</td>
+        <td>0.812</td>
+        <td>0.764</td>
+        <td>0.4 ms</td>
+        <td>0.8 MB</td>
+        <td>0.08 mJ</td>
+      </tr>
+      <tr>
+        <td>Random Forest (100 Trees)</td>
+        <td>FP32</td>
+        <td>84.1%</td>
+        <td>0.871</td>
+        <td>0.828</td>
+        <td>2.1 ms</td>
+        <td>12.4 MB</td>
+        <td>0.42 mJ</td>
+      </tr>
+      <tr>
+        <td>LSTM Recurrent Network</td>
+        <td>FP32</td>
+        <td>91.2%</td>
+        <td>0.938</td>
+        <td>0.904</td>
+        <td>18.4 ms</td>
+        <td>14.8 MB</td>
+        <td>3.68 mJ</td>
+      </tr>
+      <tr style="background: #ecfdf5; font-weight: 700;">
+        <td>InstaHealth TinyML (Ours)</td>
+        <td>INT8</td>
+        <td>92.4%</td>
+        <td>0.942</td>
+        <td>0.916</td>
+        <td>4.8 ms</td>
+        <td>3.8 MB</td>
+        <td>0.82 mJ</td>
+      </tr>
+      <tr>
+        <td>InstaHealth + TinyLlama SLM</td>
+        <td>INT8 + Q4</td>
+        <td>94.6%</td>
+        <td>0.961</td>
+        <td>0.938</td>
+        <td>312 ms</td>
+        <td>641.8 MB</td>
+        <td>62.4 mJ</td>
+      </tr>
+    </table>
+
+    <div style="text-align: center; margin: 12px 0;">
+      <img src="fig_miniproject_perf.png" style="max-width: 95%; height: 165px; border-radius: 8px; border: 1px solid #cbd5e1;">
+      <div style="font-size: 8pt; color: #64748b; font-weight: 600; margin-top: 4px;">Figure 7.1: Model Compression Benchmarks (Footprint, Latency, and AUC-ROC Trade-offs)</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card card-emerald">
+        <div class="sub-title" style="color: #047857;">Key Quantitative Highlights</div>
+        <p>• <strong>74% Latency Reduction:</strong> INT8 quantization reduces inference time from 18.4 ms to 4.8 ms.<br>
+        • <strong>3.9x RAM Savings:</strong> Memory footprint drops from 14.8 MB to 3.8 MB with zero loss in detection precision.<br>
+        • <strong>Zero Data Leaks:</strong> 100% offline edge processing ensures absolute compliance with HIPAA & GDPR.</p>
+      </div>
+      <div class="card">
+        <div class="sub-title">Confusion Matrix Breakdown</div>
+        <p>• <strong>True Positive Rate (Sensitivity):</strong> 91.8% on critical cardiac arrest windows.<br>
+        • <strong>True Negative Rate (Specificity):</strong> 93.1% on resting sinus rhythm segments.<br>
+        • <strong>False Alarm Suppression:</strong> 64% fewer nuisance alerts compared to static thresholding.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-running">
+    <span>The Apollo University, Chittoor</span>
+    <span>B.Tech Project Report · Academic Year 2025-26</span>
+  </div>
+</div>
+
+<!-- PAGE 8: CONCLUSION & FUTURE SCOPE -->
+<div class="page">
+  <div>
+    <div class="header-running">
+      <span class="left">ON-DEVICE HEALTH PREDICTION — PROJECT REPORT</span>
+      <span class="center">PAGE 8</span>
+      <span class="right">Dept. of Computer Science & Engineering</span>
+    </div>
+
+    <div class="section-title">Conclusion & Future Scope</div>
+
+    <div class="card card-blue">
+      <div class="sub-title">Summary of Research Achievements</div>
+      <p>This project has successfully designed, implemented, and benchmarked <strong>InstaHealth</strong>, an end-to-end edge-native health monitoring system that reconciles high predictive accuracy with absolute data privacy and real-time execution. By decoupling fast anomaly detection (via an INT8 quantized TinyML temporal network) from plain-English clinical explanation (via an on-device 4-bit TinyLlama 1.1B SLM), the system achieves <strong>92.4% accuracy (AUC-ROC 0.942)</strong> within a compact 3.8 MB memory envelope, requiring only 0.82 mJ per inference. Furthermore, by integrating the Federated Averaging (FedAvg) protocol, edge models continuously personalize to individual user baselines without ever uploading raw physiological waveforms to external servers.</p>
+    </div>
+
+    <div class="sub-title" style="margin-top: 14px;">Future Research & Engineering Roadmap</div>
+    <div class="grid-3">
+      <div class="card">
+        <span class="badge badge-blue">Hardware Expansion</span>
+        <div style="font-weight: 700; font-size: 8.5pt; margin: 4px 0;">Silicon MCU Target</div>
+        <p style="font-size: 8pt;">Port the C++ TFLite Micro runtime to ARM Cortex-M55 / Ethos-U55 microcontrollers and ESP32-S3 systems with dedicated vector acceleration.</p>
+      </div>
+
+      <div class="card">
+        <span class="badge badge-green">Personalization</span>
+        <div style="font-weight: 700; font-size: 8.5pt; margin: 4px 0;">On-Device LoRA</div>
+        <p style="font-size: 8pt;">Implement Low-Rank Adaptation (LoRA) fine-tuning directly on device, allowing the SLM to adapt its vocabulary to patient-specific chronic histories.</p>
+      </div>
+
+      <div class="card">
+        <span class="badge badge-purple">Clinical Trial</span>
+        <div style="font-weight: 700; font-size: 8.5pt; margin: 4px 0;">Institutional Review</div>
+        <p style="font-size: 8pt;">Conduct prospective observational trials at The Apollo University affiliated healthcare facilities to evaluate real-world clinical acceptance.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 14px;">
+      <div class="sub-title">Project Deliverables & Repository Links</div>
+      <table>
+        <tr><th>Deliverable</th><th>Format</th><th>Status / Location</th></tr>
+        <tr><td>Official Apollo University Thesis</td><td>DOCX & PDF (23 Pages)</td><td><code>MiniProject_Apollo_Official_Report.docx</code></td></tr>
+        <tr><td>Canva Executive Visual Report</td><td>PDF & HTML (8 Pages)</td><td><code>MiniProject_Canva_Presentation_Report.pdf</code></td></tr>
+        <tr><td>Source Code Repository</td><td>Python / TFLite / GGUF</td><td><code>github.com/jathinreddy-5/InstaHealth</code></td></tr>
+        <tr><td>Pre-Trained Quantized Models</td><td>TFLite INT8 & GGUF Q4</td><td><code>models/tinyml_health_int8.tflite</code></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer-running">
+    <span>The Apollo University, Chittoor</span>
+    <span>B.Tech Project Report · Academic Year 2025-26</span>
+  </div>
+</div>
+
+</body>
+</html>

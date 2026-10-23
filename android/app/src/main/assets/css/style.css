@@ -20,7 +20,7 @@
   -webkit-font-smoothing: antialiased;
 }
 
-body {
+html, body {
   background-color: #0d0f12;
   color: var(--text-primary);
   display: flex;
@@ -127,6 +127,8 @@ body {
   height: 100%;
   background: var(--bg-black);
   border-radius: 48px;
+  clip-path: inset(0 round 48px);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
   overflow-y: auto;
   overflow-x: hidden;
   padding: 24px 14px 20px 14px;

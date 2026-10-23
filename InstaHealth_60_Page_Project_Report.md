@@ -644,7 +644,8 @@ As detailed in Table 4.1, the hardware platform utilizes a low-power ARM Cortex-
 InstaHealth is architected as an air-gapped, multi-layered on-device software stack. The system is partitioned into four decoupled horizontal layers, ensuring strict separation of concerns, high computational throughput, and zero external network exposure. Figure 4.1 illustrates the comprehensive multi-layered system architecture.
 
 
-[FIGURE 4.1: SYSTEM ARCHITECTURE]
+![Figure 4.1 Architecture](fig_3_1_architecture.png)
+*Figure 4.1: InstaHealth Multi-Layered Zero-Cloud On-Device Smartwatch Architecture*
 
 
 As depicted in Figure 4.1, the four architectural layers function in a closed-loop topology directly on the wrist-worn hardware:

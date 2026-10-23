@@ -215,48 +215,51 @@ def add_table_data(doc, table_key):
     p_sp.paragraph_format.space_before = Pt(0)
     p_sp.paragraph_format.space_after = Pt(8)
 
+def render_paragraph_or_element(doc, p_text):
+    if p_text.startswith("Algorithm ") or p_text.startswith("// =="):
+        add_code_snippet(doc, p_text)
+    elif p_text == "[FIGURE 3.1: GANTT CHART]":
+        add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_gantt_chart.png"),
+                         "Figure 3.1: InstaHealth 12-Week Comprehensive Project Engineering Gantt Schedule", width_in=5.8)
+    elif p_text == "[FIGURE 4.1: SYSTEM ARCHITECTURE]":
+        add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_3_1_architecture.png"),
+                         "Figure 4.1: InstaHealth Multi-Layered Zero-Cloud On-Device Smartwatch Architecture", width_in=5.8)
+    elif p_text == "[FIGURE 4.2: DFD LEVEL 0]":
+        add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_dfd_level0.png"),
+                         "Figure 4.2: Data Flow Diagram (DFD) Level 0: Context Level System Representation", width_in=5.8)
+    elif p_text == "[FIGURE 4.3: DFD LEVEL 1]":
+        add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_dfd_level1.png"),
+                         "Figure 4.3: Data Flow Diagram (DFD) Level 1: Subsystem Level Functional Decomposition", width_in=5.8)
+    elif p_text == "[FIGURE 4.4: DFD LEVEL 2]":
+        add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_dfd_level2.png"),
+                         "Figure 4.4: Data Flow Diagram (DFD) Level 2: Detailed Process Flow for TinyML Micro-SGD Engine", width_in=5.8)
+    elif p_text == "[FIGURE 5.1: CALIBRATION WORKFLOW]":
+        add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_3_2_workflow.png"),
+                         "Figure 5.1: InstaHealth 48-Hour On-Device Calibration and Lifecycle State Machine Workflow", width_in=5.8)
+    elif p_text == "[FIGURE 6.1: DAY 1 CALIBRATION SCREENSHOT]":
+        add_image_figure(doc, os.path.join(WORKSPACE_DIR, "screenshot_day1_calibration.png"),
+                         "Figure 6.1: InstaHealth Day 1 & Day 2 Calibration UI: Real-Time Telemetry vs Demographic Benchmarks", width_in=3.6)
+    elif p_text == "[FIGURE 6.2: DAY 3 PRESCRIPTION SCREENSHOT]":
+        add_image_figure(doc, os.path.join(WORKSPACE_DIR, "screenshot_day3_prescriptions.png"),
+                         "Figure 6.2: InstaHealth Day 3+ Calibrated Prescription UI: Multi-Metric Circular Ring Carousel", width_in=3.6)
+    elif p_text == "[FIGURE 6.3: ABLATION CHART]":
+        add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_ablation_chart.png"),
+                         "Figure 6.3: Empirical Ablation Study: Mean Absolute Error (MAE) Across Physiological Models", width_in=5.8)
+    elif p_text == "[FIGURE 6.4: BATTERY POWER PROFILE]":
+        add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_battery_chart.png"),
+                         "Figure 6.4: Hardware Subsystem Current Draw Profile and 48-Hour Smartwatch Battery Budget", width_in=5.8)
+    else:
+        add_para(doc, p_text, size=12, space_after=6, line_spacing=1.5)
+
 def render_section_content(doc, sec):
     add_heading_2(doc, sec["title"])
     for p_text in sec.get("paragraphs", []):
-        add_para(doc, p_text, size=12, space_after=6, line_spacing=1.5)
+        render_paragraph_or_element(doc, p_text)
     
     for sub in sec.get("subsections", []):
         add_heading_3(doc, sub["title"])
         for p_text in sub.get("paragraphs", []):
-            if p_text.startswith("Algorithm ") or p_text.startswith("// =="):
-                add_code_snippet(doc, p_text)
-            elif p_text == "[FIGURE 3.1: GANTT CHART]":
-                add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_gantt_chart.png"),
-                                 "Figure 3.1: InstaHealth 12-Week Comprehensive Project Engineering Gantt Schedule", width_in=5.8)
-            elif p_text == "[FIGURE 4.1: SYSTEM ARCHITECTURE]":
-                add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_3_1_architecture.png"),
-                                 "Figure 4.1: InstaHealth Multi-Layered Zero-Cloud On-Device Smartwatch Architecture", width_in=5.8)
-            elif p_text == "[FIGURE 4.2: DFD LEVEL 0]":
-                add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_dfd_level0.png"),
-                                 "Figure 4.2: Data Flow Diagram (DFD) Level 0: Context Level System Representation", width_in=5.8)
-            elif p_text == "[FIGURE 4.3: DFD LEVEL 1]":
-                add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_dfd_level1.png"),
-                                 "Figure 4.3: Data Flow Diagram (DFD) Level 1: Subsystem Level Functional Decomposition", width_in=5.8)
-            elif p_text == "[FIGURE 4.4: DFD LEVEL 2]":
-                add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_dfd_level2.png"),
-                                 "Figure 4.4: Data Flow Diagram (DFD) Level 2: Detailed Process Flow for TinyML Micro-SGD Engine", width_in=5.8)
-            elif p_text == "[FIGURE 5.1: CALIBRATION WORKFLOW]":
-                add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_3_2_workflow.png"),
-                                 "Figure 5.1: InstaHealth 48-Hour On-Device Calibration and Lifecycle State Machine Workflow", width_in=5.8)
-            elif p_text == "[FIGURE 6.1: DAY 1 CALIBRATION SCREENSHOT]":
-                add_image_figure(doc, os.path.join(WORKSPACE_DIR, "screenshot_day1_calibration.png"),
-                                 "Figure 6.1: InstaHealth Day 1 & Day 2 Calibration UI: Real-Time Telemetry vs Demographic Benchmarks", width_in=3.6)
-            elif p_text == "[FIGURE 6.2: DAY 3 PRESCRIPTION SCREENSHOT]":
-                add_image_figure(doc, os.path.join(WORKSPACE_DIR, "screenshot_day3_prescriptions.png"),
-                                 "Figure 6.2: InstaHealth Day 3+ Calibrated Prescription UI: Multi-Metric Circular Ring Carousel", width_in=3.6)
-            elif p_text == "[FIGURE 6.3: ABLATION CHART]":
-                add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_ablation_chart.png"),
-                                 "Figure 6.3: Empirical Ablation Study: Mean Absolute Error (MAE) Across Physiological Models", width_in=5.8)
-            elif p_text == "[FIGURE 6.4: BATTERY POWER PROFILE]":
-                add_image_figure(doc, os.path.join(WORKSPACE_DIR, "fig_battery_chart.png"),
-                                 "Figure 6.4: Hardware Subsystem Current Draw Profile and 48-Hour Smartwatch Battery Budget", width_in=5.8)
-            else:
-                add_para(doc, p_text, size=12, space_after=6, line_spacing=1.5)
+            render_paragraph_or_element(doc, p_text)
 
 print("Starting compilation of InstaHealth 60-Page Academic Project Report...")
 doc = docx.Document()
@@ -760,29 +763,32 @@ def md_table(tkey):
         md_lines.append("| " + " | ".join(clean_row) + " |")
     md_lines.append("\n")
 
+def md_render_paragraph_or_element(p):
+    if p.startswith("Algorithm ") or p.startswith("// =="):
+        md_lines.append(f"\n```javascript\n{p}\n```\n")
+    elif "[FIGURE " in p:
+        tag = p.strip()
+        if "3.1" in tag: md_lines.append(f"\n![Figure 3.1 Gantt Chart](fig_gantt_chart.png)\n*Figure 3.1: InstaHealth 12-Week Comprehensive Project Engineering Gantt Schedule*\n")
+        elif "4.1" in tag: md_lines.append(f"\n![Figure 4.1 Architecture](fig_3_1_architecture.png)\n*Figure 4.1: InstaHealth Multi-Layered Zero-Cloud On-Device Smartwatch Architecture*\n")
+        elif "4.2" in tag: md_lines.append(f"\n![Figure 4.2 DFD Level 0](fig_dfd_level0.png)\n*Figure 4.2: Data Flow Diagram (DFD) Level 0: Context Level System Representation*\n")
+        elif "4.3" in tag: md_lines.append(f"\n![Figure 4.3 DFD Level 1](fig_dfd_level1.png)\n*Figure 4.3: Data Flow Diagram (DFD) Level 1: Subsystem Level Functional Decomposition*\n")
+        elif "4.4" in tag: md_lines.append(f"\n![Figure 4.4 DFD Level 2](fig_dfd_level2.png)\n*Figure 4.4: Data Flow Diagram (DFD) Level 2: Detailed Process Flow for TinyML Micro-SGD Engine*\n")
+        elif "5.1" in tag: md_lines.append(f"\n![Figure 5.1 Workflow](fig_3_2_workflow.png)\n*Figure 5.1: InstaHealth 48-Hour On-Device Calibration and Lifecycle State Machine Workflow*\n")
+        elif "6.1" in tag: md_lines.append(f"\n![Figure 6.1 Calibration UI](screenshot_day1_calibration.png)\n*Figure 6.1: InstaHealth Day 1 & Day 2 Calibration UI: Real-Time Telemetry vs Demographic Benchmarks*\n")
+        elif "6.2" in tag: md_lines.append(f"\n![Figure 6.2 Prescription UI](screenshot_day3_prescriptions.png)\n*Figure 6.2: InstaHealth Day 3+ Calibrated Prescription UI: Multi-Metric Circular Ring Carousel*\n")
+        elif "6.3" in tag: md_lines.append(f"\n![Figure 6.3 Ablation](fig_ablation_chart.png)\n*Figure 6.3: Empirical Ablation Study: Mean Absolute Error (MAE) Across Physiological Models*\n")
+        elif "6.4" in tag: md_lines.append(f"\n![Figure 6.4 Battery Profile](fig_battery_chart.png)\n*Figure 6.4: Hardware Subsystem Current Draw Profile and 48-Hour Smartwatch Battery Budget*\n")
+    else:
+        md_p(p)
+
 def md_section(sec):
     md_h2(sec["title"])
     for p in sec.get("paragraphs", []):
-        md_p(p)
+        md_render_paragraph_or_element(p)
     for sub in sec.get("subsections", []):
         md_h3(sub["title"])
         for p in sub.get("paragraphs", []):
-            if p.startswith("Algorithm ") or p.startswith("// =="):
-                md_lines.append(f"\n```javascript\n{p}\n```\n")
-            elif "[FIGURE " in p:
-                tag = p.strip()
-                if "3.1" in tag: md_lines.append(f"\n![Figure 3.1 Gantt Chart](fig_gantt_chart.png)\n*Figure 3.1: InstaHealth 12-Week Comprehensive Project Engineering Gantt Schedule*\n")
-                elif "4.1" in tag: md_lines.append(f"\n![Figure 4.1 Architecture](fig_3_1_architecture.png)\n*Figure 4.1: InstaHealth Multi-Layered Zero-Cloud On-Device Smartwatch Architecture*\n")
-                elif "4.2" in tag: md_lines.append(f"\n![Figure 4.2 DFD Level 0](fig_dfd_level0.png)\n*Figure 4.2: Data Flow Diagram (DFD) Level 0: Context Level System Representation*\n")
-                elif "4.3" in tag: md_lines.append(f"\n![Figure 4.3 DFD Level 1](fig_dfd_level1.png)\n*Figure 4.3: Data Flow Diagram (DFD) Level 1: Subsystem Level Functional Decomposition*\n")
-                elif "4.4" in tag: md_lines.append(f"\n![Figure 4.4 DFD Level 2](fig_dfd_level2.png)\n*Figure 4.4: Data Flow Diagram (DFD) Level 2: Detailed Process Flow for TinyML Micro-SGD Engine*\n")
-                elif "5.1" in tag: md_lines.append(f"\n![Figure 5.1 Workflow](fig_3_2_workflow.png)\n*Figure 5.1: InstaHealth 48-Hour On-Device Calibration and Lifecycle State Machine Workflow*\n")
-                elif "6.1" in tag: md_lines.append(f"\n![Figure 6.1 Calibration UI](screenshot_day1_calibration.png)\n*Figure 6.1: InstaHealth Day 1 & Day 2 Calibration UI: Real-Time Telemetry vs Demographic Benchmarks*\n")
-                elif "6.2" in tag: md_lines.append(f"\n![Figure 6.2 Prescription UI](screenshot_day3_prescriptions.png)\n*Figure 6.2: InstaHealth Day 3+ Calibrated Prescription UI: Multi-Metric Circular Ring Carousel*\n")
-                elif "6.3" in tag: md_lines.append(f"\n![Figure 6.3 Ablation](fig_ablation_chart.png)\n*Figure 6.3: Empirical Ablation Study: Mean Absolute Error (MAE) Across Physiological Models*\n")
-                elif "6.4" in tag: md_lines.append(f"\n![Figure 6.4 Battery Profile](fig_battery_chart.png)\n*Figure 6.4: Hardware Subsystem Current Draw Profile and 48-Hour Smartwatch Battery Budget*\n")
-            else:
-                md_p(p)
+            md_render_paragraph_or_element(p)
 
 md_h1(CHAPTER_1_TITLE)
 for s in CH1_SECTIONS: md_section(s)

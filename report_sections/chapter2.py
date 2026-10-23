@@ -9,7 +9,7 @@ CHAPTER_2_TITLE = "CHAPTER 2: LITERATURE REVIEW"
 SECTIONS = [
     {
         "id": "2.1",
-        "title": "2.1 Introduction to Wearable Health Informatics",
+        "title": "2.1 Introduction",
         "paragraphs": [
             "Wearable health informatics has emerged as a cornerstone of modern digital medicine, bridging consumer wellness devices and clinical preventive monitoring. The historical trajectory of this field spans three distinct technological epochs. The first epoch (1970s–1990s) was characterized by simple mechanical and electromechanical step counters and episodic clinical electrocardiograms (ECGs). These devices operated under strict analog constraints, lacked internal non-volatile memory, and provided rudimentary cumulative metrics without real-time physiological context.",
             "The second epoch (2000s–2010s) witnessed the commercial maturation of optical photoplethysmography (PPG) and micro-electro-mechanical systems (MEMS) inertial sensors. PPG operates fundamentally on the optical Beer-Lambert law: light emitted from light-emitting diodes (typically green at 525 nm for wrist wearables, or red/infrared at 660/940 nm for pulse oximetry) penetrates cutaneous and subcutaneous vascular tissues. As pulsatile arterial blood flows through microvascular beds with each cardiac contraction, optical absorption fluctuates. Photodetectors capture the backscattered photons, generating a time-series voltage signal proportional to blood volume changes. Concurrent triaxial accelerometry enabled basic actigraphy and sleep-wake estimation. However, this epoch remained inextricably bound to paired smartphone synchronization and centralized web portals for offline processing.",
@@ -18,7 +18,7 @@ SECTIONS = [
     },
     {
         "id": "2.2",
-        "title": "2.2 Review of Existing Wearable Systems & Commercial Health Platforms",
+        "title": "2.2 Review of Existing Systems",
         "paragraphs": [
             "A comprehensive analysis of contemporary wearable computing reveals critical architectural choices across commercial platforms and academic research systems. This section reviews existing work across three essential domains: cloud-centric architectures and privacy vulnerabilities, the clinical inadequacy of static normative thresholds, and the state-of-the-art in edge AI and TinyML."
         ],
@@ -56,7 +56,7 @@ SECTIONS = [
     },
     {
         "id": "2.3",
-        "title": "2.3 Comparative Limitations of Existing Work",
+        "title": "2.3 Limitations of Existing Systems",
         "paragraphs": [
             "To rigorously position InstaHealth within the landscape of consumer wearables and academic edge computing prototypes, Table 2.1 presents a comprehensive comparative analysis across eight key architectural, privacy, and physiological dimensions.",
             "As demonstrated in Table 2.1, commercial market leaders—including the Apple Watch Series 9, Google Pixel Watch 2, Garmin Forerunner 965, Whoop 4.0, and Oura Ring Gen 3—all enforce mandatory or near-mandatory cloud synchronization for deep physiological modeling. None of these commercial platforms support on-device neural training or adaptation, nor do they provide sandboxed multi-profile isolation for users wishing to partition athletic or contextual personas. Academic prototypes like MCUNet have achieved exceptional feats in quantized on-device inference, but lack closed-loop physiological modeling, 48-hour autonomous calibration, and continuous dynamic target generation.",
@@ -65,7 +65,7 @@ SECTIONS = [
     },
     {
         "id": "2.4",
-        "title": "2.4 Proposed System Overview and Theoretical Foundations",
+        "title": "2.4 Proposed System Overview",
         "paragraphs": [
             "The mathematical and clinical foundations of the InstaHealth architecture are rooted in three validated physiological and machine learning frameworks: Maximum Heart Rate and Heart Rate Reserve formulations, Belenky sleep debt dynamics, and bounded Micro-SGD gradient descent optimization."
         ],

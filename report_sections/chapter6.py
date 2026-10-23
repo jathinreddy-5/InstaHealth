@@ -4,12 +4,12 @@ signal quality analysis, empirical ablation study, execution latency, memory foo
 and battery power profiling.
 """
 
-CHAPTER_6_TITLE = "CHAPTER 6: RESULTS AND DISCUSSION"
+CHAPTER_6_TITLE = "CHAPTER 6: RESULTS AND DISCUSSIONS"
 
 SECTIONS = [
     {
         "id": "6.1",
-        "title": "6.1 User Interface and Operational Output Screens",
+        "title": "6.1 Output Screens / Results",
         "paragraphs": [
             "The user experience and visual presentation of InstaHealth were evaluated on physical smartwatch displays and emulated touchscreens. The interface was engineered to deliver maximum glanceability, allowing the user to comprehend their physiological status in under three seconds."
         ],
@@ -55,7 +55,7 @@ SECTIONS = [
     },
     {
         "id": "6.2",
-        "title": "6.2 Experimental Testing and Validation Results",
+        "title": "6.2 Testing (Test Cases & Results)",
         "paragraphs": [
             "A comprehensive test suite spanning Unit, Integration, System, and User Acceptance testing was formulated and executed against the InstaHealth firmware to verify functional correctness, algorithmic stability, and fault resilience."
         ],
@@ -88,7 +88,7 @@ SECTIONS = [
     },
     {
         "id": "6.3",
-        "title": "6.3 Performance Analysis and Ablation Study",
+        "title": "6.3 Performance Analysis",
         "paragraphs": [
             "To quantify the predictive precision, computational efficiency, and energy characteristics of InstaHealth, extensive empirical benchmarking and model ablation studies were conducted."
         ],

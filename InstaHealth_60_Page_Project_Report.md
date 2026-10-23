@@ -18,7 +18,7 @@
 *Assistant Professor*
 
 
-<p align="center"><img src="apollo_logo.png" width="180" alt="The Apollo University Logo"/></p>
+<p align="center"><img src="/Users/jathinreddy/.gemini/antigravity/brain/f353d961-e7fd-445e-894a-a4a5c051abdb/apollo_logo.png" width="200" alt="The Apollo University Logo"/></p>
 
 
 **SCHOOL OF TECHNOLOGY**  
@@ -33,9 +33,9 @@
 # DECLARATION
 
 
-   I hereby declare that the project entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” submitted by us, for the award of the degree of Bachelor of Technology in Computer Sciences & Engineering, School of Technology to The Apollo University is a record of bonafide work carried out by us under the supervision of Dr. Thirumalesu.K, Assistant Professor, Department of Computer Science & Engineering.
+We hereby declare that the project entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” submitted by us, for the award of the degree of Bachelor of Technology in Computer Science & Engineering, School of Technology to The Apollo University is a record of bonafide work carried out by us under the supervision of Dr. Thirumalesu.K, Assistant Professor, Department of Computer Science & Engineering.
 
-   We further declare that the work reported in this thesis has not been submitted and will not be submitted, either in part or in full, for the award of any other degree or diploma in this institute or any other institute or university.
+We further declare that the work reported in this thesis has not been submitted and will not be submitted, either in part or in full, for the award of any other degree or diploma in this institute or any other institute or university.
 
 **Signature of the Candidate(s) with names:**
 
@@ -49,25 +49,19 @@
 ---
 
 
-**THE APOLLO UNIVERSITY, CHITTOOR**  
-**SCHOOL OF TECHNOLOGY**
+# THE APOLLO UNIVERSITY, CHITTOOR
+SCHOOL OF TECHNOLOGY
+BONAFIDE CERTIFICATE
 
 
-# BONAFIDE CERTIFICATE
+This is to certify that the project report entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” is the bonafide work carried out by A. JATHIN REDDY (Register No: 122311520105) and K. PRANAY KUMAR (Register No: 122311520133), under my supervision and guidance, in partial fulfillment of the requirements for the award of the degree of Bachelor of Technology in Computer Science & Engineering by The Apollo University, Chittoor.
 
+**Signature of the Guide:**  
+**Dr. Thirumalesu.K**, Assistant Professor, Department of Computer Science & Engineering
 
-         This is to certify that the project report entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” is the bonafide work carried out by A . Jathin Reddy (Register No: 122311520105) and K.Pranay Kumar (Register No: 122311520133), under my supervision and guidance, in partial fulfillment of the requirements for the award of the degree of Bachelor of Technology in Computer Sciences & Engineering by The Apollo University, Chittoor.
+**Program Coordinator** (CSE) 			 **Dean** (School of Technology)  
 
-**Signature of the Guide**  
-**Dr. Thirumalesu.K**  
-Assistant Professor, Dept. of CSE
-
-| **Program Coordinator** | **Dean** |
-| :--- | :--- |
-| Department of Computer Science & Engineering | School of Technology |
-| The Apollo University | The Apollo University |
-
-**Internal Examiner:** _______________________ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **External Examiner:** _______________________
+**Internal Examiner** 					 **External Examiner**
 
 
 ---
@@ -76,22 +70,28 @@ Assistant Professor, Dept. of CSE
 # ACKNOWLEDGEMENT
 
 
-I express my sincere gratitude to my project guide Dr. Thirumalesu.K, Assistant Professor, Computer Sciences & Engineering, School of Technology, The Apollo University, Chittoor, for their continuous guidance, valuable suggestions and constructive feedback throughout the course of this project. Their support has been instrumental in the successful completion of this work.
+We express our sincere gratitude to our project guide Dr. Thirumalesu.K, Assistant Professor, Department of Computer Science & Engineering, School of Technology, The Apollo University, Chittoor, for his continuous guidance, valuable suggestions and constructive feedback throughout the course of this project. His academic rigor and support have been instrumental in the successful completion of this work.
 
 
-I also thank the Project Coordinator, Department of Computer Science & Engineering, School of Technology, The Apollo University for giving me the right direction whenever I came to the University.
+We also thank the Project Coordinator, Department of Computer Science & Engineering, School of Technology, The Apollo University for providing direction, structured milestone reviews, and invaluable technical counsel throughout the progression of this research.
 
 
-I extend my heartfelt thanks to the Programme Coordinator, Department of Computer Science & Engineering, School of Technology, The Apollo University for providing the necessary academic support and facilities to carry out this project effectively.
+We extend our heartfelt thanks to the Programme Coordinator, Department of Computer Science & Engineering, School of Technology, The Apollo University for providing the necessary academic support, laboratories, and computing infrastructure to carry out this project effectively.
 
 
-I also convey my sincere thanks to the Prof. D. Jagadeesan, Dean, School of Technology for their support and encouragement throughout the project work.
+We convey our sincere thanks to Prof. D. Jagadeesan, Dean, School of Technology, for his encouragement, leadership, and administrative support throughout the tenure of our project work.
 
 
-I express my profound gratitude to the Honourable Chancellor Dr Prathap C. Reddy, Dr. H. Vinod Bhat, Vice-Chancellor and Prof. M. Potharaju, Registrar of The Apollo University for their visionary leadership, constant encouragement and for fostering a supportive academic environment.
+We express our profound gratitude to the Honourable Chancellor Emeritus Dr. Prathap C. Reddy, Dr. H. Vinod Bhat, Vice-Chancellor, and Prof. M. Potharaju, Registrar of The Apollo University for their visionary leadership, institutional inspiration, and continuous fostering of a vibrant research and innovation culture.
 
 
-I acknowledge the support of all faculty members of the department for their cooperation and valuable inputs during the project period.
+We gratefully acknowledge the support of all faculty members and technical staff of the Department of Computer Science & Engineering for their cooperation, critical reviews, and valuable inputs during the project period.
+
+
+We also thank our fellow classmates, peers, and friends for their camaraderie, constructive debates, and collaborative assistance during the experimental benchmarking phases.
+
+
+Finally, we express our deepest gratitude to our parents and family members for their unconditional love, moral support, patient understanding, and perpetual blessings throughout our academic journey.
 
 
 I would like to thank my friends and classmates for their constant encouragement and support.
@@ -139,7 +139,7 @@ I would like to express my sincere gratitude to the organization for providing m
 | | 5.2 Module Description | 35 |
 | | 5.3 Algorithms / Methods Used | 38 |
 | | 5.4 Code Snippets (optional) | 41 |
-| 6 | **RESULTS AND DISCUSSION** | 43 |
+| 6 | **RESULTS AND DISCUSSIONS** | 43 |
 | | 6.1 Output Screens / Results | 43 |
 | | 6.2 Testing (Test Cases & Results) | 46 |
 | | 6.3 Performance Analysis | 49 |
@@ -273,7 +273,7 @@ Modern wearable health intelligence predominantly relies on continuous cloud tra
 # CHAPTER 1: INTRODUCTION
 
 
-## 1.1 Background and Context
+## 1.1 Background of the Study
 
 
 The past decade has witnessed an unprecedented paradigm shift in consumer health informatics and personal computing, catalyzed by the explosive proliferation of miniaturized, wrist-worn wearable devices. Commercial smartwatches and biometric fitness trackers—manufactured by industry leaders such as Apple, Google, Samsung, Garmin, and Whoop—have transitioned from novelty pedometers into continuous, multi-modal physiological surveillance platforms. Equipped with high-density optical photoplethysmography (PPG) sensor arrays, triaxial micro-electro-mechanical systems (MEMS) accelerometers, continuous skin temperature thermistors, and peripheral capillary oxygen saturation (SpO2) monitors, modern smartwatches record hundreds of millions of discrete physiological telemetry points per user per week.
@@ -387,7 +387,7 @@ The report concludes with a comprehensive References section formatted strictly 
 # CHAPTER 2: LITERATURE REVIEW
 
 
-## 2.1 Introduction to Wearable Health Informatics
+## 2.1 Introduction
 
 
 Wearable health informatics has emerged as a cornerstone of modern digital medicine, bridging consumer wellness devices and clinical preventive monitoring. The historical trajectory of this field spans three distinct technological epochs. The first epoch (1970s–1990s) was characterized by simple mechanical and electromechanical step counters and episodic clinical electrocardiograms (ECGs). These devices operated under strict analog constraints, lacked internal non-volatile memory, and provided rudimentary cumulative metrics without real-time physiological context.
@@ -399,7 +399,7 @@ The second epoch (2000s–2010s) witnessed the commercial maturation of optical 
 The current third epoch (2020s–present) is defined by the convergence of multi-wavelength optical sensor arrays, high-throughput embedded System-on-Chips (SoCs), and edge artificial intelligence. Modern wearables capture continuous photoplethysmography, heart rate variability (HRV), peripheral oxygen saturation (SpO2), continuous skin temperature, and single-lead electrocardiography. Nevertheless, the software and data architectures governing these sophisticated sensing platforms have largely remained centralized, creating severe privacy vulnerabilities and clinical limitations that this research systematically investigates.
 
 
-## 2.2 Review of Existing Wearable Systems & Commercial Health Platforms
+## 2.2 Review of Existing Systems
 
 
 A comprehensive analysis of contemporary wearable computing reveals critical architectural choices across commercial platforms and academic research systems. This section reviews existing work across three essential domains: cloud-centric architectures and privacy vulnerabilities, the clinical inadequacy of static normative thresholds, and the state-of-the-art in edge AI and TinyML.
@@ -447,7 +447,7 @@ The primary vehicle for enabling on-device inference has been model quantization
 Despite these advances, existing wearable TinyML literature has focused almost exclusively on static forward inference—such as keyword spotting, gesture recognition, or episodic arrhythmia detection (Lin et al., 2020; MCUNet). Pure forward inference, however, cannot adapt to an individual user's evolving physiology. The far more difficult challenge—on-device training and incremental weight adaptation on streaming biosignals—remains largely unexplored in commercial wearables due to the severe memory constraints of storing intermediate activation graphs for backpropagation. This project directly addresses this gap by formulating an on-device micro-batch Stochastic Gradient Descent (Micro-SGD) engine with hard-bounded parameter updates designed specifically for embedded physiological adaptation.
 
 
-## 2.3 Comparative Limitations of Existing Work
+## 2.3 Limitations of Existing Systems
 
 
 To rigorously position InstaHealth within the landscape of consumer wearables and academic edge computing prototypes, Table 2.1 presents a comprehensive comparative analysis across eight key architectural, privacy, and physiological dimensions.
@@ -474,7 +474,7 @@ InstaHealth is uniquely situated as the only platform providing 100% cloud-indep
 
 
 
-## 2.4 Proposed System Overview and Theoretical Foundations
+## 2.4 Proposed System Overview
 
 
 The mathematical and clinical foundations of the InstaHealth architecture are rooted in three validated physiological and machine learning frameworks: Maximum Heart Rate and Heart Rate Reserve formulations, Belenky sleep debt dynamics, and bounded Micro-SGD gradient descent optimization.
@@ -554,7 +554,7 @@ where η = 0.01 is the conservative learning rate and δ_max = 0.05 is the maxim
 # CHAPTER 3: OBJECTIVES AND SCOPE OF WORK
 
 
-## 3.1 Project Objectives
+## 3.1 Objectives of the Project
 
 
 The overarching purpose of the InstaHealth project is to develop and validate a fully autonomous, privacy-preserving, on-device smartwatch health intelligence system that supersedes conventional cloud-dependent architectures and static population heuristics. To achieve this vision, the project defines specific primary research objectives and detailed engineering objectives.
@@ -683,7 +683,7 @@ The comprehensive milestone breakdown across the 12-week development lifecycle i
 The sequential progression, phase dependencies, and milestone delivery dates of the 12-week schedule are visually represented in Figure 3.1.
 
 
-![Figure 3.1 Gantt Chart](fig_gantt_chart.png)
+![Figure 3.1 Gantt Chart](/Users/jathinreddy/.gemini/antigravity/brain/f353d961-e7fd-445e-894a-a4a5c051abdb/fig_gantt_chart.png)
 *Figure 3.1: InstaHealth 12-Week Comprehensive Project Engineering Gantt Schedule*
 
 
@@ -715,7 +715,7 @@ By deploying these architectural mitigations—specifically hard gradient clippi
 # CHAPTER 4: SYSTEM ANALYSIS & DESIGN
 
 
-## 4.1 Requirements Analysis
+## 4.1 System Requirements (Hardware & Software)
 
 
 The engineering of an autonomous, zero-cloud wearable health intelligence system requires a rigorous, formal specification of functional requirements, non-functional constraints, and embedded hardware interfaces to guarantee both clinical efficacy and real-time operational determinism.
@@ -793,13 +793,13 @@ As detailed in Table 4.1, the hardware platform utilizes a low-power ARM Cortex-
 
 
 
-## 4.2 System Architecture Design
+## 4.2 System Architecture
 
 
 InstaHealth is architected as an air-gapped, multi-layered on-device software stack. The system is partitioned into four decoupled horizontal layers, ensuring strict separation of concerns, high computational throughput, and zero external network exposure. Figure 4.1 illustrates the comprehensive multi-layered system architecture.
 
 
-![Figure 4.1 Architecture](fig_3_1_architecture.png)
+![Figure 4.1 Architecture](/Users/jathinreddy/.gemini/antigravity/brain/f353d961-e7fd-445e-894a-a4a5c051abdb/fig_3_1_architecture.png)
 *Figure 4.1: InstaHealth Multi-Layered Zero-Cloud On-Device Smartwatch Architecture*
 
 
@@ -857,7 +857,7 @@ Smartwatch interaction is fundamentally glanceable: users typically view their d
 The UI engine calculates arc geometries in polar coordinates, mapping 0% to 100% target progress to 0 to 2π radians. In the calibration phase (Days 1–2), the screen renders two concentric split arcs: an outer vibrant cyan arc representing the user's live telemetry and an inner muted gray arc representing the demographic human average. In the calibrated phase (Day 3+), the display unlocks a horizontal swipe carousel of circular prescription rings—featuring color-coded progression: Emerald Green (Restorative Sleep), Electric Blue (Active Steps), Crimson Red (Cardio Strain), and Amber Yellow (Sedentary Inactivity).
 
 
-## 4.3 Data Flow Diagrams (DFDs)
+## 4.3 Data Flow Diagram (DFD)
 
 
 To systematically model data transformation, storage boundaries, and information movement throughout the InstaHealth architecture, Data Flow Diagrams (DFDs) were formulated across three levels of hierarchical abstraction: Context Level 0, Subsystem Level 1, and Detailed Process Level 2.
@@ -869,7 +869,7 @@ To systematically model data transformation, storage boundaries, and information
 Figure 4.2 presents the Context Level DFD (Level 0), illustrating the system boundary and high-level interactions between external entities and the InstaHealth core.
 
 
-![Figure 4.2 DFD Level 0](fig_dfd_level0.png)
+![Figure 4.2 DFD Level 0](/Users/jathinreddy/.gemini/antigravity/brain/f353d961-e7fd-445e-894a-a4a5c051abdb/fig_dfd_level0.png)
 *Figure 4.2: Data Flow Diagram (DFD) Level 0: Context Level System Representation*
 
 
@@ -882,7 +882,7 @@ As illustrated in Figure 4.2, the system interfaces with three external entities
 Figure 4.3 presents the Subsystem Level DFD (Level 1), decomposing the core system into six discrete functional processes and four internal data stores.
 
 
-![Figure 4.3 DFD Level 1](fig_dfd_level1.png)
+![Figure 4.3 DFD Level 1](/Users/jathinreddy/.gemini/antigravity/brain/f353d961-e7fd-445e-894a-a4a5c051abdb/fig_dfd_level1.png)
 *Figure 4.3: Data Flow Diagram (DFD) Level 1: Subsystem Level Functional Decomposition*
 
 
@@ -913,7 +913,7 @@ The six functional processes depicted in Figure 4.3 execute as follows:
 Figure 4.4 presents the Detailed Process Flow DFD (Level 2), providing an in-depth functional decomposition of Process 4.0 (Adaptive Physiological Inference and TinyML Micro-SGD Engine).
 
 
-![Figure 4.4 DFD Level 2](fig_dfd_level2.png)
+![Figure 4.4 DFD Level 2](/Users/jathinreddy/.gemini/antigravity/brain/f353d961-e7fd-445e-894a-a4a5c051abdb/fig_dfd_level2.png)
 *Figure 4.4: Data Flow Diagram (DFD) Level 2: Detailed Process Flow for TinyML Micro-SGD Engine*
 
 
@@ -1090,7 +1090,7 @@ where η = 0.01 and δ_max = 0.05. This bounded update invariant guarantees that
 # CHAPTER 5: IMPLEMENTATION
 
 
-## 5.1 Tools, Frameworks, and Operating Environments
+## 5.1 Tools & Technologies Used
 
 
 The implementation of InstaHealth spans embedded firmware execution, microcontroller digital signal processing, on-device neural compilation, and high-performance graphics rendering. The development strategy prioritized extreme power efficiency, zero cloud dependence, and broad cross-platform portability.
@@ -1161,7 +1161,7 @@ Precision energy and power profiling was executed using a Nordic Semiconductor P
 
 
 
-## 5.2 Detailed Subsystem and Module Descriptions
+## 5.2 Module Description
 
 
 InstaHealth is organized into six highly optimized, modular software subsystems. Each module encapsulates a specific physiological or computational responsibility, communicating through thread-safe shared memory buffers.
@@ -1194,7 +1194,7 @@ Context switching between personas is executed in under 50 milliseconds by swapp
 Module 3 controls the temporal lifecycle of the physiological model. The state machine transitions through three deterministic operational states across the initial wear cycle, as visually illustrated in Figure 5.1.
 
 
-![Figure 5.1 Workflow](fig_3_2_workflow.png)
+![Figure 5.1 Workflow](/Users/jathinreddy/.gemini/antigravity/brain/f353d961-e7fd-445e-894a-a4a5c051abdb/fig_3_2_workflow.png)
 *Figure 5.1: InstaHealth 48-Hour On-Device Calibration and Lifecycle State Machine Workflow*
 
 
@@ -1257,7 +1257,7 @@ The rendering pipeline computes arc sweeps in polar coordinates, applying trigon
 
 
 
-## 5.3 Algorithmic Workflows and Methods
+## 5.3 Algorithms / Methods Used
 
 
 The mathematical and logical operations of InstaHealth are formalized in four core algorithmic workflows presented below in structured algorithmic format.
@@ -1407,7 +1407,7 @@ Output: Daily sleep prescription S_prescribe, Heart rate reserve HRR, Strain int
 ```
 
 
-## 5.4 Core Implementation Source Code Listings
+## 5.4 Code Snippets (optional)
 
 
 This section presents four production source code listings implementing the critical computational kernels of InstaHealth.
@@ -1628,10 +1628,10 @@ function renderCircularProgressArc(ctx, centerX, centerY, radius, percent, strok
 ```
 
 
-# CHAPTER 6: RESULTS AND DISCUSSION
+# CHAPTER 6: RESULTS AND DISCUSSIONS
 
 
-## 6.1 User Interface and Operational Output Screens
+## 6.1 Output Screens / Results
 
 
 The user experience and visual presentation of InstaHealth were evaluated on physical smartwatch displays and emulated touchscreens. The interface was engineered to deliver maximum glanceability, allowing the user to comprehend their physiological status in under three seconds.
@@ -1643,7 +1643,7 @@ The user experience and visual presentation of InstaHealth were evaluated on phy
 During the initial 48-hour calibration window, the interface operates in observation mode, presenting side-by-side comparative arcs that ground the user's live telemetry against their clinical demographic cohort. Figure 6.1 displays the high-resolution output screen during Day 1 of calibration.
 
 
-![Figure 6.1 Calibration UI](screenshot_day1_calibration.png)
+![Figure 6.1 Calibration UI](/Users/jathinreddy/.gemini/antigravity/brain/f353d961-e7fd-445e-894a-a4a5c051abdb/screenshot_day1_calibration.png)
 *Figure 6.1: InstaHealth Day 1 & Day 2 Calibration UI: Real-Time Telemetry vs Demographic Benchmarks*
 
 
@@ -1677,7 +1677,7 @@ Crucially, the interface does not sound abrasive alarms, flash red warnings, or 
 Upon crossing the 48-hour continuous wear threshold, the system autonomously transitions to the calibrated state. Figure 6.2 showcases the user interface during Day 3+ operation.
 
 
-![Figure 6.2 Prescription UI](screenshot_day3_prescriptions.png)
+![Figure 6.2 Prescription UI](/Users/jathinreddy/.gemini/antigravity/brain/f353d961-e7fd-445e-894a-a4a5c051abdb/screenshot_day3_prescriptions.png)
 *Figure 6.2: InstaHealth Day 3+ Calibrated Prescription UI: Multi-Metric Circular Ring Carousel*
 
 
@@ -1705,7 +1705,7 @@ To verify multi-profile sandboxing, the system was subjected to rapid persona sw
 Experimental telemetry confirmed complete isolation: high-intensity cardiovascular sessions logged under the Runner persona (elevating mean HR to 162 bpm) had zero mathematical impact on the resting HRV baselines or sleep debt accumulators of the Meditator persona. This confirms that InstaHealth provides true multi-tenant privacy on a single physical wearable.
 
 
-## 6.2 Experimental Testing and Validation Results
+## 6.2 Testing (Test Cases & Results)
 
 
 A comprehensive test suite spanning Unit, Integration, System, and User Acceptance testing was formulated and executed against the InstaHealth firmware to verify functional correctness, algorithmic stability, and fault resilience.
@@ -1768,7 +1768,7 @@ As demonstrated in Table 6.2, during quiescent resting and desk typing, optical 
 
 
 
-## 6.3 Performance Analysis and Ablation Study
+## 6.3 Performance Analysis
 
 
 To quantify the predictive precision, computational efficiency, and energy characteristics of InstaHealth, extensive empirical benchmarking and model ablation studies were conducted.
@@ -1780,7 +1780,7 @@ To quantify the predictive precision, computational efficiency, and energy chara
 An empirical ablation study was performed comparing the adaptive TinyML Multi-Layer Perceptron against two baseline modeling paradigms: (a) a standard Multi-Variable Linear Regression model, and (b) Static Population Rules (enforcing uniform 8.0h sleep, 10,000 steps, and Fox & Haskell 220-Age HRmax). Figure 6.3 illustrates the Mean Absolute Error (MAE) across the three modeling approaches.
 
 
-![Figure 6.3 Ablation](fig_ablation_chart.png)
+![Figure 6.3 Ablation](/Users/jathinreddy/.gemini/antigravity/brain/f353d961-e7fd-445e-894a-a4a5c051abdb/fig_ablation_chart.png)
 *Figure 6.3: Empirical Ablation Study: Mean Absolute Error (MAE) Across Physiological Models*
 
 
@@ -1805,7 +1805,7 @@ As outlined in Table 6.4, forward neural inference executes in just 1.18 millise
 Power consumption was measured using the Nordic Power Profiler Kit II (PPK2) supplying 3.70 V DC over continuous 48-hour testing cycles. Figure 6.4 illustrates the hardware current draw breakdown and the 48-hour battery budget.
 
 
-![Figure 6.4 Battery Profile](fig_battery_chart.png)
+![Figure 6.4 Battery Profile](/Users/jathinreddy/.gemini/antigravity/brain/f353d961-e7fd-445e-894a-a4a5c051abdb/fig_battery_chart.png)
 *Figure 6.4: Hardware Subsystem Current Draw Profile and 48-Hour Smartwatch Battery Budget*
 
 

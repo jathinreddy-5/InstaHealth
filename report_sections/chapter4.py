@@ -9,7 +9,7 @@ CHAPTER_4_TITLE = "CHAPTER 4: SYSTEM ANALYSIS & DESIGN"
 SECTIONS = [
     {
         "id": "4.1",
-        "title": "4.1 Requirements Analysis",
+        "title": "4.1 System Requirements (Hardware & Software)",
         "paragraphs": [
             "The engineering of an autonomous, zero-cloud wearable health intelligence system requires a rigorous, formal specification of functional requirements, non-functional constraints, and embedded hardware interfaces to guarantee both clinical efficacy and real-time operational determinism."
         ],
@@ -52,7 +52,7 @@ SECTIONS = [
     },
     {
         "id": "4.2",
-        "title": "4.2 System Architecture Design",
+        "title": "4.2 System Architecture",
         "paragraphs": [
             "InstaHealth is architected as an air-gapped, multi-layered on-device software stack. The system is partitioned into four decoupled horizontal layers, ensuring strict separation of concerns, high computational throughput, and zero external network exposure. Figure 4.1 illustrates the comprehensive multi-layered system architecture.",
             "[FIGURE 4.1: SYSTEM ARCHITECTURE]",
@@ -105,7 +105,7 @@ SECTIONS = [
     },
     {
         "id": "4.3",
-        "title": "4.3 Data Flow Diagrams (DFDs)",
+        "title": "4.3 Data Flow Diagram (DFD)",
         "paragraphs": [
             "To systematically model data transformation, storage boundaries, and information movement throughout the InstaHealth architecture, Data Flow Diagrams (DFDs) were formulated across three levels of hierarchical abstraction: Context Level 0, Subsystem Level 1, and Detailed Process Level 2."
         ],

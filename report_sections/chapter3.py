@@ -9,7 +9,7 @@ CHAPTER_3_TITLE = "CHAPTER 3: OBJECTIVES AND SCOPE OF WORK"
 SECTIONS = [
     {
         "id": "3.1",
-        "title": "3.1 Project Objectives",
+        "title": "3.1 Objectives of the Project",
         "paragraphs": [
             "The overarching purpose of the InstaHealth project is to develop and validate a fully autonomous, privacy-preserving, on-device smartwatch health intelligence system that supersedes conventional cloud-dependent architectures and static population heuristics. To achieve this vision, the project defines specific primary research objectives and detailed engineering objectives."
         ],

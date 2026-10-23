@@ -8,7 +8,7 @@ CHAPTER_5_TITLE = "CHAPTER 5: IMPLEMENTATION"
 SECTIONS = [
     {
         "id": "5.1",
-        "title": "5.1 Tools, Frameworks, and Operating Environments",
+        "title": "5.1 Tools & Technologies Used",
         "paragraphs": [
             "The implementation of InstaHealth spans embedded firmware execution, microcontroller digital signal processing, on-device neural compilation, and high-performance graphics rendering. The development strategy prioritized extreme power efficiency, zero cloud dependence, and broad cross-platform portability."
         ],
@@ -45,7 +45,7 @@ SECTIONS = [
     },
     {
         "id": "5.2",
-        "title": "5.2 Detailed Subsystem and Module Descriptions",
+        "title": "5.2 Module Description",
         "paragraphs": [
             "InstaHealth is organized into six highly optimized, modular software subsystems. Each module encapsulates a specific physiological or computational responsibility, communicating through thread-safe shared memory buffers."
         ],
@@ -110,7 +110,7 @@ SECTIONS = [
     },
     {
         "id": "5.3",
-        "title": "5.3 Algorithmic Workflows and Methods",
+        "title": "5.3 Algorithms / Methods Used",
         "paragraphs": [
             "The mathematical and logical operations of InstaHealth are formalized in four core algorithmic workflows presented below in structured algorithmic format."
         ],
@@ -243,7 +243,7 @@ SECTIONS = [
     },
     {
         "id": "5.4",
-        "title": "5.4 Core Implementation Source Code Listings",
+        "title": "5.4 Code Snippets (optional)",
         "paragraphs": [
             "This section presents four production source code listings implementing the critical computational kernels of InstaHealth."
         ],

@@ -20,21 +20,21 @@ TITLE_DATA = {
 }
 
 DECLARATION_TEXT = (
-    "We hereby declare that the project entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD "
-    "ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” "
-    "submitted by us, for the award of the degree of Bachelor of Technology in Computer Science & Engineering, "
+    "I hereby declare that the project entitled “ON-DEVICE PERSONALIZED HEALTH EVENT PREDICTION USING "
+    "TINYML AND ON-DEVICE SMALL LANGUAGE MODELS FOR PRIVACY-PRESERVING HEALTH ANALYTICS” "
+    "submitted by us, for the award of the degree of Bachelor of Technology in Computer Sciences & Engineering, "
     "School of Technology to The Apollo University is a record of bonafide work carried out by us under the "
-    "supervision of Dr. Thirumalesu.K, Assistant Professor, Department of Computer Science & Engineering.\n\n"
+    "supervision of “Dr. Thirumalesu.K”.\n\n"
     "We further declare that the work reported in this thesis has not been submitted and will not be submitted, "
     "either in part or in full, for the award of any other degree or diploma in this institute or any other institute or university."
 )
 
 BONAFIDE_CERTIFICATE_TEXT = (
-    "This is to certify that the project report entitled “INSTAHEALTH: A PRIVACY-PRESERVING ZERO-CLOUD "
-    "ON-DEVICE SMARTWATCH HEALTH INTELLIGENCE SYSTEM WITH ADAPTIVE MULTI-PROFILE PHYSIOLOGICAL MODELING” "
-    "is the bonafide work carried out by A. JATHIN REDDY (Register No: 122311520105) and K. PRANAY KUMAR "
+    "This is to certify that the project report entitled “ON-DEVICE PERSONALIZED HEALTH EVENT PREDICTION "
+    "USING TINYML AND ON-DEVICE SMALL LANGUAGE MODELS FOR PRIVACY-PRESERVING HEALTH ANALYTICS” "
+    "is the bonafide work carried out by A. Jathin Reddy (Register No: 122311520105) and K. Pranay Kumar "
     "(Register No: 122311520133), under my supervision and guidance, in partial fulfillment of the requirements "
-    "for the award of the degree of Bachelor of Technology in Computer Science & Engineering by The Apollo University, Chittoor."
+    "for the award of the degree of Bachelor of Technology in Computer Sciences & Engineering by The Apollo University, Chittoor."
 )
 
 ACKNOWLEDGEMENT_PARAGRAPHS = [
